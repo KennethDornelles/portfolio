@@ -4,7 +4,7 @@ import { UpdateCodeExampleDto } from './dto/update-code-example.dto';
 
 @Injectable()
 export class CodeExampleService {
-  create(createCodeExampleDto: CreateCodeExampleDto) {
+  create(_createCodeExampleDto: CreateCodeExampleDto) {
     return 'This action adds a new codeExample';
   }
 
@@ -16,7 +16,7 @@ export class CodeExampleService {
     return `This action returns a #${id} codeExample`;
   }
 
-  update(id: number, updateCodeExampleDto: UpdateCodeExampleDto) {
+  update(id: number, _updateCodeExampleDto: UpdateCodeExampleDto) {
     return `This action updates a #${id} codeExample`;
   }
 

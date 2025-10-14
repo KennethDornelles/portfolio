@@ -10,6 +10,9 @@ RUN npm install
 # Copy the rest of the application source code
 COPY . .
 
+# Generate Prisma Client
+RUN npm run prisma:generate
+
 # Build the application
 RUN npm run build
 
@@ -26,6 +29,12 @@ WORKDIR /usr/src/app
 # Copy package files and install only production dependencies
 COPY package*.json ./
 RUN npm install --only=production
+
+# Copy Prisma schema
+COPY src/database/prisma ./src/database/prisma
+
+# Generate Prisma Client
+RUN npx prisma generate --schema=./src/database/prisma/schema.prisma
 
 # Copy the built application from the development stage
 COPY --from=development /usr/src/app/dist ./dist

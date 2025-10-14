@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { SocialLinkService } from './social-link.service';
 import { CreateSocialLinkDto } from './dto/create-social-link.dto';
 import { UpdateSocialLinkDto } from './dto/update-social-link.dto';
@@ -23,7 +31,10 @@ export class SocialLinkController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSocialLinkDto: UpdateSocialLinkDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateSocialLinkDto: UpdateSocialLinkDto,
+  ) {
     return this.socialLinkService.update(+id, updateSocialLinkDto);
   }
 

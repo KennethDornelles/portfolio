@@ -4,7 +4,7 @@ import { UpdateSocialLinkDto } from './dto/update-social-link.dto';
 
 @Injectable()
 export class SocialLinkService {
-  create(createSocialLinkDto: CreateSocialLinkDto) {
+  create(_createSocialLinkDto: CreateSocialLinkDto) {
     return 'This action adds a new socialLink';
   }
 
@@ -16,7 +16,7 @@ export class SocialLinkService {
     return `This action returns a #${id} socialLink`;
   }
 
-  update(id: number, updateSocialLinkDto: UpdateSocialLinkDto) {
+  update(id: number, _updateSocialLinkDto: UpdateSocialLinkDto) {
     return `This action updates a #${id} socialLink`;
   }
 

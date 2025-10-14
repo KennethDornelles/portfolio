@@ -4,7 +4,7 @@ import { UpdateContactMessageDto } from './dto/update-contact-message.dto';
 
 @Injectable()
 export class ContactMessageService {
-  create(createContactMessageDto: CreateContactMessageDto) {
+  create(_createContactMessageDto: CreateContactMessageDto) {
     return 'This action adds a new contactMessage';
   }
 
@@ -16,7 +16,7 @@ export class ContactMessageService {
     return `This action returns a #${id} contactMessage`;
   }
 
-  update(id: number, updateContactMessageDto: UpdateContactMessageDto) {
+  update(id: number, _updateContactMessageDto: UpdateContactMessageDto) {
     return `This action updates a #${id} contactMessage`;
   }
 

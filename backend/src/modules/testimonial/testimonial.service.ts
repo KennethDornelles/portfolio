@@ -4,7 +4,7 @@ import { UpdateTestimonialDto } from './dto/update-testimonial.dto';
 
 @Injectable()
 export class TestimonialService {
-  create(createTestimonialDto: CreateTestimonialDto) {
+  create(_createTestimonialDto: CreateTestimonialDto) {
     return 'This action adds a new testimonial';
   }
 
@@ -16,7 +16,7 @@ export class TestimonialService {
     return `This action returns a #${id} testimonial`;
   }
 
-  update(id: number, updateTestimonialDto: UpdateTestimonialDto) {
+  update(id: number, _updateTestimonialDto: UpdateTestimonialDto) {
     return `This action updates a #${id} testimonial`;
   }
 

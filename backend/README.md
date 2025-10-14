@@ -23,12 +23,64 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Portfolio Backend - API RESTful construída com [NestJS](https://github.com/nestjs/nest) e Prisma ORM.
+
+## Tecnologias
+
+- **NestJS** - Framework Node.js progressivo
+- **Prisma** - ORM moderno para TypeScript e Node.js
+- **PostgreSQL** - Banco de dados relacional
+- **TypeScript** - Superset JavaScript com tipagem estática
+- **Class Validator** - Validação de dados baseada em decoradores
 
 ## Project setup
 
 ```bash
 $ npm install
+```
+
+## Configuração do Banco de Dados
+
+1. Copie o arquivo `.env.example` para `.env`:
+```bash
+$ cp .env.example .env
+```
+
+2. Configure a variável `DATABASE_URL` no arquivo `.env` com suas credenciais do PostgreSQL:
+```
+DATABASE_URL="postgresql://user:password@localhost:5432/portfolio?schema=public"
+```
+
+3. Execute as migrations do Prisma:
+```bash
+$ npm run prisma:migrate
+```
+
+4. (Opcional) Execute o seed para popular o banco com dados iniciais:
+```bash
+$ npm run prisma:seed
+```
+
+## Scripts do Prisma
+
+```bash
+# Gerar o Prisma Client
+$ npm run prisma:generate
+
+# Criar e aplicar uma nova migration
+$ npm run prisma:migrate
+
+# Aplicar migrations em produção
+$ npm run prisma:migrate:deploy
+
+# Resetar o banco de dados (cuidado!)
+$ npm run prisma:migrate:reset
+
+# Abrir o Prisma Studio (interface visual)
+$ npm run prisma:studio
+
+# Popular o banco com dados iniciais
+$ npm run prisma:seed
 ```
 
 ## Compile and run the project

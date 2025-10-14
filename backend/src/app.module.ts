@@ -1,18 +1,30 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { DatabaseModule } from './database/database.module';
 import { PersonalInfoModule } from './modules/personal-info/personal-info.module';
-import { ServiceModule } from './service/service.module';
-import { SkillModule } from './skill/skill.module';
-import { ProjectModule } from './project/project.module';
-import { EducationModule } from './education/education.module';
-import { TestimonialModule } from './testimonial/testimonial.module';
-import { ContactMessageModule } from './contact-message/contact-message.module';
-import { SocialLinkModule } from './social-link/social-link.module';
-import { CodeExampleModule } from './code-example/code-example.module';
+import { ServiceModule } from './modules/service/service.module';
+import { SkillModule } from './modules/skill/skill.module';
+import { ProjectModule } from './modules/project/project.module';
+import { EducationModule } from './modules/education/education.module';
+import { TestimonialModule } from './modules/testimonial/testimonial.module';
+import { ContactMessageModule } from './modules/contact-message/contact-message.module';
+import { SocialLinkModule } from './modules/social-link/social-link.module';
+import { CodeExampleModule } from './modules/code-example/code-example.module';
 
 @Module({
-  imports: [PersonalInfoModule, ServiceModule, SkillModule, ProjectModule, EducationModule, TestimonialModule, ContactMessageModule, SocialLinkModule, CodeExampleModule],
+  imports: [
+    DatabaseModule,
+    PersonalInfoModule,
+    ServiceModule,
+    SkillModule,
+    ProjectModule,
+    EducationModule,
+    TestimonialModule,
+    ContactMessageModule,
+    SocialLinkModule,
+    CodeExampleModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

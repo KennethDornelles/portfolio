@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { ContactMessageService } from './contact-message.service';
 import { CreateContactMessageDto } from './dto/create-contact-message.dto';
 import { UpdateContactMessageDto } from './dto/update-contact-message.dto';
@@ -23,7 +31,10 @@ export class ContactMessageController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateContactMessageDto: UpdateContactMessageDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateContactMessageDto: UpdateContactMessageDto,
+  ) {
     return this.contactMessageService.update(+id, updateContactMessageDto);
   }
 
