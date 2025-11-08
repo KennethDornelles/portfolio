@@ -35,7 +35,13 @@ export default tseslint.config(
       '@typescript-eslint/no-unsafe-enum-comparison': 'warn',
       '@typescript-eslint/require-await': 'warn',
       '@typescript-eslint/restrict-template-expressions': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
       '@typescript-eslint/no-unnecessary-type-assertion': 'off',
       '@typescript-eslint/await-thenable': 'error',
     },

@@ -7,6 +7,7 @@ import { ServiceModule } from './modules/service/service.module';
 import { SkillModule } from './modules/skill/skill.module';
 import { ProjectModule } from './modules/project/project.module';
 import { EducationModule } from './modules/education/education.module';
+import { ExperienceModule } from './modules/experience/experience.module';
 import { TestimonialModule } from './modules/testimonial/testimonial.module';
 import { ContactMessageModule } from './modules/contact-message/contact-message.module';
 import { SocialLinkModule } from './modules/social-link/social-link.module';
@@ -20,6 +21,7 @@ import { CodeExampleModule } from './modules/code-example/code-example.module';
     SkillModule,
     ProjectModule,
     EducationModule,
+    ExperienceModule,
     TestimonialModule,
     ContactMessageModule,
     SocialLinkModule,

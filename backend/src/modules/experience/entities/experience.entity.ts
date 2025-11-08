@@ -1,13 +1,12 @@
-export class Education {
+export class Experience {
   id: string;
-  institution: string;
-  degree: string;
-  field?: string;
+  company: string;
+  position: string;
+  description: string;
   startDate: Date;
   endDate?: Date;
   current: boolean;
-  description?: string;
-  grade?: string;
+  location?: string;
   order: number;
   createdAt: Date;
   updatedAt: Date;

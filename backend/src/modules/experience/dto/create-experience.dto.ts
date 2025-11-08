@@ -3,40 +3,38 @@ import {
   IsNotEmpty,
   IsOptional,
   IsBoolean,
-  IsArray,
+  IsDateString,
   IsInt,
   Min,
-  IsUrl,
 } from 'class-validator';
 
-export class CreateProjectDto {
+export class CreateExperienceDto {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  company: string;
+
+  @IsString()
+  @IsNotEmpty()
+  position: string;
 
   @IsString()
   @IsNotEmpty()
   description: string;
 
-  @IsOptional()
-  @IsString()
-  image?: string;
-
-  @IsArray()
-  @IsString({ each: true })
-  tags: string[];
+  @IsDateString()
+  startDate: string;
 
   @IsOptional()
-  @IsUrl()
-  githubUrl?: string;
-
-  @IsOptional()
-  @IsUrl()
-  liveUrl?: string;
+  @IsDateString()
+  endDate?: string;
 
   @IsOptional()
   @IsBoolean()
-  featured?: boolean;
+  current?: boolean;
+
+  @IsOptional()
+  @IsString()
+  location?: string;
 
   @IsOptional()
   @IsInt()
