@@ -25,9 +25,14 @@ export class TestimonialController {
     return this.testimonialService.findAll();
   }
 
+  @Get('active')
+  findActive() {
+    return this.testimonialService.findActive();
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.testimonialService.findOne(+id);
+    return this.testimonialService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +40,11 @@ export class TestimonialController {
     @Param('id') id: string,
     @Body() updateTestimonialDto: UpdateTestimonialDto,
   ) {
-    return this.testimonialService.update(+id, updateTestimonialDto);
+    return this.testimonialService.update(id, updateTestimonialDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.testimonialService.remove(+id);
+    return this.testimonialService.remove(id);
   }
 }

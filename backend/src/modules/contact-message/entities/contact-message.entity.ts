@@ -4,7 +4,7 @@ export class ContactMessage {
   id: string;
   name: string;
   email: string;
-  subject?: string;
+  subject: string | null;
   message: string;
   status: MessageStatus;
   createdAt: Date;

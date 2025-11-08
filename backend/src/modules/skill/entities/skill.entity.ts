@@ -5,7 +5,7 @@ export class Skill {
   name: string;
   category: SkillCategory;
   level: number;
-  icon?: string;
+  icon: string | null;
   order: number;
   createdAt: Date;
   updatedAt: Date;

@@ -1,26 +1,70 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCodeExampleDto } from './dto/create-code-example.dto';
 import { UpdateCodeExampleDto } from './dto/update-code-example.dto';
+import { PrismaService } from '../../database/prisma.service';
+import { CodeExample } from './entities/code-example.entity';
 
 @Injectable()
 export class CodeExampleService {
-  create(_createCodeExampleDto: CreateCodeExampleDto) {
-    return 'This action adds a new codeExample';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(
+    createCodeExampleDto: CreateCodeExampleDto,
+  ): Promise<CodeExample> {
+    return await this.prisma.codeExample.create({
+      data: createCodeExampleDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all codeExample`;
+  async findAll(): Promise<CodeExample[]> {
+    return await this.prisma.codeExample.findMany({
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} codeExample`;
+  async findActive(): Promise<CodeExample[]> {
+    return await this.prisma.codeExample.findMany({
+      where: { active: true },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  update(id: number, _updateCodeExampleDto: UpdateCodeExampleDto) {
-    return `This action updates a #${id} codeExample`;
+  async findByLanguage(language: string): Promise<CodeExample[]> {
+    return await this.prisma.codeExample.findMany({
+      where: { language },
+      orderBy: { createdAt: 'desc' },
+    });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} codeExample`;
+  async findOne(id: string): Promise<CodeExample> {
+    const codeExample = await this.prisma.codeExample.findUnique({
+      where: { id },
+    });
+
+    if (!codeExample) {
+      throw new NotFoundException(`Code example with ID ${id} not found`);
+    }
+
+    return codeExample;
+  }
+
+  async update(
+    id: string,
+    updateCodeExampleDto: UpdateCodeExampleDto,
+  ): Promise<CodeExample> {
+    await this.findOne(id); // Verifica se existe
+
+    return await this.prisma.codeExample.update({
+      where: { id },
+      data: updateCodeExampleDto,
+    });
+  }
+
+  async remove(id: string): Promise<CodeExample> {
+    await this.findOne(id); // Verifica se existe
+
+    return await this.prisma.codeExample.delete({
+      where: { id },
+    });
   }
 }

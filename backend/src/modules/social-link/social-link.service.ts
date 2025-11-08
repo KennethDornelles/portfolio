@@ -1,26 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSocialLinkDto } from './dto/create-social-link.dto';
 import { UpdateSocialLinkDto } from './dto/update-social-link.dto';
+import { PrismaService } from '../../database/prisma.service';
+import { SocialLink } from './entities/social-link.entity';
 
 @Injectable()
 export class SocialLinkService {
-  create(_createSocialLinkDto: CreateSocialLinkDto) {
-    return 'This action adds a new socialLink';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createSocialLinkDto: CreateSocialLinkDto): Promise<SocialLink> {
+    return await this.prisma.socialLink.create({
+      data: createSocialLinkDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all socialLink`;
+  async findAll(): Promise<SocialLink[]> {
+    return await this.prisma.socialLink.findMany({
+      orderBy: { order: 'asc' },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} socialLink`;
+  async findActive(): Promise<SocialLink[]> {
+    return await this.prisma.socialLink.findMany({
+      where: { active: true },
+      orderBy: { order: 'asc' },
+    });
   }
 
-  update(id: number, _updateSocialLinkDto: UpdateSocialLinkDto) {
-    return `This action updates a #${id} socialLink`;
+  async findOne(id: string): Promise<SocialLink> {
+    const socialLink = await this.prisma.socialLink.findUnique({
+      where: { id },
+    });
+
+    if (!socialLink) {
+      throw new NotFoundException(`Social link with ID ${id} not found`);
+    }
+
+    return socialLink;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} socialLink`;
+  async update(
+    id: string,
+    updateSocialLinkDto: UpdateSocialLinkDto,
+  ): Promise<SocialLink> {
+    await this.findOne(id); // Verifica se existe
+
+    return await this.prisma.socialLink.update({
+      where: { id },
+      data: updateSocialLinkDto,
+    });
+  }
+
+  async remove(id: string): Promise<SocialLink> {
+    await this.findOne(id); // Verifica se existe
+
+    return await this.prisma.socialLink.delete({
+      where: { id },
+    });
   }
 }

@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { CodeExampleService } from './code-example.service';
 import { CreateCodeExampleDto } from './dto/create-code-example.dto';
@@ -21,13 +22,21 @@ export class CodeExampleController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('language') language?: string) {
+    if (language) {
+      return this.codeExampleService.findByLanguage(language);
+    }
     return this.codeExampleService.findAll();
+  }
+
+  @Get('active')
+  findActive() {
+    return this.codeExampleService.findActive();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.codeExampleService.findOne(+id);
+    return this.codeExampleService.findOne(id);
   }
 
   @Patch(':id')
@@ -35,11 +44,11 @@ export class CodeExampleController {
     @Param('id') id: string,
     @Body() updateCodeExampleDto: UpdateCodeExampleDto,
   ) {
-    return this.codeExampleService.update(+id, updateCodeExampleDto);
+    return this.codeExampleService.update(id, updateCodeExampleDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.codeExampleService.remove(+id);
+    return this.codeExampleService.remove(id);
   }
 }

@@ -2,10 +2,10 @@ export class Testimonial {
   id: string;
   name: string;
   role: string;
-  company?: string;
+  company: string | null;
   message: string;
-  avatar?: string;
-  rating: number;
+  avatar: string | null;
+  rating: number | null;
   active: boolean;
   order: number;
   createdAt: Date;

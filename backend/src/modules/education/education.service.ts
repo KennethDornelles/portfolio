@@ -1,26 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
+import { PrismaService } from '../../database/prisma.service';
+import { Education } from './entities/education.entity';
 
 @Injectable()
 export class EducationService {
-  create(_createEducationDto: CreateEducationDto) {
-    return 'This action adds a new education';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createEducationDto: CreateEducationDto): Promise<Education> {
+    return await this.prisma.education.create({
+      data: createEducationDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all education`;
+  async findAll(): Promise<Education[]> {
+    return await this.prisma.education.findMany({
+      orderBy: { order: 'asc' },
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} education`;
+  async findCurrent(): Promise<Education[]> {
+    return await this.prisma.education.findMany({
+      where: { current: true },
+      orderBy: { startDate: 'desc' },
+    });
   }
 
-  update(id: number, _updateEducationDto: UpdateEducationDto) {
-    return `This action updates a #${id} education`;
+  async findOne(id: string): Promise<Education> {
+    const education = await this.prisma.education.findUnique({
+      where: { id },
+    });
+
+    if (!education) {
+      throw new NotFoundException(`Education with ID ${id} not found`);
+    }
+
+    return education;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} education`;
+  async update(
+    id: string,
+    updateEducationDto: UpdateEducationDto,
+  ): Promise<Education> {
+    await this.findOne(id); // Verifica se existe
+
+    return await this.prisma.education.update({
+      where: { id },
+      data: updateEducationDto,
+    });
+  }
+
+  async remove(id: string): Promise<Education> {
+    await this.findOne(id); // Verifica se existe
+
+    return await this.prisma.education.delete({
+      where: { id },
+    });
   }
 }

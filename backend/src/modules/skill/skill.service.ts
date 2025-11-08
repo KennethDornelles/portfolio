@@ -1,26 +1,59 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
+import { PrismaService } from '../../database/prisma.service';
+import { Skill } from './entities/skill.entity';
+import { SkillCategory } from '@prisma/client';
 
 @Injectable()
 export class SkillService {
-  create(_createSkillDto: CreateSkillDto) {
-    return 'This action adds a new skill';
+  constructor(private readonly prisma: PrismaService) {}
+
+  async create(createSkillDto: CreateSkillDto): Promise<Skill> {
+    return await this.prisma.skill.create({
+      data: createSkillDto,
+    });
   }
 
-  findAll() {
-    return `This action returns all skill`;
+  async findAll(): Promise<Skill[]> {
+    return await this.prisma.skill.findMany({
+      orderBy: [{ category: 'asc' }, { order: 'asc' }],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} skill`;
+  async findByCategory(category: SkillCategory): Promise<Skill[]> {
+    return await this.prisma.skill.findMany({
+      where: { category },
+      orderBy: { order: 'asc' },
+    });
   }
 
-  update(id: number, _updateSkillDto: UpdateSkillDto) {
-    return `This action updates a #${id} skill`;
+  async findOne(id: string): Promise<Skill> {
+    const skill = await this.prisma.skill.findUnique({
+      where: { id },
+    });
+
+    if (!skill) {
+      throw new NotFoundException(`Skill with ID ${id} not found`);
+    }
+
+    return skill;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} skill`;
+  async update(id: string, updateSkillDto: UpdateSkillDto): Promise<Skill> {
+    await this.findOne(id); // Verifica se existe
+
+    return await this.prisma.skill.update({
+      where: { id },
+      data: updateSkillDto,
+    });
+  }
+
+  async remove(id: string): Promise<Skill> {
+    await this.findOne(id); // Verifica se existe
+
+    return await this.prisma.skill.delete({
+      where: { id },
+    });
   }
 }

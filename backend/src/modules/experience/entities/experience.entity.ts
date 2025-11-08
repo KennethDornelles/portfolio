@@ -4,9 +4,9 @@ export class Experience {
   position: string;
   description: string;
   startDate: Date;
-  endDate?: Date;
+  endDate: Date | null;
   current: boolean;
-  location?: string;
+  location: string | null;
   order: number;
   createdAt: Date;
   updatedAt: Date;

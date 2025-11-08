@@ -1,7 +1,7 @@
 export class CodeExample {
   id: string;
   title: string;
-  description?: string;
+  description: string | null;
   code: string;
   language: string;
   tags: string[];

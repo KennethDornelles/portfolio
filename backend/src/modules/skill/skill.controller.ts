@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
+import { SkillCategory } from '@prisma/client';
 
 @Controller('skill')
 export class SkillController {
@@ -21,22 +23,25 @@ export class SkillController {
   }
 
   @Get()
-  findAll() {
+  findAll(@Query('category') category?: SkillCategory) {
+    if (category) {
+      return this.skillService.findByCategory(category);
+    }
     return this.skillService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.skillService.findOne(+id);
+    return this.skillService.findOne(id);
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSkillDto: UpdateSkillDto) {
-    return this.skillService.update(+id, updateSkillDto);
+    return this.skillService.update(id, updateSkillDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.skillService.remove(+id);
+    return this.skillService.remove(id);
   }
 }
