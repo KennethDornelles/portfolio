@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { SocialLinkService } from './social-link.service';
 import { CreateSocialLinkDto } from './dto/create-social-link.dto';
@@ -31,20 +32,20 @@ export class SocialLinkController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.socialLinkService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updateSocialLinkDto: UpdateSocialLinkDto,
   ) {
     return this.socialLinkService.update(id, updateSocialLinkDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.socialLinkService.remove(id);
   }
 }

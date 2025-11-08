@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { PersonalInfoService } from './personal-info.service';
 import { CreatePersonalInfoDto } from './dto/create-personal-info.dto';
@@ -34,13 +35,13 @@ export class PersonalInfoController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.personalInfoService.findOne(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() updatePersonalInfoDto: UpdatePersonalInfoDto,
   ) {
     return this.personalInfoService.update(id, updatePersonalInfoDto);
@@ -48,7 +49,7 @@ export class PersonalInfoController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.personalInfoService.remove(id);
   }
 }
