@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
+import { HealthModule } from './health/health.module';
 import { PersonalInfoModule } from './modules/personal-info/personal-info.module';
 import { ServiceModule } from './modules/service/service.module';
 import { SkillModule } from './modules/skill/skill.module';
@@ -16,6 +17,7 @@ import { CodeExampleModule } from './modules/code-example/code-example.module';
 @Module({
   imports: [
     DatabaseModule,
+    HealthModule,
     PersonalInfoModule,
     ServiceModule,
     SkillModule,
