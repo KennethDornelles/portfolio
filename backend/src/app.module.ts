@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
@@ -13,9 +14,16 @@ import { TestimonialModule } from './modules/testimonial/testimonial.module';
 import { ContactMessageModule } from './modules/contact-message/contact-message.module';
 import { SocialLinkModule } from './modules/social-link/social-link.module';
 import { CodeExampleModule } from './modules/code-example/code-example.module';
+import { configuration, validationSchema } from './config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
+      validationSchema,
+      envFilePath: '.env',
+    }),
     DatabaseModule,
     HealthModule,
     PersonalInfoModule,
