@@ -101,7 +101,7 @@ Para executar os testes, utilize os seguintes comandos nos respectivos diretóri
 
 A documentação adicional do projeto pode ser encontrada nos seguintes arquivos:
 
--   [DESIGN_SYSTEM.md](./DESIGN_SYSTEM.md)
+-   [DESIGN_SYSTEM.md](./docs/DESIGN_SYSTEM.md)
 -   [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md)
 -   [backend/HEALTH_CHECK_TESTING.md](./backend/HEALTH_CHECK_TESTING.md)
 

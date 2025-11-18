@@ -1,10 +1,11 @@
 version: '3.8'
 
+# Development environment with hot-reload
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: portfolio_postgres
-    restart: always
+    container_name: portfolio_postgres_dev
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-portfolio}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-portfolio123}
@@ -12,9 +13,9 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data_dev:/var/lib/postgresql/data
     networks:
-      - portfolio_network
+      - portfolio_network_dev
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-portfolio}"]
       interval: 10s
@@ -25,49 +26,51 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-      target: production
-    container_name: portfolio_backend
-    restart: always
+      target: build
+    container_name: portfolio_backend_dev
+    restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-portfolio}:${POSTGRES_PASSWORD:-portfolio123}@postgres:5432/${POSTGRES_DB:-portfolio_db}
-      JWT_SECRET: ${JWT_SECRET:-your-secret-key-change-in-production}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-key}
       PORT: 3000
-      NODE_ENV: production
+      NODE_ENV: development
     ports:
       - "3000:3000"
+      - "9229:9229"  # Debug port
     depends_on:
       postgres:
         condition: service_healthy
     networks:
-      - portfolio_network
-    # Healthcheck is defined in Dockerfile
+      - portfolio_network_dev
+    volumes:
+      - ./backend:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
+    command: npm run start:dev
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-      target: production
-    container_name: portfolio_frontend
-    restart: always
+      target: build
+    container_name: portfolio_frontend_dev
+    restart: unless-stopped
     environment:
-      NODE_ENV: production
+      NODE_ENV: development
     ports:
-      - "4200:80"
+      - "4200:4200"
     depends_on:
       - backend
     networks:
-      - portfolio_network
-    # Healthcheck for nginx
-    healthcheck:
-      test: ["CMD-SHELL", "wget --quiet --tries=1 --spider http://localhost:80 || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
+      - portfolio_network_dev
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start -- --host 0.0.0.0 --poll 2000
 
 volumes:
-  postgres_data:
+  postgres_data_dev:
 
 networks:
-  portfolio_network:
+  portfolio_network_dev:
     driver: bridge
