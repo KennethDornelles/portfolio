@@ -1,27 +1,46 @@
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-# Backend - Portfolio API
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-## 📜 Sobre
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-API RESTful construída com [NestJS](https://github.com/nestjs/nest) e Prisma ORM para o projeto Portfolio Fullstack.
+## Description
 
-## ✨ Tecnologias
+Portfolio Backend - API RESTful construída com [NestJS](https://github.com/nestjs/nest) e Prisma ORM.
 
--   **NestJS:** Framework Node.js progressivo.
--   **Prisma:** ORM moderno para TypeScript e Node.js.
--   **PostgreSQL:** Banco de dados relacional.
--   **TypeScript:** Superset do JavaScript com tipagem estática.
--   **Class Validator:** Validação de dados baseada em decoradores.
--   **@nestjs/config:** Módulo de configuração com validação de variáveis de ambiente.
+## Tecnologias
 
-## ⚙️ Configuração do Ambiente
+- **NestJS** - Framework Node.js progressivo
+- **Prisma** - ORM moderno para TypeScript e Node.js
+- **PostgreSQL** - Banco de dados relacional
+- **TypeScript** - Superset JavaScript com tipagem estática
+- **Class Validator** - Validação de dados baseada em decoradores
+- **@nestjs/config** - Módulo de configuração com validação de variáveis de ambiente
 
-Este projeto utiliza o `@nestjs/config` para gerenciar e validar as variáveis de ambiente.
+## Configuração do Ambiente
+
+Este projeto utiliza o `@nestjs/config` para gerenciar variáveis de ambiente de forma centralizada e validada.
 
 ### Variáveis de Ambiente
 
-1.  Crie um arquivo `.env` na raiz do diretório `backend/`.
-2.  Use o `.env.example` como referência para preencher as variáveis:
+Crie um arquivo `.env` na raiz do projeto backend:
 
 ```env
 # Database
@@ -38,68 +57,147 @@ FRONTEND_URL="http://localhost:4200"
 API_PREFIX="api"
 ```
 
-Para mais detalhes sobre o sistema de configuração, consulte o [README de Configuração](./src/config/README.md).
+### Validação
 
-### Configuração da API
+Todas as variáveis de ambiente são validadas usando Joi. Se alguma variável obrigatória estiver faltando ou em formato incorreto, a aplicação não iniciará.
 
--   **Prefixo Global:** A API utiliza o prefixo global `/api` para todas as rotas (ex: `/api/projects`).
--   **CORS:** Configurado para aceitar requisições do `FRONTEND_URL` definido no `.env`.
+Para mais detalhes sobre o sistema de configuração, consulte [src/config/README.md](src/config/README.md).
 
-## 🛠️ Desenvolvimento
+## Configuração da API
 
-Siga os passos para executar a aplicação localmente.
+### Prefixo Global
+A API utiliza o prefixo global `/api` para todas as rotas. 
 
-### Instalação e Setup
+**Exemplos:**
+- Health Check: `http://localhost:3000/api/health`
+- Projetos: `http://localhost:3000/api/projects`
+- Educação: `http://localhost:3000/api/education`
 
-1.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
+### CORS
+O CORS está configurado para aceitar requisições do frontend. Por padrão, aceita requisições de `http://localhost:4200`. 
 
-2.  **Configure o Banco de Dados:**
-    -   Certifique-se de que o PostgreSQL está rodando (via Docker ou localmente).
-    -   Ajuste a `DATABASE_URL` no arquivo `.env`.
+Para configurar uma URL diferente em produção, defina a variável de ambiente `FRONTEND_URL` no arquivo `.env`:
+```env
+FRONTEND_URL=https://seu-dominio.com
+```
 
-3.  **Execute as Migrations:**
-    ```bash
-    npm run prisma:migrate
-    ```
+**Configurações do CORS:**
+- **Métodos permitidos**: GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS
+- **Credenciais**: Habilitadas
+- **Headers permitidos**: Content-Type, Accept, Authorization
 
-4.  **(Opcional) Popule o banco com dados iniciais:**
-    ```bash
-    npm run prisma:seed
-    ```
+## Project setup
 
-### Executando a Aplicação
+```bash
+$ npm install
+```
 
--   **Modo de desenvolvimento (com watch):**
-    ```bash
-    npm run start:dev
-    ```
--   **Modo de produção:**
-    ```bash
-    npm run build
-    npm run start:prod
-    ```
+## Configuração do Banco de Dados
 
-### Scripts do Prisma
+1. Copie o arquivo `.env.example` para `.env`:
+```bash
+$ cp .env.example .env
+```
 
--   `npm run prisma:generate`: Gera o Prisma Client.
--   `npm run prisma:studio`: Abre a interface visual do Prisma.
--   `npm run prisma:migrate:reset`: Reseta o banco de dados.
+2. Configure a variável `DATABASE_URL` no arquivo `.env` com suas credenciais do PostgreSQL:
+```
+DATABASE_URL="postgresql://user:password@localhost:5432/portfolio?schema=public"
+```
 
-## ✅ Testes
+3. Execute as migrations do Prisma:
+```bash
+$ npm run prisma:migrate
+```
 
--   **Testes unitários:**
-    ```bash
-    npm run test
-    ```
--   **Testes e2e:**
-    ```bash
-    npm run test:e2e
-    ```
--   **Cobertura de testes:**
-    ```bash
-    npm run test:cov
-    ```
+4. (Opcional) Execute o seed para popular o banco com dados iniciais:
+```bash
+$ npm run prisma:seed
+```
 
+## Scripts do Prisma
+
+```bash
+# Gerar o Prisma Client
+$ npm run prisma:generate
+
+# Criar e aplicar uma nova migration
+$ npm run prisma:migrate
+
+# Aplicar migrations em produção
+$ npm run prisma:migrate:deploy
+
+# Resetar o banco de dados (cuidado!)
+$ npm run prisma:migrate:reset
+
+# Abrir o Prisma Studio (interface visual)
+$ npm run prisma:studio
+
+# Popular o banco com dados iniciais
+$ npm run prisma:seed
+```
+
+## Compile and run the project
+
+```bash
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
+```
+
+## Run tests
+
+```bash
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
+```
+
+## Deployment
+
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+
+```bash
+$ npm install -g @nestjs/mau
+$ mau deploy
+```
+
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+
+## Resources
+
+Check out a few resources that may come in handy when working with NestJS:
+
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+
+## Support
+
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+
+## Stay in touch
+
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
+
+## License
+
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

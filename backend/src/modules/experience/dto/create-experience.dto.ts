@@ -9,8 +9,15 @@ import {
   MinLength,
   MaxLength,
 } from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateExperienceDto {
+  @ApiProperty({
+    description: 'Nome da empresa',
+    example: 'Tech Solutions Inc.',
+    minLength: 2,
+    maxLength: 150,
+  })
   @IsString({ message: 'O nome da empresa deve ser uma string' })
   @IsNotEmpty({ message: 'O nome da empresa é obrigatório' })
   @MinLength(2, {
@@ -21,12 +28,24 @@ export class CreateExperienceDto {
   })
   company: string;
 
+  @ApiProperty({
+    description: 'Cargo ocupado',
+    example: 'Desenvolvedor Sênior',
+    minLength: 2,
+    maxLength: 150,
+  })
   @IsString({ message: 'O cargo deve ser uma string' })
   @IsNotEmpty({ message: 'O cargo é obrigatório' })
   @MinLength(2, { message: 'O cargo deve ter pelo menos 2 caracteres' })
   @MaxLength(150, { message: 'O cargo deve ter no máximo 150 caracteres' })
   position: string;
 
+  @ApiProperty({
+    description: 'Descrição das atividades e responsabilidades',
+    example: 'Desenvolvimento de aplicações web usando React e Node.js...',
+    minLength: 10,
+    maxLength: 2000,
+  })
   @IsString({ message: 'A descrição deve ser uma string' })
   @IsNotEmpty({ message: 'A descrição é obrigatória' })
   @MinLength(10, { message: 'A descrição deve ter pelo menos 10 caracteres' })
@@ -35,6 +54,11 @@ export class CreateExperienceDto {
   })
   description: string;
 
+  @ApiProperty({
+    description: 'Data de início',
+    example: '2020-01-15',
+    format: 'date',
+  })
   @IsDateString(
     {},
     { message: 'Data de início inválida (formato: YYYY-MM-DD)' },
@@ -42,6 +66,11 @@ export class CreateExperienceDto {
   @IsNotEmpty({ message: 'A data de início é obrigatória' })
   startDate: string;
 
+  @ApiPropertyOptional({
+    description: 'Data de término (deixe em branco se ainda trabalha)',
+    example: '2023-06-30',
+    format: 'date',
+  })
   @IsOptional()
   @IsDateString(
     {},

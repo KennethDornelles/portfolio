@@ -8,30 +8,45 @@ import {
   Delete,
   ParseUUIDPipe,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { ExperienceService } from './experience.service';
 import { CreateExperienceDto } from './dto/create-experience.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
 
+@ApiTags('Experience')
 @Controller('experience')
 export class ExperienceController {
   constructor(private readonly experienceService: ExperienceService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Criar nova experiência profissional' })
+  @ApiResponse({ status: 201, description: 'Experiência criada com sucesso' })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
   create(@Body() createExperienceDto: CreateExperienceDto) {
     return this.experienceService.create(createExperienceDto);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Listar todas as experiências profissionais' })
+  @ApiResponse({ status: 200, description: 'Lista de experiências' })
   findAll() {
     return this.experienceService.findAll();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Buscar experiência por ID' })
+  @ApiParam({ name: 'id', description: 'ID da experiência' })
+  @ApiResponse({ status: 200, description: 'Experiência encontrada' })
+  @ApiResponse({ status: 404, description: 'Experiência não encontrada' })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.experienceService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Atualizar experiência profissional' })
+  @ApiParam({ name: 'id', description: 'ID da experiência' })
+  @ApiResponse({ status: 200, description: 'Experiência atualizada' })
+  @ApiResponse({ status: 404, description: 'Experiência não encontrada' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateExperienceDto: UpdateExperienceDto,
@@ -40,6 +55,10 @@ export class ExperienceController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Remover experiência profissional' })
+  @ApiParam({ name: 'id', description: 'ID da experiência' })
+  @ApiResponse({ status: 200, description: 'Experiência removida' })
+  @ApiResponse({ status: 404, description: 'Experiência não encontrada' })
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.experienceService.remove(id);
   }

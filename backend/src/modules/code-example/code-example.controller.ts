@@ -9,20 +9,28 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
 import { CodeExampleService } from './code-example.service';
 import { CreateCodeExampleDto } from './dto/create-code-example.dto';
 import { UpdateCodeExampleDto } from './dto/update-code-example.dto';
 
+@ApiTags('Code Examples')
 @Controller('code-example')
 export class CodeExampleController {
   constructor(private readonly codeExampleService: CodeExampleService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Criar novo exemplo de código' })
+  @ApiResponse({ status: 201, description: 'Exemplo criado com sucesso' })
+  @ApiResponse({ status: 400, description: 'Dados inválidos' })
   create(@Body() createCodeExampleDto: CreateCodeExampleDto) {
     return this.codeExampleService.create(createCodeExampleDto);
   }
 
   @Get()
+  @ApiOperation({ summary: 'Listar todos os exemplos de código' })
+  @ApiQuery({ name: 'language', required: false, description: 'Filtrar por linguagem' })
+  @ApiResponse({ status: 200, description: 'Lista de exemplos' })
   findAll(@Query('language') language?: string) {
     if (language) {
       return this.codeExampleService.findByLanguage(language);
@@ -31,16 +39,26 @@ export class CodeExampleController {
   }
 
   @Get('active')
+  @ApiOperation({ summary: 'Listar exemplos de código ativos' })
+  @ApiResponse({ status: 200, description: 'Lista de exemplos ativos' })
   findActive() {
     return this.codeExampleService.findActive();
   }
 
   @Get(':id')
+  @ApiOperation({ summary: 'Buscar exemplo de código por ID' })
+  @ApiParam({ name: 'id', description: 'ID do exemplo' })
+  @ApiResponse({ status: 200, description: 'Exemplo encontrado' })
+  @ApiResponse({ status: 404, description: 'Exemplo não encontrado' })
   findOne(@Param('id', ParseUUIDPipe) id: string) {
     return this.codeExampleService.findOne(id);
   }
 
   @Patch(':id')
+  @ApiOperation({ summary: 'Atualizar exemplo de código' })
+  @ApiParam({ name: 'id', description: 'ID do exemplo' })
+  @ApiResponse({ status: 200, description: 'Exemplo atualizado' })
+  @ApiResponse({ status: 404, description: 'Exemplo não encontrado' })
   update(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateCodeExampleDto: UpdateCodeExampleDto,
@@ -49,6 +67,10 @@ export class CodeExampleController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Remover exemplo de código' })
+  @ApiParam({ name: 'id', description: 'ID do exemplo' })
+  @ApiResponse({ status: 200, description: 'Exemplo removido' })
+  @ApiResponse({ status: 404, description: 'Exemplo não encontrado' })
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.codeExampleService.remove(id);
   }

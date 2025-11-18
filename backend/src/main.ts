@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import {
   HttpExceptionFilter,
@@ -44,6 +45,27 @@ async function bootstrap() {
       },
     }),
   );
+
+  // Configurar Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Portfolio API')
+    .setDescription('API completa para gerenciamento de portfólio pessoal')
+    .setVersion('1.0')
+    .addTag('Personal Info', 'Gerenciamento de informações pessoais')
+    .addTag('Education', 'Gerenciamento de formação acadêmica')
+    .addTag('Experience', 'Gerenciamento de experiências profissionais')
+    .addTag('Skills', 'Gerenciamento de habilidades técnicas')
+    .addTag('Projects', 'Gerenciamento de projetos')
+    .addTag('Services', 'Gerenciamento de serviços oferecidos')
+    .addTag('Code Examples', 'Gerenciamento de exemplos de código')
+    .addTag('Social Links', 'Gerenciamento de links de redes sociais')
+    .addTag('Testimonials', 'Gerenciamento de depoimentos')
+    .addTag('Contact Messages', 'Gerenciamento de mensagens de contato')
+    .addTag('Health', 'Verificação de saúde da aplicação')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api/docs', app, document);
 
   const port = configService.get<number>('port') || 3000;
   await app.listen(port);
