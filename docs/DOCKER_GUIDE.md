@@ -129,7 +129,7 @@ docker system prune -a --volumes
 
 ```dockerfile
 # Copia package.json primeiro (camada cacheável)
-COPY package*.json ./
+COPY package*.json ./ 
 RUN npm ci
 
 # Depois copia código fonte (muda com frequência)
@@ -302,3 +302,4 @@ netstat -ano | findstr :5432
 - [Multi-stage builds](https://docs.docker.com/build/building/multi-stage/)
 - [Docker Compose](https://docs.docker.com/compose/)
 - [Nginx Optimization](https://nginx.org/en/docs/)
+

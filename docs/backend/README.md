@@ -1,480 +1,203 @@
-# Backend Documentation
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+</p>
 
-## 📋 Guia de Migração - Portfólio React para Angular 19+ Stack
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
 
-### 🎯 Objetivo
-Migrar o portfólio atual em React (https://react-portfolio-ten-gules.vercel.app) para uma stack moderna fullstack com:
-- **Frontend**: Angular 19+ com Standalone Components
-- **Backend**: NestJS com TypeScript
-- **ORM**: Prisma
-- **Database**: PostgreSQL
-- **Containerização**: Docker & Docker Compose
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-> **📝 Nota:** Este guia contém apenas instruções passo a passo. Você criará os arquivos manualmente conforme as instruções.
+## Description
 
----
+Portfolio Backend - API RESTful construída com [NestJS](https://github.com/nestjs/nest) e Prisma ORM.
 
-### 📊 Análise do Portfólio Atual
+## Tecnologias
 
-#### Seções Identificadas:
-1. **Hero** - Apresentação inicial com nome e título
-2. **Sobre Mim** - Informações pessoais e biografia
-3. **Serviços** - Cards de serviços oferecidos
-4. **Projetos/Portfólio** - Galeria de projetos
-5. **Educação & Skills** - Formação e habilidades técnicas
-6. **Exemplos de Código** - Code snippets
-7. **Currículo** - Experiências profissionais
-8. **Depoimentos** - Feedback de clientes
-9. **Contato** - Formulário e informações de contato
+- **NestJS** - Framework Node.js progressivo
+- **Prisma** - ORM moderno para TypeScript e Node.js
+- **PostgreSQL** - Banco de dados relacional
+- **TypeScript** - Superset JavaScript com tipagem estática
+- **Class Validator** - Validação de dados baseada em decoradores
+- **@nestjs/config** - Módulo de configuração com validação de variáveis de ambiente
 
----
+## Configuração do Ambiente
 
-### 🗂️ Estrutura do Projeto
+Este projeto utiliza o `@nestjs/config` para gerenciar variáveis de ambiente de forma centralizada e validada.
 
-```
-portfolio-fullstack/
-├── frontend/                    # Angular 19+ Application
-│   ├── src/
-│   │   ├── app/
-│   │   │   ├── core/           # Serviços singleton, guards, interceptors
-│   │   │   ├── shared/         # Componentes, pipes, directives compartilhados
-│   │   │   ├── features/       # Módulos de funcionalidades
-│   │   │   │   ├── home/
-│   │   │   │   ├── about/
-│   │   │   │   ├── services/
-│   │   │   │   ├── projects/
-│   │   │   │   ├── skills/
-│   │   │   │   ├── resume/
-│   │   │   │   ├── testimonials/
-│   │   │   │   └── contact/
-│   │   │   ├── layouts/        # Layouts da aplicação
-│   │   │   └── app.config.ts
-│   │   ├── assets/
-│   │   ├── environments/
-│   │   └── styles/
-│   ├── angular.json
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── Dockerfile
-│
-├── backend/                     # NestJS Application
-│   ├── src/
-│   │   ├── modules/
-│   │   │   ├── projects/
-│   │   │   ├── services/
-│   │   │   ├── skills/
-│   │   │   ├── experiences/
-│   │   │   ├── education/
-│   │   │   ├── testimonials/
-│   │   │   └── contact/
-│   │   ├── prisma/
-│   │   ├── common/
-│   │   └── main.ts
-│   ├── prisma/
-│   │   ├── schema.prisma
-│   │   └── migrations/
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── Dockerfile
-│
-├── docker-compose.yml
-├── .env.example
-└── README.md
-```
+### Variáveis de Ambiente
 
----
+Crie um arquivo `.env` na raiz do projeto backend:
 
-### 🚀 Passo a Passo da Migração
-
-#### **FASE 1: Configuração do Ambiente** ⚙️
-
-##### 1.1 Instalar Ferramentas Necessárias
-```bash
-# Verificar versões
-node --version  # v20+ recomendado
-npm --version   # v10+ recomendado
-
-# Instalar Angular CLI globalmente
-npm install -g @angular/cli@19
-
-# Instalar NestJS CLI (se ainda não tiver)
-npm install -g @nestjs/cli
-
-# Verificar Docker
-docker --version
-docker-compose --version
-```
-
-##### 1.2 Criar Estrutura de Pastas
-```bash
-# Na raiz do projeto portfolio-fullstack
-mkdir -p frontend backend/prisma
-```
-
----
-
-#### **FASE 2: Configuração do Backend NestJS** 🔧
-
-##### 2.1 Configurar Prisma no Backend
-```bash
-cd backend
-
-# Instalar dependências do Prisma
-npm install @prisma/client
-npm install -D prisma
-
-# Inicializar Prisma (já feito se existir)
-npx prisma init
-```
-
-##### 2.2 Configurar Schema do Prisma
-Editar `backend/prisma/schema.prisma` com o modelo de dados do portfólio.
-
-##### 2.3 Instalar Dependências Adicionais
-```bash
-npm install @nestjs/config
-npm install @nestjs/swagger
-npm install class-validator class-transformer
-npm install @nestjs/throttler
-npm install helmet
-npm install compression
-```
-
-##### 2.4 Criar Módulos do NestJS
-```bash
-# Gerar módulos
-nest g resource modules/projects --no-spec
-nest g resource modules/skills --no-spec
-nest g resource modules/experiences --no-spec
-nest g resource modules/education --no-spec
-nest g resource modules/testimonials --no-spec
-nest g resource modules/contact --no-spec
-nest g resource modules/services --no-spec
-
-# Gerar módulo do Prisma
-nest g module prisma --no-spec
-nest g service prisma/prisma --no-spec --flat
-```
-
-##### 2.5 Configurar Variáveis de Ambiente
-Criar `backend/.env`:
 ```env
-DATABASE_URL="postgresql://postgres:postgres@localhost:5432/portfolio_db?schema=public"
+# Database
+DATABASE_URL="postgresql://user:password@localhost:5432/portfolio?schema=public"
+
+# Application
+NODE_ENV="development"
 PORT=3000
-NODE_ENV=development
-CORS_ORIGIN=http://localhost:4200
+
+# Frontend
+FRONTEND_URL="http://localhost:4200"
+
+# API
+API_PREFIX="api"
 ```
 
----
+### Validação
 
-### **FASE 4: Configuração do Banco de Dados** 🗄️
+Todas as variáveis de ambiente são validadas usando Joi. Se alguma variável obrigatória estiver faltando ou em formato incorreto, a aplicação não iniciará.
 
-#### 4.1 Configurar PostgreSQL com Docker
-Criar `docker-compose.yml` na raiz:
-```yaml
-version: '3.8'
+Para mais detalhes sobre o sistema de configuração, consulte [src/config/README.md](src/config/README.md).
 
-services:
-  postgres:
-    image: postgres:16-alpine
-    container_name: portfolio-db
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: portfolio_db
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
+## Configuração da API
 
-volumes:
-  postgres_data:
+### Prefixo Global
+A API utiliza o prefixo global `/api` para todas as rotas. 
+
+**Exemplos:**
+- Health Check: `http://localhost:3000/api/health`
+- Projetos: `http://localhost:3000/api/projects`
+- Educação: `http://localhost:3000/api/education`
+
+### CORS
+O CORS está configurado para aceitar requisições do frontend. Por padrão, aceita requisições de `http://localhost:4200`. 
+
+Para configurar uma URL diferente em produção, defina a variável de ambiente `FRONTEND_URL` no arquivo `.env`:
+```env
+FRONTEND_URL=https://seu-dominio.com
 ```
 
-#### 4.2 Iniciar Banco de Dados
+**Configurações do CORS:**
+- **Métodos permitidos**: GET, HEAD, PUT, PATCH, POST, DELETE, OPTIONS
+- **Credenciais**: Habilitadas
+- **Headers permitidos**: Content-Type, Accept, Authorization
+
+## Project setup
+
 ```bash
-# Subir o PostgreSQL
-docker-compose up -d postgres
-
-# Verificar se está rodando
-docker-compose ps
+$ npm install
 ```
 
-#### 4.3 Executar Migrations do Prisma
+## Configuração do Banco de Dados
+
+1. Copie o arquivo `.env.example` para `.env`:
 ```bash
-cd backend
-
-# Criar migration inicial
-npx prisma migrate dev --name init
-
-# Gerar Prisma Client
-npx prisma generate
-
-# (Opcional) Popular banco com dados iniciais
-npx prisma db seed
+$ cp .env.example .env
 ```
 
----
-
-### **FASE 5: Implementação das Features** 💻
-
-#### 5.1 Implementar Backend - Ordem Recomendada
-
-1. **Prisma Service** (configuração base)
-2. **Skills Module** (mais simples)
-3. **Services Module** (serviços oferecidos)
-4. **Projects Module** (projetos do portfólio)
-5. **Education Module** (formação acadêmica)
-6. **Experiences Module** (experiências profissionais)
-7. **Testimonials Module** (depoimentos)
-8. **Contact Module** (formulário de contato)
-
----
-
-### **FASE 6: Dockerização Completa** 🐳
-
-#### 6.1 Criar Dockerfile do Backend
-Criar `backend/Dockerfile`:
-```dockerfile
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-COPY prisma ./prisma/
-RUN npm ci
-COPY . .
-RUN npx prisma generate
-RUN npm run build
-
-FROM node:20-alpine
-WORKDIR /app
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/prisma ./prisma
-COPY package*.json ./
-EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/main"]
+2. Configure a variável `DATABASE_URL` no arquivo `.env` com suas credenciais do PostgreSQL:
+```
+DATABASE_URL="postgresql://user:password@localhost:5432/portfolio?schema=public"
 ```
 
----
-
-### **FASE 7: Testes e Validações** ✅
-
-#### 7.1 Testes do Backend
+3. Execute as migrations do Prisma:
 ```bash
-cd backend
-
-# Executar testes unitários
-npm run test
-
-# Executar testes e2e
-npm run test:e2e
-
-# Coverage
-npm run test:cov
+$ npm run prisma:migrate
 ```
 
----
-
-## Testando o Health Check Endpoint
-
-### Pré-requisitos
-
-Para testar completamente os endpoints de health check, é necessário:
-
-1. **Banco de dados PostgreSQL rodando** (porta 5432)
-   - Você pode usar Docker: `docker-compose up postgres -d`
-   
-2. **Servidor backend rodando**
-   ```bash
-   cd backend
-   npm install
-   npm run start:dev
-   ```
-
-### Endpoints Implementados
-
-#### 1. Health Check Completo
-**Endpoint:** `GET /health`
-
-Verifica:
-- ✅ Conectividade com o banco de dados (Prisma)
-- ✅ Status da API
-
-**Teste com curl:**
+4. (Opcional) Execute o seed para popular o banco com dados iniciais:
 ```bash
-curl http://localhost:3000/health
+$ npm run prisma:seed
 ```
 
-**Resposta esperada (sucesso):**
-```json
-{
-  "status": "ok",
-  "info": {
-    "database": {
-      "status": "up"
-    },
-    "api": {
-      "status": "up"
-    }
-  },
-  "error": {},
-  "details": {
-    "database": {
-      "status": "up"
-    },
-    "api": {
-      "status": "up"
-    }
-  }
-}
-```
+## Scripts do Prisma
 
-#### 2. Liveness Probe
-**Endpoint:** `GET /health/liveness`
-
-Verifica se o aplicativo está rodando. Endpoint simples que sempre responde se o servidor está ativo.
-
-**Teste com curl:**
 ```bash
-curl http://localhost:3000/health/liveness
+# Gerar o Prisma Client
+$ npm run prisma:generate
+
+# Criar e aplicar uma nova migration
+$ npm run prisma:migrate
+
+# Aplicar migrations em produção
+$ npm run prisma:migrate:deploy
+
+# Resetar o banco de dados (cuidado!)
+$ npm run prisma:migrate:reset
+
+# Abrir o Prisma Studio (interface visual)
+$ npm run prisma:studio
+
+# Popular o banco com dados iniciais
+$ npm run prisma:seed
 ```
 
-**Resposta esperada:**
-```json
-{
-  "status": "ok",
-  "timestamp": "2025-11-17T19:27:42.000Z"
-}
-```
+## Compile and run the project
 
-#### 3. Readiness Probe
-**Endpoint:** `GET /health/readiness`
-
-Verifica se o aplicativo está pronto para receber tráfego (verifica conectividade com banco de dados).
-
-**Teste com curl:**
 ```bash
-curl http://localhost:3000/health/readiness
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
-**Resposta esperada (sucesso):**
-```json
-{
-  "status": "ok",
-  "info": {
-    "database": {
-      "status": "up"
-    }
-  },
-  "error": {},
-  "details": {
-    "database": {
-      "status": "up"
-    }
-  }
-}
-```
+## Run tests
 
-### Testes Automatizados
-
-Execute os testes unitários:
 ```bash
-cd backend
-npm test -- health.controller.spec.ts
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
 ```
 
-### Integração com Docker
+## Deployment
 
-O `docker-compose.yml` já está configurado com health checks:
+When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
 
-```yaml
-services:
-  postgres:
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U portfolio"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
 
-  backend:
-    healthcheck:
-      test: ["CMD-SHELL", "curl -f http://localhost:3000/health/liveness || exit 1"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-    depends_on:
-      postgres:
-        condition: service_healthy
-```
-
-Para verificar o status dos containers:
 ```bash
-docker-compose ps
+$ npm install -g @nestjs/mau
+$ mau deploy
 ```
 
-### Testando com Postman/Insomnia
+With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
 
-1. **Criar uma coleção** com as seguintes requisições:
+## Resources
 
-   - **Health Check Completo**
-     - Method: GET
-     - URL: http://localhost:3000/health
-   
-   - **Liveness**
-     - Method: GET
-     - URL: http://localhost:3000/health/liveness
-   
-   - **Readiness**
-     - Method: GET
-     - URL: http://localhost:3000/health/readiness
+Check out a few resources that may come in handy when working with NestJS:
 
-### Monitoramento
+- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
+- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
+- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
+- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
+- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
+- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
+- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
+- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
 
-#### Verificando logs do servidor
-```bash
-# Com Docker
-docker-compose logs -f backend
+## Support
 
-# Localmente
-npm run start:dev
-```
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-#### Status Codes
+## Stay in touch
 
-- **200 OK**: Todos os checks passaram
-- **503 Service Unavailable**: Algum serviço crítico está indisponível
+- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-### Troubleshooting
+## License
 
-#### Erro: "Can't reach database server"
-**Solução:**
-1. Verifique se o PostgreSQL está rodando:
-   ```bash
-   docker-compose ps postgres
-   # ou
-   sudo systemctl status postgresql
-   ```
-
-2. Verifique as variáveis de ambiente:
-   ```bash
-   # No arquivo .env deve ter:
-   DATABASE_URL="postgresql://portfolio:portfolio123@localhost:5432/portfolio_db"
-   ```
-
-3. Inicie o banco de dados:
-   ```bash
-   docker-compose up postgres -d
-   ```
-
-#### Erro: "Cannot GET /health"
-**Solução:**
-1. Verifique se o servidor está rodando na porta correta
-2. Certifique-se de que o HealthModule está importado no AppModule
-3. Limpe e reconstrua o projeto:
-   ```bash
-   rm -rf dist/
-   npm run build
-   npm run start:prod
-   ```
+Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).

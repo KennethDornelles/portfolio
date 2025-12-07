@@ -211,3 +211,5 @@ throw new Error('Unexpected error');
 - [NestJS Exception Filters](https://docs.nestjs.com/exception-filters)
 - [Prisma Error Reference](https://www.prisma.io/docs/reference/api-reference/error-reference)
 - [HTTP Status Codes](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
+
+```

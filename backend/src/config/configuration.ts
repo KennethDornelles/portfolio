@@ -11,4 +11,8 @@ export default () => ({
     origin: process.env.FRONTEND_URL || 'http://localhost:4200',
     credentials: true,
   },
+  throttle: {
+    ttl: parseInt(process.env.THROTTLE_TTL || '60000', 10), // milissegundos
+    limit: parseInt(process.env.THROTTLE_LIMIT || '10', 10), // número de requisições
+  },
 });
