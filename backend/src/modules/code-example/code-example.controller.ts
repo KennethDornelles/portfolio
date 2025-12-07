@@ -9,7 +9,13 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { CodeExampleService } from './code-example.service';
 import { CreateCodeExampleDto } from './dto/create-code-example.dto';
 import { UpdateCodeExampleDto } from './dto/update-code-example.dto';
@@ -30,9 +36,16 @@ export class CodeExampleController {
 
   @Get()
   @ApiOperation({ summary: 'Listar todos os exemplos de código' })
-  @ApiQuery({ name: 'language', required: false, description: 'Filtrar por linguagem' })
+  @ApiQuery({
+    name: 'language',
+    required: false,
+    description: 'Filtrar por linguagem',
+  })
   @ApiResponse({ status: 200, description: 'Lista de exemplos' })
-  findAll(@Query('language') language?: string, @Query() paginationDto?: PaginationDto) {
+  findAll(
+    @Query('language') language?: string,
+    @Query() paginationDto?: PaginationDto,
+  ) {
     if (language) {
       return this.codeExampleService.findByLanguage(language);
     }

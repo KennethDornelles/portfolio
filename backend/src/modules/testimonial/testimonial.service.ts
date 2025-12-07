@@ -17,7 +17,9 @@ export class TestimonialService {
     });
   }
 
-  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Testimonial> | Testimonial[]> {
+  async findAll(
+    paginationDto?: PaginationDto,
+  ): Promise<PaginatedResponseDto<Testimonial> | Testimonial[]> {
     if (!paginationDto) {
       return await this.prisma.testimonial.findMany({
         orderBy: { order: 'asc' },

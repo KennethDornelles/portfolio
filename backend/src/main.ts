@@ -20,7 +20,7 @@ async function bootstrap() {
     origin: configService.get<string>('cors.origin'),
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: configService.get<boolean>('cors.credentials'),
-    allowedHeaders: 'Content-Type, Accept, Authorization',
+    allowedHeaders: 'Content-Type, Accept, Authorization, x-api-key',
   });
 
   // Configurar prefixo global da API
@@ -49,8 +49,29 @@ async function bootstrap() {
   // Configurar Swagger
   const config = new DocumentBuilder()
     .setTitle('Portfolio API')
-    .setDescription('API completa para gerenciamento de portfólio pessoal')
+    .setDescription(
+      'API completa para gerenciamento de portfólio pessoal\n\n' +
+        '## Autenticação\n\n' +
+        'Esta API utiliza autenticação via API Key para proteger endpoints de escrita (POST, PATCH, DELETE).\n\n' +
+        '**Endpoints públicos (sem autenticação):**\n' +
+        '- Todos os endpoints GET (leitura)\n' +
+        '- POST /contact-message (envio de mensagens de contato)\n' +
+        '- Endpoints de health check\n\n' +
+        '**Endpoints protegidos (requer API Key):**\n' +
+        '- POST, PATCH, DELETE (operações de escrita)\n\n' +
+        'Para acessar endpoints protegidos, adicione o header `x-api-key` com sua chave de API.',
+    )
     .setVersion('1.0')
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'x-api-key',
+        in: 'header',
+        description: 'API Key para autenticação em endpoints protegidos',
+      },
+      'api-key',
+    )
+    .addTag('🔐 Autenticação', 'Endpoints de autenticação e verificação')
     .addTag('Personal Info', 'Gerenciamento de informações pessoais')
     .addTag('Education', 'Gerenciamento de formação acadêmica')
     .addTag('Experience', 'Gerenciamento de experiências profissionais')

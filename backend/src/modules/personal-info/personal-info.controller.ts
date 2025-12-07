@@ -23,7 +23,10 @@ export class PersonalInfoController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   @ApiOperation({ summary: 'Criar nova informação pessoal' })
-  @ApiResponse({ status: 201, description: 'Informação pessoal criada com sucesso' })
+  @ApiResponse({
+    status: 201,
+    description: 'Informação pessoal criada com sucesso',
+  })
   @ApiResponse({ status: 400, description: 'Dados inválidos' })
   create(@Body() createPersonalInfoDto: CreatePersonalInfoDto) {
     return this.personalInfoService.create(createPersonalInfoDto);

@@ -17,7 +17,9 @@ export class CodeExampleService {
     });
   }
 
-  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<CodeExample> | CodeExample[]> {
+  async findAll(
+    paginationDto?: PaginationDto,
+  ): Promise<PaginatedResponseDto<CodeExample> | CodeExample[]> {
     if (!paginationDto) {
       return await this.prisma.codeExample.findMany({
         orderBy: { createdAt: 'desc' },

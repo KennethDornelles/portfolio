@@ -9,7 +9,13 @@ import {
   Query,
   ParseUUIDPipe,
 } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiParam,
+  ApiQuery,
+} from '@nestjs/swagger';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
@@ -31,9 +37,17 @@ export class SkillController {
 
   @Get()
   @ApiOperation({ summary: 'Listar todas as habilidades' })
-  @ApiQuery({ name: 'category', required: false, enum: SkillCategory, description: 'Filtrar por categoria' })
+  @ApiQuery({
+    name: 'category',
+    required: false,
+    enum: SkillCategory,
+    description: 'Filtrar por categoria',
+  })
   @ApiResponse({ status: 200, description: 'Lista de habilidades' })
-  findAll(@Query('category') category?: SkillCategory, @Query() paginationDto?: PaginationDto) {
+  findAll(
+    @Query('category') category?: SkillCategory,
+    @Query() paginationDto?: PaginationDto,
+  ) {
     if (category) {
       return this.skillService.findByCategory(category);
     }

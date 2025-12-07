@@ -16,7 +16,9 @@ export class SkillService {
     });
   }
 
-  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Skill> | Skill[]> {
+  async findAll(
+    paginationDto?: PaginationDto,
+  ): Promise<PaginatedResponseDto<Skill> | Skill[]> {
     if (!paginationDto) {
       return await this.prisma.skill.findMany({
         orderBy: [{ category: 'asc' }, { order: 'asc' }],

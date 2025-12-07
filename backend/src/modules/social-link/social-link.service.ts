@@ -15,7 +15,9 @@ export class SocialLinkService {
     });
   }
 
-  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<SocialLink> | SocialLink[]> {
+  async findAll(
+    paginationDto?: PaginationDto,
+  ): Promise<PaginatedResponseDto<SocialLink> | SocialLink[]> {
     if (!paginationDto) {
       return await this.prisma.socialLink.findMany({
         orderBy: { order: 'asc' },

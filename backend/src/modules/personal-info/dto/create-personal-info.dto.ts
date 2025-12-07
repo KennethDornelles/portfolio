@@ -37,7 +37,8 @@ export class CreatePersonalInfoDto {
 
   @ApiProperty({
     description: 'Biografia profissional',
-    example: 'Desenvolvedor apaixonado por tecnologia com 5 anos de experiência...',
+    example:
+      'Desenvolvedor apaixonado por tecnologia com 5 anos de experiência...',
     minLength: 10,
     maxLength: 1000,
   })

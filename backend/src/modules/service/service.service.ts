@@ -15,7 +15,9 @@ export class ServiceService {
     });
   }
 
-  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Service> | Service[]> {
+  async findAll(
+    paginationDto?: PaginationDto,
+  ): Promise<PaginatedResponseDto<Service> | Service[]> {
     if (!paginationDto) {
       return await this.prisma.service.findMany({
         orderBy: { order: 'asc' },

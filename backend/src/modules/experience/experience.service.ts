@@ -15,7 +15,9 @@ export class ExperienceService {
     });
   }
 
-  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Experience> | Experience[]> {
+  async findAll(
+    paginationDto?: PaginationDto,
+  ): Promise<PaginatedResponseDto<Experience> | Experience[]> {
     if (!paginationDto) {
       return await this.prisma.experience.findMany({
         orderBy: { order: 'asc' },

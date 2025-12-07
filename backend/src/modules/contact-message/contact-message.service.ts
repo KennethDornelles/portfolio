@@ -18,7 +18,9 @@ export class ContactMessageService {
     });
   }
 
-  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<ContactMessage> | ContactMessage[]> {
+  async findAll(
+    paginationDto?: PaginationDto,
+  ): Promise<PaginatedResponseDto<ContactMessage> | ContactMessage[]> {
     if (!paginationDto) {
       return await this.prisma.contactMessage.findMany({
         orderBy: { createdAt: 'desc' },

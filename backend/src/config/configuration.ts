@@ -4,6 +4,7 @@ export default () => ({
   api: {
     prefix: process.env.API_PREFIX || 'api',
   },
+  apiKey: process.env.API_KEY,
   database: {
     url: process.env.DATABASE_URL,
   },

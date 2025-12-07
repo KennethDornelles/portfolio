@@ -15,7 +15,9 @@ export class EducationService {
     });
   }
 
-  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Education> | Education[]> {
+  async findAll(
+    paginationDto?: PaginationDto,
+  ): Promise<PaginatedResponseDto<Education> | Education[]> {
     if (!paginationDto) {
       return await this.prisma.education.findMany({
         orderBy: { order: 'asc' },

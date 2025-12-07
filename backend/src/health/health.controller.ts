@@ -7,9 +7,11 @@ import {
 } from '@nestjs/terminus';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { PrismaService } from '../database/prisma.service';
+import { Public } from '../decorators';
 
 @ApiTags('Health')
 @Controller('health')
+@Public()
 export class HealthController {
   constructor(
     private health: HealthCheckService,
@@ -21,7 +23,10 @@ export class HealthController {
   @Get()
   @HealthCheck()
   @ApiOperation({ summary: 'Verificar saúde geral da aplicação' })
-  @ApiResponse({ status: 200, description: 'Status da aplicação e dependências' })
+  @ApiResponse({
+    status: 200,
+    description: 'Status da aplicação e dependências',
+  })
   check() {
     return this.health.check([
       // Check if the database is healthy
@@ -45,7 +50,9 @@ export class HealthController {
 
   @Get('readiness')
   @HealthCheck()
-  @ApiOperation({ summary: 'Verificar se a aplicação está pronta para receber tráfego' })
+  @ApiOperation({
+    summary: 'Verificar se a aplicação está pronta para receber tráfego',
+  })
   @ApiResponse({ status: 200, description: 'Aplicação está pronta' })
   readiness() {
     // Readiness probe - checks if the app is ready to receive traffic

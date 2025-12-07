@@ -16,6 +16,8 @@ import { TestimonialModule } from './modules/testimonial/testimonial.module';
 import { ContactMessageModule } from './modules/contact-message/contact-message.module';
 import { SocialLinkModule } from './modules/social-link/social-link.module';
 import { CodeExampleModule } from './modules/code-example/code-example.module';
+import { AuthModule } from './modules/auth/auth.module';
+import { ApiKeyGuard } from './modules/auth/guards';
 import { configuration, validationSchema } from './config';
 
 @Module({
@@ -29,13 +31,16 @@ import { configuration, validationSchema } from './config';
     ThrottlerModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => [{
-        ttl: config.get('throttle.ttl'),
-        limit: config.get('throttle.limit'),
-      }],
+      useFactory: (config: ConfigService) => [
+        {
+          ttl: config.get('throttle.ttl'),
+          limit: config.get('throttle.limit'),
+        },
+      ],
     }),
     DatabaseModule,
     HealthModule,
+    AuthModule,
     PersonalInfoModule,
     ServiceModule,
     SkillModule,
@@ -50,6 +55,10 @@ import { configuration, validationSchema } from './config';
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ApiKeyGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: ThrottlerGuard,
