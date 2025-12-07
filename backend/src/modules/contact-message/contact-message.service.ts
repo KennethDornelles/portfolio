@@ -4,6 +4,7 @@ import { UpdateContactMessageDto } from './dto/update-contact-message.dto';
 import { PrismaService } from '../../database/prisma.service';
 import { ContactMessage } from './entities/contact-message.entity';
 import { MessageStatus } from '@prisma/client';
+import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
 
 @Injectable()
 export class ContactMessageService {
@@ -17,10 +18,26 @@ export class ContactMessageService {
     });
   }
 
-  async findAll(): Promise<ContactMessage[]> {
-    return await this.prisma.contactMessage.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<ContactMessage> | ContactMessage[]> {
+    if (!paginationDto) {
+      return await this.prisma.contactMessage.findMany({
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.contactMessage.findMany({
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.contactMessage.count(),
+    ]);
+
+    return new PaginatedResponseDto(data, total, page, limit);
   }
 
   async findByStatus(status: MessageStatus): Promise<ContactMessage[]> {

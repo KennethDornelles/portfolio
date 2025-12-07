@@ -13,6 +13,7 @@ import { ContactMessageService } from './contact-message.service';
 import { CreateContactMessageDto } from './dto/create-contact-message.dto';
 import { UpdateContactMessageDto } from './dto/update-contact-message.dto';
 import { MessageStatus } from '@prisma/client';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Contact Messages')
 @Controller('contact-message')
@@ -31,11 +32,11 @@ export class ContactMessageController {
   @ApiOperation({ summary: 'Listar todas as mensagens de contato' })
   @ApiQuery({ name: 'status', required: false, enum: MessageStatus, description: 'Filtrar por status' })
   @ApiResponse({ status: 200, description: 'Lista de mensagens' })
-  findAll(@Query('status') status?: MessageStatus) {
+  findAll(@Query('status') status?: MessageStatus, @Query() paginationDto?: PaginationDto) {
     if (status) {
       return this.contactMessageService.findByStatus(status);
     }
-    return this.contactMessageService.findAll();
+    return this.contactMessageService.findAll(paginationDto);
   }
 
   @Get(':id')

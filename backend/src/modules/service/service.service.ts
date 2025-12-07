@@ -3,6 +3,7 @@ import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
 import { PrismaService } from '../../database/prisma.service';
 import { Service } from './entities/service.entity';
+import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
 
 @Injectable()
 export class ServiceService {
@@ -14,10 +15,26 @@ export class ServiceService {
     });
   }
 
-  async findAll(): Promise<Service[]> {
-    return await this.prisma.service.findMany({
-      orderBy: { order: 'asc' },
-    });
+  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Service> | Service[]> {
+    if (!paginationDto) {
+      return await this.prisma.service.findMany({
+        orderBy: { order: 'asc' },
+      });
+    }
+
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.service.findMany({
+        skip,
+        take: limit,
+        orderBy: { order: 'asc' },
+      }),
+      this.prisma.service.count(),
+    ]);
+
+    return new PaginatedResponseDto(data, total, page, limit);
   }
 
   async findActive(): Promise<Service[]> {

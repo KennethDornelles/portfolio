@@ -3,6 +3,7 @@ import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
 import { PrismaService } from '../../database/prisma.service';
 import { Education } from './entities/education.entity';
+import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
 
 @Injectable()
 export class EducationService {
@@ -14,10 +15,26 @@ export class EducationService {
     });
   }
 
-  async findAll(): Promise<Education[]> {
-    return await this.prisma.education.findMany({
-      orderBy: { order: 'asc' },
-    });
+  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Education> | Education[]> {
+    if (!paginationDto) {
+      return await this.prisma.education.findMany({
+        orderBy: { order: 'asc' },
+      });
+    }
+
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.education.findMany({
+        skip,
+        take: limit,
+        orderBy: { order: 'asc' },
+      }),
+      this.prisma.education.count(),
+    ]);
+
+    return new PaginatedResponseDto(data, total, page, limit);
   }
 
   async findCurrent(): Promise<Education[]> {

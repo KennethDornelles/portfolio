@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { TestimonialService } from './testimonial.service';
 import { CreateTestimonialDto } from './dto/create-testimonial.dto';
 import { UpdateTestimonialDto } from './dto/update-testimonial.dto';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Testimonials')
 @Controller('testimonial')
@@ -29,8 +31,8 @@ export class TestimonialController {
   @Get()
   @ApiOperation({ summary: 'Listar todos os depoimentos' })
   @ApiResponse({ status: 200, description: 'Lista de depoimentos' })
-  findAll() {
-    return this.testimonialService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.testimonialService.findAll(paginationDto);
   }
 
   @Get('active')

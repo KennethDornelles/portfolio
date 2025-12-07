@@ -3,6 +3,7 @@ import { CreateCodeExampleDto } from './dto/create-code-example.dto';
 import { UpdateCodeExampleDto } from './dto/update-code-example.dto';
 import { PrismaService } from '../../database/prisma.service';
 import { CodeExample } from './entities/code-example.entity';
+import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
 
 @Injectable()
 export class CodeExampleService {
@@ -16,10 +17,26 @@ export class CodeExampleService {
     });
   }
 
-  async findAll(): Promise<CodeExample[]> {
-    return await this.prisma.codeExample.findMany({
-      orderBy: { createdAt: 'desc' },
-    });
+  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<CodeExample> | CodeExample[]> {
+    if (!paginationDto) {
+      return await this.prisma.codeExample.findMany({
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.codeExample.findMany({
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+      }),
+      this.prisma.codeExample.count(),
+    ]);
+
+    return new PaginatedResponseDto(data, total, page, limit);
   }
 
   async findActive(): Promise<CodeExample[]> {

@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { ServiceService } from './service.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Services')
 @Controller('service')
@@ -29,8 +31,8 @@ export class ServiceController {
   @Get()
   @ApiOperation({ summary: 'Listar todos os serviços' })
   @ApiResponse({ status: 200, description: 'Lista de serviços' })
-  findAll() {
-    return this.serviceService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.serviceService.findAll(paginationDto);
   }
 
   @Get('active')

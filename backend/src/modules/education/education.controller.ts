@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { EducationService } from './education.service';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Education')
 @Controller('education')
@@ -29,8 +31,8 @@ export class EducationController {
   @Get()
   @ApiOperation({ summary: 'Listar todas as formações acadêmicas' })
   @ApiResponse({ status: 200, description: 'Lista de formações' })
-  findAll() {
-    return this.educationService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.educationService.findAll(paginationDto);
   }
 
   @Get(':id')

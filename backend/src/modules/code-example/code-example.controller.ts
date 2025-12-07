@@ -13,6 +13,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiQuery } from '@nestjs/
 import { CodeExampleService } from './code-example.service';
 import { CreateCodeExampleDto } from './dto/create-code-example.dto';
 import { UpdateCodeExampleDto } from './dto/update-code-example.dto';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Code Examples')
 @Controller('code-example')
@@ -31,11 +32,11 @@ export class CodeExampleController {
   @ApiOperation({ summary: 'Listar todos os exemplos de código' })
   @ApiQuery({ name: 'language', required: false, description: 'Filtrar por linguagem' })
   @ApiResponse({ status: 200, description: 'Lista de exemplos' })
-  findAll(@Query('language') language?: string) {
+  findAll(@Query('language') language?: string, @Query() paginationDto?: PaginationDto) {
     if (language) {
       return this.codeExampleService.findByLanguage(language);
     }
-    return this.codeExampleService.findAll();
+    return this.codeExampleService.findAll(paginationDto);
   }
 
   @Get('active')

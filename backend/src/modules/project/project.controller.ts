@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Projects')
 @Controller('project')
@@ -29,8 +31,8 @@ export class ProjectController {
   @Get()
   @ApiOperation({ summary: 'Listar todos os projetos' })
   @ApiResponse({ status: 200, description: 'Lista de projetos' })
-  findAll() {
-    return this.projectService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.projectService.findAll(paginationDto);
   }
 
   @Get('featured')

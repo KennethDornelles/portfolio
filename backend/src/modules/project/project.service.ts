@@ -3,6 +3,7 @@ import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
 import { PrismaService } from '../../database/prisma.service';
 import { Project } from './entities/project.entity';
+import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
 
 @Injectable()
 export class ProjectService {
@@ -14,10 +15,26 @@ export class ProjectService {
     });
   }
 
-  async findAll(): Promise<Project[]> {
-    return await this.prisma.project.findMany({
-      orderBy: { order: 'asc' },
-    });
+  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Project> | Project[]> {
+    if (!paginationDto) {
+      return await this.prisma.project.findMany({
+        orderBy: { order: 'asc' },
+      });
+    }
+
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.project.findMany({
+        skip,
+        take: limit,
+        orderBy: { order: 'asc' },
+      }),
+      this.prisma.project.count(),
+    ]);
+
+    return new PaginatedResponseDto(data, total, page, limit);
   }
 
   async findFeatured(): Promise<Project[]> {

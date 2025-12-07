@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { SocialLinkService } from './social-link.service';
 import { CreateSocialLinkDto } from './dto/create-social-link.dto';
 import { UpdateSocialLinkDto } from './dto/update-social-link.dto';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Social Links')
 @Controller('social-link')
@@ -29,8 +31,8 @@ export class SocialLinkController {
   @Get()
   @ApiOperation({ summary: 'Listar todos os links de redes sociais' })
   @ApiResponse({ status: 200, description: 'Lista de links' })
-  findAll() {
-    return this.socialLinkService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.socialLinkService.findAll(paginationDto);
   }
 
   @Get('active')

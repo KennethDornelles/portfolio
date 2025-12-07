@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   ParseUUIDPipe,
+  Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
 import { ExperienceService } from './experience.service';
 import { CreateExperienceDto } from './dto/create-experience.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Experience')
 @Controller('experience')
@@ -29,8 +31,8 @@ export class ExperienceController {
   @Get()
   @ApiOperation({ summary: 'Listar todas as experiências profissionais' })
   @ApiResponse({ status: 200, description: 'Lista de experiências' })
-  findAll() {
-    return this.experienceService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this.experienceService.findAll(paginationDto);
   }
 
   @Get(':id')

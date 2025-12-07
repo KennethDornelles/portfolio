@@ -14,6 +14,7 @@ import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
 import { SkillCategory } from '@prisma/client';
+import { PaginationDto } from '../../common/dto';
 
 @ApiTags('Skills')
 @Controller('skill')
@@ -32,11 +33,11 @@ export class SkillController {
   @ApiOperation({ summary: 'Listar todas as habilidades' })
   @ApiQuery({ name: 'category', required: false, enum: SkillCategory, description: 'Filtrar por categoria' })
   @ApiResponse({ status: 200, description: 'Lista de habilidades' })
-  findAll(@Query('category') category?: SkillCategory) {
+  findAll(@Query('category') category?: SkillCategory, @Query() paginationDto?: PaginationDto) {
     if (category) {
       return this.skillService.findByCategory(category);
     }
-    return this.skillService.findAll();
+    return this.skillService.findAll(paginationDto);
   }
 
   @Get(':id')

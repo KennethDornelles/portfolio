@@ -3,6 +3,7 @@ import { CreateTestimonialDto } from './dto/create-testimonial.dto';
 import { UpdateTestimonialDto } from './dto/update-testimonial.dto';
 import { PrismaService } from '../../database/prisma.service';
 import { Testimonial } from './entities/testimonial.entity';
+import { PaginationDto, PaginatedResponseDto } from '../../common/dto';
 
 @Injectable()
 export class TestimonialService {
@@ -16,10 +17,26 @@ export class TestimonialService {
     });
   }
 
-  async findAll(): Promise<Testimonial[]> {
-    return await this.prisma.testimonial.findMany({
-      orderBy: { order: 'asc' },
-    });
+  async findAll(paginationDto?: PaginationDto): Promise<PaginatedResponseDto<Testimonial> | Testimonial[]> {
+    if (!paginationDto) {
+      return await this.prisma.testimonial.findMany({
+        orderBy: { order: 'asc' },
+      });
+    }
+
+    const { page = 1, limit = 10 } = paginationDto;
+    const skip = (page - 1) * limit;
+
+    const [data, total] = await Promise.all([
+      this.prisma.testimonial.findMany({
+        skip,
+        take: limit,
+        orderBy: { order: 'asc' },
+      }),
+      this.prisma.testimonial.count(),
+    ]);
+
+    return new PaginatedResponseDto(data, total, page, limit);
   }
 
   async findActive(): Promise<Testimonial[]> {
