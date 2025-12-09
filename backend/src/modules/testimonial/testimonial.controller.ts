@@ -30,8 +30,20 @@ export class TestimonialController {
 
   @Get()
   @ApiOperation({ summary: 'Listar todos os depoimentos' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Número da página',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Itens por página',
+    type: Number,
+  })
   @ApiResponse({ status: 200, description: 'Lista de depoimentos' })
-  findAll(@Query() paginationDto: PaginationDto) {
+  findAll(@Query() paginationDto?: PaginationDto) {
     return this.testimonialService.findAll(paginationDto);
   }
 

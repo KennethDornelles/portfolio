@@ -41,6 +41,18 @@ export class CodeExampleController {
     required: false,
     description: 'Filtrar por linguagem',
   })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Número da página',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Itens por página',
+    type: Number,
+  })
   @ApiResponse({ status: 200, description: 'Lista de exemplos' })
   findAll(
     @Query('language') language?: string,

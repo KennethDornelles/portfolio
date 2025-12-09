@@ -40,8 +40,20 @@ export class ProjectController {
   @Get()
   @Public()
   @ApiOperation({ summary: 'Listar todos os projetos' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Número da página',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Itens por página',
+    type: Number,
+  })
   @ApiResponse({ status: 200, description: 'Lista de projetos' })
-  findAll(@Query() paginationDto: PaginationDto) {
+  findAll(@Query() paginationDto?: PaginationDto) {
     return this.projectService.findAll(paginationDto);
   }
 

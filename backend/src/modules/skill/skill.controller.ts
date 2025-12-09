@@ -43,6 +43,18 @@ export class SkillController {
     enum: SkillCategory,
     description: 'Filtrar por categoria',
   })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Número da página',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Itens por página',
+    type: Number,
+  })
   @ApiResponse({ status: 200, description: 'Lista de habilidades' })
   findAll(
     @Query('category') category?: SkillCategory,

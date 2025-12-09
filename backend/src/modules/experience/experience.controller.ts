@@ -30,8 +30,20 @@ export class ExperienceController {
 
   @Get()
   @ApiOperation({ summary: 'Listar todas as experiências profissionais' })
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    description: 'Número da página',
+    type: Number,
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    description: 'Itens por página',
+    type: Number,
+  })
   @ApiResponse({ status: 200, description: 'Lista de experiências' })
-  findAll(@Query() paginationDto: PaginationDto) {
+  findAll(@Query() paginationDto?: PaginationDto) {
     return this.experienceService.findAll(paginationDto);
   }
 
