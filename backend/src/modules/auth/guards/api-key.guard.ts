@@ -36,13 +36,14 @@ export class ApiKeyGuard implements CanActivate {
     private configService: ConfigService,
   ) {
     this.validApiKey = this.configService.get<string>('apiKey') || '';
-    
+
     if (!this.validApiKey) {
       this.logger.warn(
         '⚠️ API_KEY não configurada! Configure a variável de ambiente API_KEY.',
       );
     }
-  }  canActivate(context: ExecutionContext): boolean {
+  }
+  canActivate(context: ExecutionContext): boolean {
     // Verifica se a rota está marcada como pública
     const isPublic = this.reflector.getAllAndOverride<boolean>(IS_PUBLIC_KEY, [
       context.getHandler(),
