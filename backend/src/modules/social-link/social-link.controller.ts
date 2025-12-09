@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { Public } from '../../decorators';
 import { SocialLinkService } from './social-link.service';
 import { CreateSocialLinkDto } from './dto/create-social-link.dto';
 import { UpdateSocialLinkDto } from './dto/update-social-link.dto';
@@ -29,6 +30,7 @@ export class SocialLinkController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Listar todos os links de redes sociais' })
   @ApiQuery({
     name: 'page',
@@ -48,6 +50,7 @@ export class SocialLinkController {
   }
 
   @Get('active')
+  @Public()
   @ApiOperation({ summary: 'Listar links de redes sociais ativos' })
   @ApiResponse({ status: 200, description: 'Lista de links ativos' })
   findActive() {
@@ -55,6 +58,7 @@ export class SocialLinkController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Buscar link de rede social por ID' })
   @ApiParam({ name: 'id', description: 'ID do link' })
   @ApiResponse({ status: 200, description: 'Link encontrado' })

@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { Public } from '../../decorators';
 import { ServiceService } from './service.service';
 import { CreateServiceDto } from './dto/create-service.dto';
 import { UpdateServiceDto } from './dto/update-service.dto';
@@ -29,6 +30,7 @@ export class ServiceController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Listar todos os serviços' })
   @ApiQuery({
     name: 'page',
@@ -48,6 +50,7 @@ export class ServiceController {
   }
 
   @Get('active')
+  @Public()
   @ApiOperation({ summary: 'Listar serviços ativos' })
   @ApiResponse({ status: 200, description: 'Lista de serviços ativos' })
   findActive() {
@@ -55,6 +58,7 @@ export class ServiceController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Buscar serviço por ID' })
   @ApiParam({ name: 'id', description: 'ID do serviço' })
   @ApiResponse({ status: 200, description: 'Serviço encontrado' })

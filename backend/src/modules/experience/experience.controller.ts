@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { Public } from '../../decorators';
 import { ExperienceService } from './experience.service';
 import { CreateExperienceDto } from './dto/create-experience.dto';
 import { UpdateExperienceDto } from './dto/update-experience.dto';
@@ -29,6 +30,7 @@ export class ExperienceController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Listar todas as experiências profissionais' })
   @ApiQuery({
     name: 'page',
@@ -48,6 +50,7 @@ export class ExperienceController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Buscar experiência por ID' })
   @ApiParam({ name: 'id', description: 'ID da experiência' })
   @ApiResponse({ status: 200, description: 'Experiência encontrada' })

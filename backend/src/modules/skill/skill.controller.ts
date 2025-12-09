@@ -16,6 +16,7 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Public } from '../../decorators';
 import { SkillService } from './skill.service';
 import { CreateSkillDto } from './dto/create-skill.dto';
 import { UpdateSkillDto } from './dto/update-skill.dto';
@@ -36,6 +37,7 @@ export class SkillController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Listar todas as habilidades' })
   @ApiQuery({
     name: 'category',
@@ -67,6 +69,7 @@ export class SkillController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Buscar habilidade por ID' })
   @ApiParam({ name: 'id', description: 'ID da habilidade' })
   @ApiResponse({ status: 200, description: 'Habilidade encontrada' })

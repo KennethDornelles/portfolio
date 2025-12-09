@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { Public } from '../../decorators';
 import { TestimonialService } from './testimonial.service';
 import { CreateTestimonialDto } from './dto/create-testimonial.dto';
 import { UpdateTestimonialDto } from './dto/update-testimonial.dto';
@@ -29,6 +30,7 @@ export class TestimonialController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Listar todos os depoimentos' })
   @ApiQuery({
     name: 'page',
@@ -48,6 +50,7 @@ export class TestimonialController {
   }
 
   @Get('active')
+  @Public()
   @ApiOperation({ summary: 'Listar depoimentos ativos' })
   @ApiResponse({ status: 200, description: 'Lista de depoimentos ativos' })
   findActive() {
@@ -55,6 +58,7 @@ export class TestimonialController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Buscar depoimento por ID' })
   @ApiParam({ name: 'id', description: 'ID do depoimento' })
   @ApiResponse({ status: 200, description: 'Depoimento encontrado' })

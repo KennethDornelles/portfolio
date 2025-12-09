@@ -1,0 +1,203 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum SkillCategory {
+  FRONTEND
+  BACKEND
+  DATABASE
+  DEVOPS
+  TOOLS
+  SOFT_SKILLS
+}
+
+enum MessageStatus {
+  UNREAD
+  READ
+  ARCHIVED
+}
+
+// Informações Pessoais (Singleton - apenas 1 registro)
+model PersonalInfo {
+  id          String   @id @default(uuid())
+  name        String
+  title       String   // Ex: "Full Stack Developer"
+  bio         String   @db.Text
+  email       String
+  phone       String?
+  location    String?
+  avatar      String?
+  resumeUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("personal_info")
+}
+
+// Serviços Oferecidos
+model Service {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
+  icon        String?  // Nome do ícone ou URL
+  order       Int      @default(0)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([active, order])
+  @@index([createdAt(sort: Desc)])
+  @@map("services")
+}
+
+// Habilidades Técnicas
+model Skill {
+  id        String        @id @default(uuid())
+  name      String
+  category  SkillCategory
+  level     Int           // 1-100
+  icon      String?       // URL do ícone/logo da tecnologia
+  order     Int           @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  @@index([category, order])
+  @@index([level(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@map("skills")
+}
+
+// Projetos do Portfólio
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  description String   @db.Text
+  image       String?
+  tags        String[] // Array de tecnologias usadas
+  githubUrl   String?
+  liveUrl     String?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([featured, order])
+  @@index([createdAt(sort: Desc)])
+  @@map("projects")
+}
+
+// Formação Acadêmica
+model Education {
+  id          String    @id @default(uuid())
+  institution String
+  degree      String    // Ex: "Bacharelado em Ciência da Computação"
+  field       String?   // Área de estudo
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  description String?   @db.Text
+  grade       String?   // GPA ou nota final
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([current, startDate(sort: Desc)])
+  @@index([order])
+  @@index([createdAt(sort: Desc)])
+  @@map("education")
+}
+
+// Experiência Profissional
+model Experience {
+  id          String    @id @default(uuid())
+  company     String
+  position    String
+  description String    @db.Text
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  location    String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([current, startDate(sort: Desc)])
+  @@index([order])
+  @@index([createdAt(sort: Desc)])
+  @@map("experiences")
+}
+
+// Depoimentos/Testemunhos
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  role      String   // Cargo/função da pessoa
+  company   String?
+  message   String   @db.Text
+  avatar    String?
+  rating    Int?     @default(5) // 1-5 estrelas
+  active    Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active, rating(sort: Desc)])
+  @@index([active, order])
+  @@index([createdAt(sort: Desc)])
+  @@map("testimonials")
+}
+
+// Mensagens de Contato
+model ContactMessage {
+  id        String        @id @default(uuid())
+  name      String
+  email     String
+  subject   String?
+  message   String        @db.Text
+  status    MessageStatus @default(UNREAD)
+  createdAt DateTime      @default(now())
+
+  @@index([status, createdAt(sort: Desc)])
+  @@index([email])
+  @@index([createdAt(sort: Desc)])
+  @@map("contact_messages")
+}
+
+// Links de Redes Sociais
+model SocialLink {
+  id        String   @id @default(uuid())
+  platform  String   // GitHub, LinkedIn, Twitter, etc.
+  url       String
+  icon      String?  // Nome do ícone ou classe CSS
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([active, order])
+  @@index([platform])
+  @@map("social_links")
+}
+
+// Exemplos de Código (opcional - para blog/artigos técnicos)
+model CodeExample {
+  id          String   @id @default(uuid())
+  title       String
+  description String?  @db.Text
+  code        String   @db.Text
+  language    String   // javascript, typescript, python, etc.
+  tags        String[]
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([active, createdAt(sort: Desc)])
+  @@index([language])
+  @@map("code_examples")
+}

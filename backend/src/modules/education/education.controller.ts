@@ -10,6 +10,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { Public } from '../../decorators';
 import { EducationService } from './education.service';
 import { CreateEducationDto } from './dto/create-education.dto';
 import { UpdateEducationDto } from './dto/update-education.dto';
@@ -29,6 +30,7 @@ export class EducationController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Listar todas as formações acadêmicas' })
   @ApiQuery({
     name: 'page',
@@ -48,6 +50,7 @@ export class EducationController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Buscar formação por ID' })
   @ApiParam({ name: 'id', description: 'ID da formação' })
   @ApiResponse({ status: 200, description: 'Formação encontrada' })

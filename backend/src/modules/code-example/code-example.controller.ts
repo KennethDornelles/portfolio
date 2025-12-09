@@ -16,6 +16,7 @@ import {
   ApiParam,
   ApiQuery,
 } from '@nestjs/swagger';
+import { Public } from '../../decorators';
 import { CodeExampleService } from './code-example.service';
 import { CreateCodeExampleDto } from './dto/create-code-example.dto';
 import { UpdateCodeExampleDto } from './dto/update-code-example.dto';
@@ -35,6 +36,7 @@ export class CodeExampleController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Listar todos os exemplos de código' })
   @ApiQuery({
     name: 'language',
@@ -65,6 +67,7 @@ export class CodeExampleController {
   }
 
   @Get('active')
+  @Public()
   @ApiOperation({ summary: 'Listar exemplos de código ativos' })
   @ApiResponse({ status: 200, description: 'Lista de exemplos ativos' })
   findActive() {
@@ -72,6 +75,7 @@ export class CodeExampleController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Buscar exemplo de código por ID' })
   @ApiParam({ name: 'id', description: 'ID do exemplo' })
   @ApiResponse({ status: 200, description: 'Exemplo encontrado' })

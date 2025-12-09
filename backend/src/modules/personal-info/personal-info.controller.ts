@@ -11,6 +11,7 @@ import {
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiParam } from '@nestjs/swagger';
+import { Public } from '../../decorators';
 import { PersonalInfoService } from './personal-info.service';
 import { CreatePersonalInfoDto } from './dto/create-personal-info.dto';
 import { UpdatePersonalInfoDto } from './dto/update-personal-info.dto';
@@ -33,6 +34,7 @@ export class PersonalInfoController {
   }
 
   @Get()
+  @Public()
   @ApiOperation({ summary: 'Listar todas as informações pessoais' })
   @ApiResponse({ status: 200, description: 'Lista de informações pessoais' })
   findAll() {
@@ -40,6 +42,7 @@ export class PersonalInfoController {
   }
 
   @Get('current')
+  @Public()
   @ApiOperation({ summary: 'Buscar informação pessoal atual' })
   @ApiResponse({ status: 200, description: 'Informação pessoal atual' })
   @ApiResponse({ status: 404, description: 'Informação não encontrada' })
@@ -48,6 +51,7 @@ export class PersonalInfoController {
   }
 
   @Get(':id')
+  @Public()
   @ApiOperation({ summary: 'Buscar informação pessoal por ID' })
   @ApiParam({ name: 'id', description: 'ID da informação pessoal' })
   @ApiResponse({ status: 200, description: 'Informação pessoal encontrada' })
