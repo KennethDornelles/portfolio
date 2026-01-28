@@ -23,8 +23,13 @@ import { BullModule } from '@nestjs/bullmq';
 
 const parseRedisUrl = (url: string) => {
   if (!url) return undefined;
+  
+  // Sanitize: Remove quotes and trim
+  const cleanUrl = url.replace(/(^["']|["']$)/g, '').trim(); 
+  
   try {
-    const parsed = new URL(url);
+    const parsed = new URL(cleanUrl);
+    console.log(`Redis parsed successfully: ${parsed.hostname}:${parsed.port} (TLS: ${parsed.protocol === 'rediss:'})`);
     return {
       host: parsed.hostname,
       port: parseInt(parsed.port || '6379', 10),
@@ -33,6 +38,7 @@ const parseRedisUrl = (url: string) => {
       tls: parsed.protocol === 'rediss:' ? {} : undefined,
     };
   } catch (e) {
+    console.error(`Redis URL parsing failed for input length ${url.length}: ${e instanceof Error ? e.message : String(e)}`);
     return undefined;
   }
 };
