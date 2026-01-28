@@ -25,18 +25,19 @@ import { BullModule } from '@nestjs/bullmq';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      ignoreEnvFile: process.env.NODE_ENV === 'production',
       envFilePath: '.env',
     }),
     BullModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const url = configService.get<string>('REDIS_URL');
+        const url = configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
         return {
           connection: url
             ? (url as any)
             : {
-                host: configService.get<string>('REDIS_HOST') || 'localhost',
-                port: configService.get<number>('REDIS_PORT') || 6379,
+                host: configService.get<string>('REDIS_HOST') || process.env.REDIS_HOST || 'localhost',
+                port: configService.get<number>('REDIS_PORT') || parseInt(process.env.REDIS_PORT || '6379', 10),
               },
         };
       },
@@ -55,15 +56,15 @@ import { BullModule } from '@nestjs/bullmq';
       isGlobal: true,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const url = configService.get<string>('REDIS_URL');
+        const url = configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
         return {
           store: await redisStore(
             url
               ? { url }
               : {
                   socket: {
-                    host: configService.get<string>('REDIS_HOST') || 'localhost',
-                    port: configService.get<number>('REDIS_PORT') || 6379,
+                    host: configService.get<string>('REDIS_HOST') || process.env.REDIS_HOST || 'localhost',
+                    port: configService.get<number>('REDIS_PORT') || parseInt(process.env.REDIS_PORT || '6379', 10),
                   },
                 },
           ),
