@@ -24,4 +24,34 @@ export class I18nService {
 
     return value;
   }
+
+  async getTranslations(lang: string = 'PT_BR'): Promise<Record<string, string>> {
+    const cacheKey = `i18n:all:${lang}`;
+    const cached = await this.cacheManager.get(cacheKey);
+
+    if (cached) return cached as Record<string, string>;
+
+    const records = await this.i18nRepository.findAllByLang(lang);
+    
+    // Transform to Key-Value map
+    const map: Record<string, string> = {};
+    records.forEach(r => {
+        // We assume the joined translationKey is available or we use the key directly if stored in Translation?
+        // In the schema: Translation has keyId, TranslationKey has key.
+        // The repository include: { translationKey: true } should be added to interface return type or casted.
+        // Actually, Prisma types include relations if included.
+        // Let's assume Translation type has translationKey property available at runtime if included.
+        // However, TS might complain if I don't use the generated type with relation.
+        // For simplicity, I'll use any or careful casting.
+        // Wait, Translation type from @prisma/client does NOT have relations.
+        // I should just use (r as any).translationKey.key
+        const key = (r as any).translationKey?.key;
+        if (key) {
+            map[key] = r.value;
+        }
+    });
+
+    await this.cacheManager.set(cacheKey, map, 3600000);
+    return map;
+  }
 }

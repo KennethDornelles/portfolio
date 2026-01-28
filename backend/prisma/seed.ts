@@ -7,24 +7,30 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🌱 Starting database seeding...');
 
-  // 1. Create Admin User
-  const adminEmail = 'admin@portfolio.com';
-  const adminPassword = 'password123';
-  const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
+  // 1. Create Admin User from environment variables (DO NOT hardcode credentials!)
+  const adminEmail = process.env.ADMIN_EMAIL;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  const adminName = process.env.ADMIN_NAME || 'Admin';
 
-  if (!existingAdmin) {
-    const passwordHash = await bcrypt.hash(adminPassword, 10);
-    await prisma.user.create({
-      data: {
-        email: adminEmail,
-        passwordHash,
-        role: UserRole.ADMIN,
-        isActive: true,
-      },
-    });
-    console.log(`✅ Admin user created: ${adminEmail}`);
+  if (!adminEmail || !adminPassword) {
+    console.warn('⚠️ ADMIN_EMAIL and ADMIN_PASSWORD environment variables not set. Skipping admin user creation.');
   } else {
-    console.log(`ℹ️ Admin user already exists.`);
+    const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
+
+    if (!existingAdmin) {
+      const passwordHash = await bcrypt.hash(adminPassword, 10);
+      await prisma.user.create({
+        data: {
+          email: adminEmail,
+          passwordHash,
+          role: UserRole.ADMIN,
+          isActive: true,
+        },
+      });
+      console.log(`✅ Admin user created: ${adminEmail}`);
+    } else {
+      console.log(`ℹ️ Admin user already exists.`);
+    }
   }
 
   // 2. Create Initial Technologies

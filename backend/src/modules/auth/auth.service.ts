@@ -28,7 +28,15 @@ export class AuthService {
   async login(user: any) {
     const tokens = await this.generateTokens(user.id, user.role);
     await this.updateRefreshToken(user.id, tokens.refreshToken);
-    return tokens;
+    return {
+      ...tokens,
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name || user.email.split('@')[0],
+        role: user.role,
+      },
+    };
   }
 
   async logout(userId: string) {
@@ -73,10 +81,13 @@ export class AuthService {
   }
 
   private async generateTokens(userId: string, role?: string) {
-    const payload = { sub: userId, role };
+    const iat = Math.floor(Date.now() / 1000) - 300; // 5 minutes in the past to avoid future iat rejection
+    const payload = { sub: userId, role, iat };
+    const secret = this.configService.get<string>('JWT_SECRET') || 'secret';
+    
     const [at, rt] = await Promise.all([
       this.jwtService.signAsync(payload, {
-        secret: this.configService.get('JWT_SECRET'),
+        secret,
         expiresIn: '15m',
       }),
       this.jwtService.signAsync(payload, {
@@ -87,7 +98,7 @@ export class AuthService {
 
     return {
       accessToken: at,
-      refreshToken: rt, // Note: We might want an opaque token for DB, but JWT is fine too.
+      refreshToken: rt,
     };
   }
 
@@ -98,5 +109,32 @@ export class AuthService {
       userId,
       expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     });
+  }
+
+  async loginAsGuest() {
+    // Generate a random guest ID (simulated, not stored in DB to avoid clutter, or could be a fixed Guest User)
+    // If we want audit logs to work for guest, we might need a real user.
+    // But for "Demo Mode", read-only, maybe just a token is enough.
+    // The UUID must be valid for database constraints if we use it in relations?
+    // Refresh Tokens constrain on UserId. But we aren't creating a Refresh Token.
+    // So any UUID is fine.
+    const guestId = '00000000-0000-0000-0000-000000000000'; // Fixed Guest ID or random
+    
+    const payload = { sub: guestId, role: 'GUEST' };
+    
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: this.configService.get('JWT_SECRET'),
+      expiresIn: '15m',
+    });
+
+    return {
+      accessToken,
+      user: {
+        id: guestId,
+        email: 'guest@demo.com',
+        role: 'GUEST',
+        name: 'Demo Guest'
+      }
+    };
   }
 }

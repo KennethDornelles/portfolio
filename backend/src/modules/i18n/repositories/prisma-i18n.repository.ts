@@ -15,4 +15,15 @@ export class PrismaI18nRepository implements II18nRepository {
       },
     });
   }
+
+  async findAllByLang(language: string): Promise<Translation[]> {
+    return this.prisma.translation.findMany({
+      where: {
+        language: language === 'PT_BR' ? 'PT_BR' : 'EN_US',
+      },
+      include: {
+        translationKey: true,
+      },
+    });
+  }
 }

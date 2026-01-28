@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { IProjectsRepository } from './repositories/projects.repository.interface';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
@@ -8,14 +8,26 @@ export class ProjectsService {
   constructor(private projectsRepository: IProjectsRepository) {}
 
   async create(createProjectDto: CreateProjectDto) {
-    const { technologyIds, ...data } = createProjectDto;
-    
-    return this.projectsRepository.create({
-      ...data,
-      technologies: technologyIds ? {
-        connect: technologyIds.map(id => ({ id })),
-      } : undefined,
-    });
+    try {
+      const { technologyIds, ...data } = createProjectDto;
+      
+      // Check if slug already exists
+      const existing = await this.projectsRepository.findBySlug(data.slug);
+      if (existing) {
+        throw new ConflictException(`Project with slug "${data.slug}" already exists`);
+      }
+
+      return await this.projectsRepository.create({
+        ...data,
+        technologies: technologyIds ? {
+          connect: technologyIds.map(id => ({ id })),
+        } : undefined,
+      });
+    } catch (error) {
+      if (error instanceof ConflictException) throw error;
+      console.error('❌ ProjectsService.create failed:', error);
+      throw error;
+    }
   }
 
   async findAll() {

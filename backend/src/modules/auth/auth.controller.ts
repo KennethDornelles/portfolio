@@ -68,6 +68,24 @@ export class AuthController {
     return this.authService.login(user); // returns tokens
   }
 
+  @Public()
+  @Post('login')
+  @ApiOperation({ summary: 'Login to the application (alias)' })
+  @ApiResponse({ status: 200, description: 'Return access and refresh tokens.' })
+  @HttpCode(HttpStatus.OK)
+  async login(@Body() dto: AuthDto) {
+    return this.signin(dto);
+  }
+
+  @Public()
+  @Post('guest')
+  @ApiOperation({ summary: 'Login as Guest (Demo Mode)' })
+  @ApiResponse({ status: 200, description: 'Return access token for guest.' })
+  @HttpCode(HttpStatus.OK)
+  async guestLogin() {
+    return this.authService.loginAsGuest();
+  }
+
   @UseGuards(JwtAuthGuard)
   @Post('logout')
   @ApiBearerAuth()
