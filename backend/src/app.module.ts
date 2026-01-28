@@ -28,10 +28,12 @@ import { BullModule } from '@nestjs/bullmq';
       envFilePath: '.env',
     }),
     BullModule.forRoot({
-      connection: {
-        host: process.env.REDIS_HOST || 'redis',
-        port: parseInt(process.env.REDIS_PORT || '6379', 10),
-      },
+      connection: process.env.REDIS_URL
+        ? (process.env.REDIS_URL as any)
+        : {
+            host: process.env.REDIS_HOST || 'localhost',
+            port: parseInt(process.env.REDIS_PORT || '6379', 10),
+          },
     }),
     LoggerModule.forRoot({
       pinoHttp: {
@@ -46,13 +48,17 @@ import { BullModule } from '@nestjs/bullmq';
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async () => ({
-        store: await redisStore({
-          socket: {
-            host: process.env.REDIS_HOST || 'redis',
-            port: parseInt(process.env.REDIS_PORT || '6379', 10),
-          },
-        }),
-        ttl: 60000, // 60 seconds default TTL
+        store: await redisStore(
+          process.env.REDIS_URL
+            ? { url: process.env.REDIS_URL }
+            : {
+                socket: {
+                  host: process.env.REDIS_HOST || 'localhost',
+                  port: parseInt(process.env.REDIS_PORT || '6379', 10),
+                },
+              },
+        ),
+        ttl: 60000,
       }),
     }),
     ThrottlerModule.forRoot({
