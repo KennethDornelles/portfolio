@@ -1,6 +1,8 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
+import { InjectQueue } from '@nestjs/bullmq';
+import { Queue } from 'bullmq';
 
 export interface IMailProvider {
   sendEmail(to: string, subject: string, body: string): Promise<void>;
@@ -36,14 +38,22 @@ export class ResendMailProvider implements IMailProvider {
 
 @Injectable()
 export class MailService {
-  constructor(@Inject('MAIL_PROVIDER') private provider: IMailProvider) {}
+  constructor(@InjectQueue('mail') private mailQueue: Queue) {}
 
   async sendWelcome(email: string) {
-    await this.provider.sendEmail(email, 'Welcome to Portfolio', '<h1>Thank you for joining!</h1>');
+    await this.mailQueue.add('send-email', {
+      to: email,
+      subject: 'Welcome to Portfolio',
+      body: '<h1>Thank you for joining!</h1>',
+    });
   }
 
   // Generic method for other usages
   async send(to: string, subject: string, body: string) {
-    await this.provider.sendEmail(to, subject, body);
+    await this.mailQueue.add('send-email', {
+      to,
+      subject,
+      body,
+    });
   }
 }

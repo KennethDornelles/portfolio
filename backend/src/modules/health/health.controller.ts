@@ -2,6 +2,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, MemoryHealthIndicator, PrismaHealthIndicator } from '@nestjs/terminus';
 import { PrismaService } from '../prisma/prisma.service';
+import { Public } from '../../common/decorators';
 
 @Controller('health')
 export class HealthController {
@@ -11,6 +12,7 @@ export class HealthController {
     private prisma: PrismaService, // Direct injection for custom check
   ) {}
 
+  @Public()
   @Get()
   @HealthCheck()
   check() {

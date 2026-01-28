@@ -9,6 +9,8 @@ import { Roles } from '../../common/decorators/roles.decorator';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { UserRole } from '@prisma/client';
 
+import { Public } from '../../common/decorators/public.decorator';
+
 @ApiTags('Projects')
 @Controller('projects')
 export class ProjectsController {
@@ -24,6 +26,7 @@ export class ProjectsController {
     return this.projectsService.create(createProjectDto);
   }
 
+  @Public()
   @Get()
   @UseInterceptors(CacheInterceptor)
   @CacheTTL(120000) // 2 minutes cache
@@ -33,6 +36,7 @@ export class ProjectsController {
     return this.projectsService.findAll();
   }
 
+  @Public()
   @Get(':id')
   @ApiOperation({ summary: 'Get a project by id' })
   @ApiResponse({ status: 200, description: 'Return a single project.' })
@@ -40,6 +44,7 @@ export class ProjectsController {
     return this.projectsService.findOne(id);
   }
 
+  @Public()
   @Get('slug/:slug')
   @ApiOperation({ summary: 'Get a project by slug' })
   @ApiResponse({ status: 200, description: 'Return a single project by slug.' })
