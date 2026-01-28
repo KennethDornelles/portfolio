@@ -1,4 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { Resend } from 'resend';
 
 export interface IMailProvider {
   sendEmail(to: string, subject: string, body: string): Promise<void>;
@@ -13,10 +15,35 @@ export class ConsoleMailProvider implements IMailProvider {
 }
 
 @Injectable()
+export class ResendMailProvider implements IMailProvider {
+  private resend: Resend;
+
+  constructor(private configService: ConfigService) {
+    this.resend = new Resend(this.configService.get('RESEND_API_KEY'));
+  }
+
+  async sendEmail(to: string, subject: string, body: string): Promise<void> {
+    const from = this.configService.get('MAIL_FROM', 'onboarding@resend.dev');
+    
+    await this.resend.emails.send({
+      from,
+      to,
+      subject,
+      html: body,
+    });
+  }
+}
+
+@Injectable()
 export class MailService {
   constructor(@Inject('MAIL_PROVIDER') private provider: IMailProvider) {}
 
   async sendWelcome(email: string) {
-    await this.provider.sendEmail(email, 'Welcome to BarberBoss', 'Thank you for joining!');
+    await this.provider.sendEmail(email, 'Welcome to Portfolio', '<h1>Thank you for joining!</h1>');
+  }
+
+  // Generic method for other usages
+  async send(to: string, subject: string, body: string) {
+    await this.provider.sendEmail(to, subject, body);
   }
 }

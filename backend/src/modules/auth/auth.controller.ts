@@ -9,8 +9,8 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { UsersService } from '../users/users.service';
-import { RtGuard } from './guards/rt.guard';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { RtGuard } from '../../common/guards/rt.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import {
   Public,
   GetCurrentUser,

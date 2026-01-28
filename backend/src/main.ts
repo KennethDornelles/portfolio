@@ -3,11 +3,15 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
   const configService = app.get(ConfigService);
+
+  // Helmet - HTTP Security Headers
+  app.use(helmet());
 
   // Global Validation Pipe - OBRIGATÓRIO para class-validator funcionar
   app.useGlobalPipes(
@@ -46,4 +50,4 @@ async function bootstrap() {
   
   console.log(`🚀 Application is running on: http://localhost:${port}/api`);
 }
-bootstrap();
+void bootstrap();
