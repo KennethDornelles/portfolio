@@ -54,4 +54,16 @@ export class I18nService {
     await this.cacheManager.set(cacheKey, map, 3600000);
     return map;
   }
+
+  async clearCache() {
+    // Resetting the entire cache is drastic but effective for this fix
+    // Ideally we would delete only 'i18n:*' but reset works for full flush
+    try {
+        await this.cacheManager.reset();
+        return { success: true, message: 'Cache cleared successfully' };
+    } catch (e) {
+        console.error('Failed to clear cache', e);
+        throw e;
+    }
+  }
 }
