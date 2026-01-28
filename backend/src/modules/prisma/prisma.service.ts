@@ -8,9 +8,14 @@ export class PrismaService extends PrismaClient implements OnModuleInit, OnModul
     let dbUrl = configService.get<string>('DATABASE_URL') || process.env.DATABASE_URL;
 
     // Add recommended Supabase/Render pooling params if not present
-    if (dbUrl && dbUrl.includes('supabase.co') && !dbUrl.includes('pgbouncer')) {
-      const separator = dbUrl.includes('?') ? '&' : '?';
-      dbUrl += `${separator}pgbouncer=true&connection_limit=1`;
+    if (dbUrl && dbUrl.includes('supabase.co')) {
+      // Force port 6543 for transaction pooling if user requested or it's standard
+      dbUrl = dbUrl.replace(':5432', ':6543');
+      
+      if (!dbUrl.includes('pgbouncer')) {
+        const separator = dbUrl.includes('?') ? '&' : '?';
+        dbUrl += `${separator}pgbouncer=true&connection_limit=1`;
+      }
     }
 
     super({

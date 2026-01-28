@@ -21,6 +21,22 @@ import { join } from 'path';
 import { LoggerModule } from 'nestjs-pino';
 import { BullModule } from '@nestjs/bullmq';
 
+const parseRedisUrl = (url: string) => {
+  if (!url) return undefined;
+  try {
+    const parsed = new URL(url);
+    return {
+      host: parsed.hostname,
+      port: parseInt(parsed.port || '6379', 10),
+      password: parsed.password || undefined,
+      username: parsed.username || undefined,
+      tls: parsed.protocol === 'rediss:' ? {} : undefined,
+    };
+  } catch (e) {
+    return undefined;
+  }
+};
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -32,13 +48,13 @@ import { BullModule } from '@nestjs/bullmq';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         const url = configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
+        const parsed = parseRedisUrl(url || '');
+        
         return {
-          connection: url
-            ? (url as any)
-            : {
-                host: configService.get<string>('REDIS_HOST') || process.env.REDIS_HOST || 'localhost',
-                port: configService.get<number>('REDIS_PORT') || parseInt(process.env.REDIS_PORT || '6379', 10),
-              },
+          connection: parsed || {
+            host: configService.get<string>('REDIS_HOST') || process.env.REDIS_HOST || 'localhost',
+            port: configService.get<number>('REDIS_PORT') || parseInt(process.env.REDIS_PORT || '6379', 10),
+          },
         };
       },
     }),
@@ -57,10 +73,12 @@ import { BullModule } from '@nestjs/bullmq';
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const url = configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
+        const parsed = parseRedisUrl(url || '');
+
         return {
           store: await redisStore(
-            url
-              ? { url }
+            parsed
+              ? { socket: { ...parsed, tls: parsed.tls === undefined ? false : parsed.tls } as any, password: parsed.password }
               : {
                   socket: {
                     host: configService.get<string>('REDIS_HOST') || process.env.REDIS_HOST || 'localhost',
