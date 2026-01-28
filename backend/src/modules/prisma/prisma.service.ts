@@ -5,11 +5,19 @@ import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit, OnModuleDestroy {
   constructor(private configService: ConfigService) {
+    let dbUrl = configService.get<string>('DATABASE_URL') || process.env.DATABASE_URL;
+
+    // Add recommended Supabase/Render pooling params if not present
+    if (dbUrl && dbUrl.includes('supabase.co') && !dbUrl.includes('pgbouncer')) {
+      const separator = dbUrl.includes('?') ? '&' : '?';
+      dbUrl += `${separator}pgbouncer=true&connection_limit=1`;
+    }
+
     super({
       log: ['info', 'warn', 'error'],
       datasources: {
         db: {
-          url: configService.get<string>('DATABASE_URL'),
+          url: dbUrl,
         },
       },
     });

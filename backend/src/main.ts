@@ -1,3 +1,6 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -11,6 +14,17 @@ async function bootstrap() {
   app.useLogger(app.get(Logger));
   
   const configService = app.get(ConfigService);
+
+  // Startup Validation Logging
+  console.log('--- Startup Configuration Check ---');
+  console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+  console.log(`REDIS_URL defined: ${!!process.env.REDIS_URL}`);
+  console.log(`REDIS_HOST defined: ${!!process.env.REDIS_HOST}`);
+  console.log(`DATABASE_URL defined: ${!!process.env.DATABASE_URL}`);
+  if (process.env.DATABASE_URL?.includes('supabase')) {
+    console.log('Detected Supabase URL');
+  }
+  console.log('-----------------------------------');
 
   // Helmet - HTTP Security Headers
   app.use(helmet());
