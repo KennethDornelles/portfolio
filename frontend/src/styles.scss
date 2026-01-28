@@ -1,1 +1,60 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Chrome/Safari gradient text fix */
+.text-transparent {
+  -webkit-text-fill-color: transparent;
+}
+
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Global form styles for better contrast */
+input, textarea, select {
+  color: white !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+  
+  &:focus {
+    border-color: #00D4FF !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2) !important;
+  }
+  
+  /* Select dropdown arrow */
+  option {
+    background-color: #1a1a1a;
+    color: white;
+  }
+}
+
+/* Labels */
+label {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #00D4FF;
+  
+  &:checked {
+    background-color: #00D4FF;
+  }
+}
