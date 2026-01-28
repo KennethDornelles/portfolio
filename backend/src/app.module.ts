@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
@@ -27,13 +27,19 @@ import { BullModule } from '@nestjs/bullmq';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    BullModule.forRoot({
-      connection: process.env.REDIS_URL
-        ? (process.env.REDIS_URL as any)
-        : {
-            host: process.env.REDIS_HOST || 'localhost',
-            port: parseInt(process.env.REDIS_PORT || '6379', 10),
-          },
+    BullModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => {
+        const url = configService.get<string>('REDIS_URL');
+        return {
+          connection: url
+            ? (url as any)
+            : {
+                host: configService.get<string>('REDIS_HOST') || 'localhost',
+                port: configService.get<number>('REDIS_PORT') || 6379,
+              },
+        };
+      },
     }),
     LoggerModule.forRoot({
       pinoHttp: {
@@ -47,19 +53,23 @@ import { BullModule } from '@nestjs/bullmq';
     }),
     CacheModule.registerAsync({
       isGlobal: true,
-      useFactory: async () => ({
-        store: await redisStore(
-          process.env.REDIS_URL
-            ? { url: process.env.REDIS_URL }
-            : {
-                socket: {
-                  host: process.env.REDIS_HOST || 'localhost',
-                  port: parseInt(process.env.REDIS_PORT || '6379', 10),
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        const url = configService.get<string>('REDIS_URL');
+        return {
+          store: await redisStore(
+            url
+              ? { url }
+              : {
+                  socket: {
+                    host: configService.get<string>('REDIS_HOST') || 'localhost',
+                    port: configService.get<number>('REDIS_PORT') || 6379,
+                  },
                 },
-              },
-        ),
-        ttl: 60000,
-      }),
+          ),
+          ttl: 60000,
+        };
+      },
     }),
     ThrottlerModule.forRoot({
       throttlers: [
