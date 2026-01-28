@@ -1,5 +1,6 @@
 import { Injectable, Inject } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { createClient } from 'redis';
 import { II18nRepository } from './repositories/i18n.repository.interface';
 
 @Injectable()
@@ -56,26 +57,48 @@ export class I18nService {
   }
 
   async clearCache() {
+    console.log('Attempting to clear cache via direct Redis client...');
+    let client;
     try {
-        // Try standard reset
-        if (this.cacheManager.reset) {
-            await this.cacheManager.reset();
-            return { success: true, method: 'reset' };
-        }
-        
-        // Try deleting keys manually if store supports it
-        if (this.cacheManager.store && this.cacheManager.store.keys && this.cacheManager.store.del) {
-            const keys = await this.cacheManager.store.keys('i18n:*');
-            if (keys.length > 0) {
-                await this.cacheManager.store.del(keys);
-            }
-            return { success: true, method: 'manual-del', keysCount: keys.length };
+        // Construct Redis URL from env or use existing REDIS_URL
+        const url = process.env.REDIS_URL || 
+             (process.env.REDIS_HOST ? `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT || 6379}` : undefined);
+
+        if (!url) {
+            throw new Error('REDIS_URL not found in environment');
         }
 
-        throw new Error('Cache manager does not support reset or manual deletion');
+        // Handle Render's rediss:// if needed
+        const options: any = { url };
+        if (url.startsWith('rediss://')) {
+            options.socket = {
+                tls: true,
+                rejectUnauthorized: false 
+            };
+        }
+
+        client = createClient(options);
+        
+        client.on('error', err => console.error('Direct Redis Client Error', err));
+        
+        await client.connect();
+        
+        const keys = await client.keys('i18n:*');
+        
+        let count = 0;
+        if (keys.length > 0) {
+            count = await client.del(keys);
+        }
+        
+        return { success: true, method: 'direct-redis-client', keysFound: keys.length, keysDeleted: count };
+
     } catch (e) {
         console.error('Failed to clear cache', e);
         throw e;
+    } finally {
+        if (client && client.isOpen) {
+            await client.disconnect();
+        }
     }
   }
 }
