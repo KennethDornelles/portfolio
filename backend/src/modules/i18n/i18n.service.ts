@@ -56,11 +56,23 @@ export class I18nService {
   }
 
   async clearCache() {
-    // Resetting the entire cache is drastic but effective for this fix
-    // Ideally we would delete only 'i18n:*' but reset works for full flush
     try {
-        await this.cacheManager.reset();
-        return { success: true, message: 'Cache cleared successfully' };
+        // Try standard reset
+        if (this.cacheManager.reset) {
+            await this.cacheManager.reset();
+            return { success: true, method: 'reset' };
+        }
+        
+        // Try deleting keys manually if store supports it
+        if (this.cacheManager.store && this.cacheManager.store.keys && this.cacheManager.store.del) {
+            const keys = await this.cacheManager.store.keys('i18n:*');
+            if (keys.length > 0) {
+                await this.cacheManager.store.del(keys);
+            }
+            return { success: true, method: 'manual-del', keysCount: keys.length };
+        }
+
+        throw new Error('Cache manager does not support reset or manual deletion');
     } catch (e) {
         console.error('Failed to clear cache', e);
         throw e;
