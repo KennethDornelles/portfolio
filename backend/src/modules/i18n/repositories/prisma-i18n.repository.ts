@@ -26,4 +26,8 @@ export class PrismaI18nRepository implements II18nRepository {
       },
     });
   }
+
+  async count(): Promise<number> {
+    return this.prisma.translation.count();
+  }
 }

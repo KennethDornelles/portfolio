@@ -1,6 +1,7 @@
-import { Translation, Prisma } from '@prisma/client';
+import { Translation } from '@prisma/client';
 
-export abstract class II18nRepository {
-  abstract findTranslation(language: string, key: string): Promise<Translation | null>;
-  abstract findAllByLang(language: string): Promise<Translation[]>;
+export interface II18nRepository {
+  findTranslation(language: string, key: string): Promise<Translation | null>;
+  findAllByLang(language: string): Promise<Translation[]>;
+  count(): Promise<number>;
 }
