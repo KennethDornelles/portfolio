@@ -3,9 +3,13 @@ import { PrismaClient, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
+import { seedTranslations } from './seed-translations';
 
 async function main() {
   console.log('🌱 Starting database seeding...');
+  
+  // 0. Seed Translations first (References constants, but good to have early)
+  await seedTranslations(prisma);
 
   // 1. Create Admin User from environment variables (DO NOT hardcode credentials!)
   const adminEmail = process.env.ADMIN_EMAIL;

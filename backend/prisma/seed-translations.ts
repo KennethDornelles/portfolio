@@ -1,8 +1,8 @@
 import { PrismaClient, LanguageCode } from '@prisma/client';
 
-const prisma = new PrismaClient();
 
-async function main() {
+
+export async function seedTranslations(prisma: PrismaClient) {
   console.log('Seeding translations...');
 
   const translations = [
@@ -206,12 +206,3 @@ async function main() {
 
   console.log('Translations seeded!');
 }
-
-main()
-  .catch((e) => {
-    console.error(e);
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
