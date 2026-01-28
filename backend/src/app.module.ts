@@ -11,6 +11,7 @@ import { ProjectsModule } from './modules/projects/projects.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
 import { ProfileModule } from './modules/profile/profile.module';
 import { StorageModule } from './modules/storage/storage.module';
+import { TechnologiesModule } from './modules/technologies/technologies.module';
 import { HealthModule } from './modules/health/health.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
@@ -74,6 +75,7 @@ import { BullModule } from '@nestjs/bullmq';
     ProjectsModule,
     ContactsModule,
     ProfileModule,
+    TechnologiesModule,
     StorageModule,
     HealthModule,
   ],
