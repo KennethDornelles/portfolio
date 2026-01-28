@@ -16,9 +16,19 @@ export class I18nController {
   @Public()
   @Get('cache/clear')
   async clearCache(@Param() _params: any, @Query('secret') secret: string) {
-    if (secret !== process.env.JWT_SECRET && secret !== 'temp-admin-secret-2024') {
+    if (!secret || (secret !== process.env.JWT_SECRET && secret !== 'temp-admin-secret-2024')) {
         throw new BadRequestException('Invalid secret');
     }
-    return this.i18nService.clearCache();
+    
+    try {
+      return await this.i18nService.clearCache();
+    } catch (error) {
+      console.error('Clear Cache Error:', error);
+      return { 
+        success: false, 
+        message: error instanceof Error ? error.message : 'Unknown error',
+        stack: error instanceof Error ? error.stack : undefined 
+      };
+    }
   }
 }
