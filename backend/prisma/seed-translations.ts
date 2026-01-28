@@ -121,6 +121,63 @@ async function main() {
     { key: 'CONTACT_SUCCESS_DESC', lang: 'PT_BR', value: 'Obrigado! Retornarei em breve.' },
     { key: 'CONTACT_ALT', lang: 'EN_US', value: 'Or email me directly at:' },
     { key: 'CONTACT_ALT', lang: 'PT_BR', value: 'Ou envie um email diretamente para:' },
+
+    // Authentication - Login
+    { key: 'AUTH_LOGIN_TITLE', lang: 'EN_US', value: 'Welcome Back' },
+    { key: 'AUTH_LOGIN_TITLE', lang: 'PT_BR', value: 'Bem-vindo de Volta' },
+    { key: 'AUTH_LOGIN_SUBTITLE', lang: 'EN_US', value: 'Sign in to your account' },
+    { key: 'AUTH_LOGIN_SUBTITLE', lang: 'PT_BR', value: 'Entre na sua conta' },
+    { key: 'AUTH_EMAIL_LABEL', lang: 'EN_US', value: 'Email Address' },
+    { key: 'AUTH_EMAIL_LABEL', lang: 'PT_BR', value: 'Endereço de Email' },
+    { key: 'AUTH_PASSWORD_LABEL', lang: 'EN_US', value: 'Password' },
+    { key: 'AUTH_PASSWORD_LABEL', lang: 'PT_BR', value: 'Senha' },
+    { key: 'AUTH_FORGOT_PASSWORD', lang: 'EN_US', value: 'Forgot password?' },
+    { key: 'AUTH_FORGOT_PASSWORD', lang: 'PT_BR', value: 'Esqueceu a senha?' },
+    { key: 'AUTH_SUBMIT_LOGIN', lang: 'EN_US', value: 'Sign In' },
+    { key: 'AUTH_SUBMIT_LOGIN', lang: 'PT_BR', value: 'Entrar' },
+    { key: 'AUTH_NO_ACCOUNT', lang: 'EN_US', value: 'Don\'t have an account?' },
+    { key: 'AUTH_NO_ACCOUNT', lang: 'PT_BR', value: 'Não tem uma conta?' },
+    { key: 'AUTH_REGISTER_LINK', lang: 'EN_US', value: 'Sign up' },
+    { key: 'AUTH_REGISTER_LINK', lang: 'PT_BR', value: 'Cadastre-se' },
+
+    // Authentication - Register
+    { key: 'AUTH_REGISTER_TITLE', lang: 'EN_US', value: 'Create Account' },
+    { key: 'AUTH_REGISTER_TITLE', lang: 'PT_BR', value: 'Criar Conta' },
+    { key: 'AUTH_REGISTER_SUBTITLE', lang: 'EN_US', value: 'Start your journey with us' },
+    { key: 'AUTH_REGISTER_SUBTITLE', lang: 'PT_BR', value: 'Comece sua jornada conosco' },
+    { key: 'AUTH_NAME_LABEL', lang: 'EN_US', value: 'Full Name' },
+    { key: 'AUTH_NAME_LABEL', lang: 'PT_BR', value: 'Nome Completo' },
+    { key: 'AUTH_SUBMIT_REGISTER', lang: 'EN_US', value: 'Create Account' },
+    { key: 'AUTH_SUBMIT_REGISTER', lang: 'PT_BR', value: 'Criar Conta' },
+    { key: 'AUTH_HAS_ACCOUNT', lang: 'EN_US', value: 'Already have an account?' },
+    { key: 'AUTH_HAS_ACCOUNT', lang: 'PT_BR', value: 'Já tem uma conta?' },
+    { key: 'AUTH_LOGIN_LINK', lang: 'EN_US', value: 'Log in' },
+    { key: 'AUTH_LOGIN_LINK', lang: 'PT_BR', value: 'Entrar' },
+
+    // Validation & Errors
+    { key: 'VAL_REQUIRED', lang: 'EN_US', value: 'This field is required' },
+    { key: 'VAL_REQUIRED', lang: 'PT_BR', value: 'Este campo é obrigatório' },
+    { key: 'VAL_EMAIL_INVALID', lang: 'EN_US', value: 'Please enter a valid email' },
+    { key: 'VAL_EMAIL_INVALID', lang: 'PT_BR', value: 'Por favor, insira um email válido' },
+    { key: 'VAL_PASSWORD_MIN', lang: 'EN_US', value: 'Password must be at least 8 characters' },
+    { key: 'VAL_PASSWORD_MIN', lang: 'PT_BR', value: 'A senha deve ter pelo menos 8 caracteres' },
+    { key: 'VAL_PASSWORD_MATCH', lang: 'EN_US', value: 'Passwords do not match' },
+    { key: 'VAL_PASSWORD_MATCH', lang: 'PT_BR', value: 'As senhas não coincidem' },
+    
+    { key: 'ERR_GENERIC', lang: 'EN_US', value: 'Something went wrong. Please try again.' },
+    { key: 'ERR_GENERIC', lang: 'PT_BR', value: 'Algo deu errado. Por favor, tente novamente.' },
+    { key: 'ERR_UNAUTHORIZED', lang: 'EN_US', value: 'Invalid credentials' },
+    { key: 'ERR_UNAUTHORIZED', lang: 'PT_BR', value: 'Credenciais inválidas' },
+    { key: 'ERR_NETWORK', lang: 'EN_US', value: 'Network error. Check your connection.' },
+    { key: 'ERR_NETWORK', lang: 'PT_BR', value: 'Erro de rede. Verifique sua conexão.' },
+
+    // Shared / Common
+    { key: 'COMMON_LOADING', lang: 'EN_US', value: 'Loading...' },
+    { key: 'COMMON_LOADING', lang: 'PT_BR', value: 'Carregando...' },
+    { key: 'COMMON_SUCCESS', lang: 'EN_US', value: 'Success' },
+    { key: 'COMMON_SUCCESS', lang: 'PT_BR', value: 'Sucesso' },
+    { key: 'COMMON_ERROR', lang: 'EN_US', value: 'Error' },
+    { key: 'COMMON_ERROR', lang: 'PT_BR', value: 'Erro' },
   ];
 
   for (const t of translations) {
