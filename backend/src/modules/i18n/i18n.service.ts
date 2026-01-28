@@ -101,4 +101,21 @@ export class I18nService {
         }
     }
   }
+
+  async debugDB() {
+    try {
+        const count = await this.i18nRepository.count();
+        const sample = await this.i18nRepository.findTranslation('EN_US', 'NAV_HOME');
+        return {
+            totalTranslations: count,
+            sampleNavHome: sample,
+            connection: 'Active'
+        };
+    } catch (e) {
+        return {
+            error: e instanceof Error ? e.message : String(e),
+            connection: 'Failed'
+        };
+    }
+  }
 }
