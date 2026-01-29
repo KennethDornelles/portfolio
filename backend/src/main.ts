@@ -43,12 +43,22 @@ async function bootstrap() {
 
   // Configurar CORS
   app.enableCors({
-    origin: [
-      'https://seu-dominio.vercel.app',
-      'http://localhost:3000',
-      'http://localhost:4200',
-      /^https:\/\/.*\.vercel\.app$/,
-    ],
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://localhost:4200',
+      ];
+      
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+        callback(null, true);
+      } else {
+        console.warn(`Blocked CORS for origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     credentials: true,
     allowedHeaders: 'Content-Type,Accept,Authorization',
