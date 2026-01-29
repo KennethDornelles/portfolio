@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { LanguageService } from '../../../../core/services/language.service';
 
 interface Technology {
   id: string;
@@ -16,23 +18,23 @@ interface Technology {
 @Component({
   selector: 'app-technologies-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   template: `
     <div class="space-y-6">
       <!-- Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-white">Tecnologias</h1>
-          <p class="text-gray-400">Gerencie sua stack tecnológica</p>
+          <h1 class="text-2xl font-bold text-white">{{ 'ADMIN_TECH_TITLE' | translate }}</h1>
+          <p class="text-gray-400">{{ 'ADMIN_TECH_SUBTITLE' | translate }}</p>
         </div>
         @if (adminAuth.canEdit()) {
           <button (click)="showModal = true; editingTech = null; resetForm()"
                   class="px-4 py-2 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors">
-            + Nova Tecnologia
+            {{ 'ADMIN_BTN_NEW_TECH' | translate }}
           </button>
         } @else {
           <span class="px-4 py-2 bg-yellow-500/10 text-yellow-400 rounded-xl text-sm">
-            👁️ Modo Visualização
+            👁️ {{ 'ADMIN_VIEW_MODE' | translate }}
           </span>
         }
       </div>
@@ -42,7 +44,7 @@ interface Technology {
         <button (click)="selectedCategory = ''"
                 [class]="!selectedCategory ? 'bg-tech-blue text-black' : 'bg-white/5 text-gray-400'"
                 class="px-4 py-2 rounded-xl font-medium transition-colors">
-          Todas
+          {{ 'ADMIN_TECH_ALL' | translate }}
         </button>
         @for (cat of categories(); track cat) {
           <button (click)="selectedCategory = cat"
@@ -82,7 +84,7 @@ interface Technology {
             <!-- Proficiency Bar -->
             <div class="mt-4">
               <div class="flex justify-between text-sm mb-2">
-                <span class="text-gray-400">Proficiência</span>
+                <span class="text-gray-400">{{ 'ADMIN_TECH_PROFICIENCY' | translate }}</span>
                 <span class="text-tech-blue font-medium">{{ tech.proficiencyLevel }}%</span>
               </div>
               <div class="h-2 bg-white/10 rounded-full overflow-hidden">
@@ -94,7 +96,7 @@ interface Technology {
         } @empty {
           <div class="col-span-full bg-white/5 rounded-2xl border border-white/10 p-12 text-center">
             <span class="text-4xl mb-4 block">⚡</span>
-            <p class="text-gray-400">Nenhuma tecnologia cadastrada</p>
+            <p class="text-gray-400">{{ 'ADMIN_TECH_EMPTY' | translate }}</p>
           </div>
         }
       </div>
@@ -104,39 +106,39 @@ interface Technology {
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div class="bg-graphite-900 rounded-2xl border border-white/10 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-white/10">
             <h2 class="text-xl font-bold text-white mb-6">
-              {{ editingTech ? 'Editar Tecnologia' : 'Nova Tecnologia' }}
+              {{ (editingTech ? 'ADMIN_TECH_MODAL_EDIT' : 'ADMIN_TECH_MODAL_NEW') | translate }}
             </h2>
             
             <form (submit)="saveTech($event)" class="space-y-4">
               <div>
-                <label class="block text-gray-400 text-sm mb-2">Nome</label>
+                <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_NAME' | translate }}</label>
                 <input type="text" [(ngModel)]="form.name" name="name" required
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50">
               </div>
               
               <div>
-                <label class="block text-gray-400 text-sm mb-2">Categoria</label>
+                <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_CATEGORY' | translate }}</label>
                 <select [(ngModel)]="form.category" name="category" required
                         class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white focus:outline-none focus:border-tech-blue/50">
-                  <option value="">Selecione...</option>
+                  <option value="">{{ 'ADMIN_FORM_SELECT' | translate }}</option>
                   <option value="Frontend">Frontend</option>
                   <option value="Backend">Backend</option>
                   <option value="Database">Database</option>
                   <option value="DevOps">DevOps</option>
                   <option value="Mobile">Mobile</option>
-                  <option value="Other">Outros</option>
+                  <option value="Other">{{ 'ADMIN_FORM_OTHER' | translate }}</option>
                 </select>
               </div>
               
               <div>
-                <label class="block text-gray-400 text-sm mb-2">Ícone (emoji)</label>
+                <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_ICON' | translate }}</label>
                 <input type="text" [(ngModel)]="form.icon" name="icon"
                        placeholder="⚡"
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 text-center text-2xl">
               </div>
               
               <div>
-                <label class="block text-gray-400 text-sm mb-2">Proficiência: {{ form.proficiencyLevel }}%</label>
+                <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_TECH_PROFICIENCY' | translate }}: {{ form.proficiencyLevel }}%</label>
                 <input type="range" [(ngModel)]="form.proficiencyLevel" name="proficiencyLevel"
                        min="0" max="100" step="5"
                        class="w-full accent-tech-blue">
@@ -145,11 +147,11 @@ interface Technology {
               <div class="flex gap-3 pt-4">
                 <button type="button" (click)="showModal = false"
                         class="flex-1 px-4 py-3 bg-white/5 text-gray-300 rounded-xl hover:bg-white/10 transition-colors">
-                  Cancelar
+                  {{ 'ADMIN_BTN_CANCEL' | translate }}
                 </button>
                 <button type="submit" [disabled]="loading()"
                         class="flex-1 px-4 py-3 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors disabled:opacity-50">
-                  {{ loading() ? 'Salvando...' : 'Salvar' }}
+                  {{ loading() ? ('ADMIN_BTN_SAVING' | translate) : ('ADMIN_BTN_SAVE' | translate) }}
                 </button>
               </div>
             </form>
@@ -161,6 +163,7 @@ interface Technology {
 })
 export class TechnologiesAdminComponent implements OnInit {
   private http = inject(HttpClient);
+  private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
   
   technologies = signal<Technology[]>([]);
@@ -248,10 +251,10 @@ export class TechnologiesAdminComponent implements OnInit {
 
   deleteTech(id: string) {
     if (!this.adminAuth.canEdit()) return;
-    if (confirm('Tem certeza que deseja excluir esta tecnologia?')) {
+    if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_TECH'))) {
       this.http.delete(`${environment.apiUrl}/technologies/${id}`).subscribe({
         next: () => this.loadTechnologies(),
-        error: (err) => console.error('Failed to delete technology', err)
+        error: (err: any) => console.error('Failed to delete technology', err)
       });
     }
   }

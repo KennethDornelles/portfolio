@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { LanguageService } from '../../../../core/services/language.service';
 
 interface Project {
   id: string;
@@ -25,23 +27,23 @@ interface Technology {
 @Component({
   selector: 'app-projects-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   template: `
     <div class="space-y-6">
       <!-- Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-white">Projetos</h1>
-          <p class="text-gray-400">Gerencie os projetos do seu portfolio</p>
+          <h1 class="text-2xl font-bold text-white">{{ 'ADMIN_PROJECTS_TITLE' | translate }}</h1>
+          <p class="text-gray-400">{{ 'ADMIN_PROJECTS_SUBTITLE' | translate }}</p>
         </div>
         @if (adminAuth.canEdit()) {
           <button (click)="showModal = true; editingProject = null; resetForm()"
                   class="px-4 py-2 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors">
-            + Novo Projeto
+            {{ 'ADMIN_BTN_NEW_PROJECT' | translate }}
           </button>
         } @else {
           <span class="px-4 py-2 bg-yellow-500/10 text-yellow-400 rounded-xl text-sm">
-            👁️ Modo Visualização
+            👁️ {{ 'ADMIN_VIEW_MODE' | translate }}
           </span>
         }
       </div>
@@ -51,12 +53,12 @@ interface Technology {
         <table class="w-full">
           <thead class="bg-white/5">
             <tr>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">Nome</th>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">Tecnologias</th>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">Status</th>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">Data</th>
+              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_NAME' | translate }}</th>
+              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_TECHNOLOGIES' | translate }}</th>
+              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_STATUS' | translate }}</th>
+              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_DATE' | translate }}</th>
               @if (adminAuth.canEdit()) {
-                <th class="text-right px-6 py-4 text-gray-400 font-medium text-sm">Ações</th>
+                <th class="text-right px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_ACTIONS' | translate }}</th>
               }
             </tr>
           </thead>
@@ -84,9 +86,9 @@ interface Technology {
                 </td>
                 <td class="px-6 py-4">
                   @if (project.isActive) {
-                    <span class="px-3 py-1 bg-green-500/10 text-green-400 text-xs rounded-full">Ativo</span>
+                    <span class="px-3 py-1 bg-green-500/10 text-green-400 text-xs rounded-full">{{ 'ADMIN_STATUS_ACTIVE' | translate }}</span>
                   } @else {
-                    <span class="px-3 py-1 bg-gray-500/10 text-gray-400 text-xs rounded-full">Inativo</span>
+                    <span class="px-3 py-1 bg-gray-500/10 text-gray-400 text-xs rounded-full">{{ 'ADMIN_STATUS_INACTIVE' | translate }}</span>
                   }
                 </td>
                 <td class="px-6 py-4 text-gray-400 text-sm">
@@ -110,7 +112,7 @@ interface Technology {
             } @empty {
               <tr>
                 <td [attr.colspan]="adminAuth.canEdit() ? 5 : 4" class="px-6 py-12 text-center text-gray-500">
-                  Nenhum projeto cadastrado
+                  {{ 'ADMIN_PROJECTS_EMPTY' | translate }}
                 </td>
               </tr>
             }
@@ -123,7 +125,7 @@ interface Technology {
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div class="bg-graphite-900 rounded-2xl border border-white/10 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-white/10">
             <h2 class="text-xl font-bold text-white mb-6">
-              {{ editingProject ? 'Editar Projeto' : 'Novo Projeto' }}
+              {{ (editingProject ? 'ADMIN_PROJECTS_MODAL_EDIT' : 'ADMIN_PROJECTS_MODAL_NEW') | translate }}
             </h2>
             
             <form (submit)="saveProject($event)" class="space-y-4">
@@ -133,19 +135,19 @@ interface Technology {
                 </div>
               }
               <div>
-                <label class="block text-gray-400 text-sm mb-2">Título</label>
+                <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_TITLE' | translate }}</label>
                 <input type="text" [(ngModel)]="form.title" name="title" required
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50">
               </div>
               
               <div>
-                <label class="block text-gray-400 text-sm mb-2">Descrição</label>
+                <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_DESCRIPTION' | translate }}</label>
                 <textarea [(ngModel)]="form.description" name="description" rows="3"
                           class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 resize-none"></textarea>
               </div>
               
               <div>
-                <label class="block text-gray-400 text-sm mb-2">Tecnologias (separadas por vírgula)</label>
+                <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_TECH_HINT' | translate }}</label>
                 <input type="text" [(ngModel)]="form.technologiesStr" name="technologies"
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50"
                        placeholder="React, Node.js, PostgreSQL">
@@ -167,17 +169,17 @@ interface Technology {
               <div class="flex items-center gap-3">
                 <input type="checkbox" [(ngModel)]="form.isActive" name="isActive" id="isActive"
                        class="w-5 h-5 rounded bg-white/5 border-white/10">
-                <label for="isActive" class="text-gray-300">Projeto ativo</label>
+                <label for="isActive" class="text-gray-300">{{ 'ADMIN_FORM_PROJECT_ACTIVE' | translate }}</label>
               </div>
               
               <div class="flex gap-3 pt-4">
                 <button type="button" (click)="showModal = false"
                         class="flex-1 px-4 py-3 bg-white/5 text-gray-300 rounded-xl hover:bg-white/10 transition-colors">
-                  Cancelar
+                  {{ 'ADMIN_BTN_CANCEL' | translate }}
                 </button>
                 <button type="submit" [disabled]="loading()"
                         class="flex-1 px-4 py-3 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors disabled:opacity-50">
-                  {{ loading() ? 'Salvando...' : 'Salvar' }}
+                  {{ loading() ? ('ADMIN_BTN_SAVING' | translate) : ('ADMIN_BTN_SAVE' | translate) }}
                 </button>
               </div>
             </form>
@@ -189,6 +191,7 @@ interface Technology {
 })
 export class ProjectsAdminComponent implements OnInit {
   private http = inject(HttpClient);
+  private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
   
   projects = signal<Project[]>([]);
@@ -285,14 +288,14 @@ export class ProjectsAdminComponent implements OnInit {
         this.loading.set(false);
         this.errorMessage.set(null);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Failed to save project', err);
         this.loading.set(false);
         
         if (err.status === 500 || err.status === 400) {
-          this.errorMessage.set('Um projeto com este título ou slug já existe. Por favor, escolha outro nome.');
+          this.errorMessage.set(this.i18n.translate('ADMIN_ERR_DUPLICATE'));
         } else {
-          this.errorMessage.set('Erro ao salvar projeto. Tente novamente mais tarde.');
+          this.errorMessage.set(this.i18n.translate('ADMIN_ERR_GENERIC'));
         }
       }
     });
@@ -300,10 +303,10 @@ export class ProjectsAdminComponent implements OnInit {
 
   deleteProject(id: string) {
     if (!this.adminAuth.canEdit()) return;
-    if (confirm('Tem certeza que deseja excluir este projeto?')) {
+    if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_PROJECT'))) {
       this.http.delete(`${environment.apiUrl}/projects/${id}`).subscribe({
         next: () => this.loadProjects(),
-        error: (err) => console.error('Failed to delete project', err)
+        error: (err: any) => console.error('Failed to delete project', err)
       });
     }
   }

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { LanguageService } from '../../../../core/services/language.service';
 
 interface Translation {
   key: string;
@@ -15,30 +17,30 @@ interface Translation {
 @Component({
   selector: 'app-translations-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   template: `
     <div class="space-y-6">
       <!-- Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-white">Traduções</h1>
-          <p class="text-gray-400">Gerencie as chaves de internacionalização (i18n)</p>
+          <h1 class="text-2xl font-bold text-white">{{ 'ADMIN_TRANS_TITLE' | translate }}</h1>
+          <p class="text-gray-400">{{ 'ADMIN_TRANS_SUBTITLE' | translate }}</p>
         </div>
         @if (adminAuth.canEdit()) {
           <button (click)="showAddModal = true"
                   class="px-4 py-2 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors">
-            + Nova Chave
+            {{ 'ADMIN_BTN_NEW_KEY' | translate }}
           </button>
         } @else {
           <span class="px-4 py-2 bg-yellow-500/10 text-yellow-400 rounded-xl text-sm">
-            👁️ Modo Visualização
+            👁️ {{ 'ADMIN_VIEW_MODE' | translate }}
           </span>
         }
       </div>
 
       <!-- Search -->
       <div class="relative">
-        <input type="text" [(ngModel)]="searchQuery" placeholder="Buscar traduções..."
+        <input type="text" [(ngModel)]="searchQuery" [placeholder]="'ADMIN_TRANS_SEARCH' | translate"
                class="w-full px-4 py-3 pl-10 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50">
         <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">🔍</span>
       </div>
@@ -47,7 +49,7 @@ interface Translation {
       <div class="grid grid-cols-3 gap-4">
         <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center">
           <p class="text-2xl font-bold text-white">{{ translations().length }}</p>
-          <p class="text-gray-400 text-sm">Total de Chaves</p>
+          <p class="text-gray-400 text-sm">{{ 'ADMIN_TRANS_TOTAL' | translate }}</p>
         </div>
         <div class="p-4 bg-purple-500/5 rounded-xl border border-purple-500/10 text-center">
           <span class="text-purple-400 text-2xl">🇧🇷</span>
@@ -64,11 +66,11 @@ interface Translation {
         <table class="w-full">
           <thead class="bg-white/5">
             <tr>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">Chave</th>
+              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TRANS_TBL_KEY' | translate }}</th>
               <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">🇧🇷 Português</th>
               <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">🇺🇸 English</th>
               @if (adminAuth.canEdit()) {
-                <th class="text-right px-6 py-4 text-gray-400 font-medium text-sm">Ações</th>
+                <th class="text-right px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_ACTIONS' | translate }}</th>
               }
             </tr>
           </thead>
@@ -123,7 +125,7 @@ interface Translation {
             } @empty {
               <tr>
                 <td [attr.colspan]="adminAuth.canEdit() ? 4 : 3" class="px-6 py-12 text-center text-gray-500">
-                  {{ searchQuery ? 'Nenhuma tradução encontrada' : 'Nenhuma tradução cadastrada' }}
+                  {{ searchQuery ? ('ADMIN_TRANS_NOT_FOUND' | translate) : ('ADMIN_TRANS_EMPTY' | translate) }}
                 </td>
               </tr>
             }
@@ -135,11 +137,11 @@ interface Translation {
       @if (showAddModal && adminAuth.canEdit()) {
         <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div class="bg-graphite-900 rounded-2xl border border-white/10 w-full max-w-lg max-h-[90vh] overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-white/10">
-            <h2 class="text-xl font-bold text-white mb-6">Nova Tradução</h2>
+            <h2 class="text-xl font-bold text-white mb-6">{{ 'ADMIN_TRANS_MODAL_NEW' | translate }}</h2>
             
             <form (submit)="addTranslation($event)" class="space-y-4">
               <div>
-                <label class="block text-gray-400 text-sm mb-2">Chave</label>
+                <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_TRANS_TBL_KEY' | translate }}</label>
                 <input type="text" [(ngModel)]="newKey" name="key" required
                        placeholder="EX: BUTTON_SUBMIT"
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 font-mono">
@@ -160,11 +162,11 @@ interface Translation {
               <div class="flex gap-3 pt-4">
                 <button type="button" (click)="showAddModal = false"
                         class="flex-1 px-4 py-3 bg-white/5 text-gray-300 rounded-xl hover:bg-white/10 transition-colors">
-                  Cancelar
+                  {{ 'ADMIN_BTN_CANCEL' | translate }}
                 </button>
                 <button type="submit"
                         class="flex-1 px-4 py-3 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors">
-                  Adicionar
+                  {{ 'ADMIN_BTN_ADD' | translate }}
                 </button>
               </div>
             </form>
@@ -176,6 +178,7 @@ interface Translation {
 })
 export class TranslationsAdminComponent implements OnInit {
   private http = inject(HttpClient);
+  private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
   
   translations = signal<Translation[]>([]);
@@ -245,7 +248,7 @@ export class TranslationsAdminComponent implements OnInit {
 
   deleteTranslation(key: string) {
     if (!this.adminAuth.canEdit()) return;
-    if (confirm(`Tem certeza que deseja excluir a chave "${key}"?`)) {
+    if (confirm(`${this.i18n.translate('ADMIN_CONFIRM_DELETE_KEY')} "${key}"?`)) {
       this.translations.update(ts => ts.filter(t => t.key !== key));
     }
   }
