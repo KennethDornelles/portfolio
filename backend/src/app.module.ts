@@ -13,6 +13,7 @@ import { ProfileModule } from './modules/profile/profile.module';
 import { StorageModule } from './modules/storage/storage.module';
 import { TechnologiesModule } from './modules/technologies/technologies.module';
 import { HealthModule } from './modules/health/health.module';
+import { ExperiencesModule } from './modules/experiences/experiences.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { CacheModule } from '@nestjs/cache-manager';
@@ -119,6 +120,7 @@ const parseRedisUrl = (url: string) => {
     TechnologiesModule,
     StorageModule,
     HealthModule,
+    ExperiencesModule,
   ],
   providers: [
     {
