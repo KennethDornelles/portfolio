@@ -34,7 +34,7 @@ interface Activity {
           <p class="text-gray-400">{{ 'DASH_SUBTITLE' | translate }}</p>
         </div>
         <div class="text-sm text-gray-500">
-          Última atualização: {{ lastUpdate }}
+          {{ 'DASH_LAST_UPDATE' | translate }} {{ lastUpdate }}
         </div>
       </div>
 
@@ -44,7 +44,7 @@ interface Activity {
         <div class="p-6 bg-gradient-to-br from-tech-blue/10 to-transparent rounded-2xl border border-white/10">
           <div class="flex items-center justify-between mb-4">
             <span class="text-3xl">📁</span>
-            <span class="text-xs text-tech-blue bg-tech-blue/10 px-2 py-1 rounded-full">+2 este mês</span>
+            <span class="text-xs text-tech-blue bg-tech-blue/10 px-2 py-1 rounded-full">{{ 'DASH_CARD_NEW_MONTH' | translate }}</span>
           </div>
           <p class="text-3xl font-bold text-white">{{ stats().projects }}</p>
           <p class="text-gray-400 text-sm">{{ 'DASH_STAT_PROJECTS' | translate }}</p>
@@ -54,20 +54,20 @@ interface Activity {
         <div class="p-6 bg-gradient-to-br from-green-500/10 to-transparent rounded-2xl border border-white/10">
           <div class="flex items-center justify-between mb-4">
             <span class="text-3xl">📬</span>
-            <span class="text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full">{{ unreadContacts() }} novos</span>
+            <span class="text-xs text-green-400 bg-green-500/10 px-2 py-1 rounded-full">{{ unreadContacts() }} {{ 'DASH_CARD_NEW_MSG' | translate }}</span>
           </div>
           <p class="text-3xl font-bold text-white">{{ stats().contacts }}</p>
-          <p class="text-gray-400 text-sm">Contatos</p>
+          <p class="text-gray-400 text-sm">{{ 'DASH_CARD_CONTACTS' | translate }}</p>
         </div>
 
         <!-- Translations -->
         <div class="p-6 bg-gradient-to-br from-purple-500/10 to-transparent rounded-2xl border border-white/10">
           <div class="flex items-center justify-between mb-4">
             <span class="text-3xl">🌍</span>
-            <span class="text-xs text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full">2 idiomas</span>
+            <span class="text-xs text-purple-400 bg-purple-500/10 px-2 py-1 rounded-full">{{ 'DASH_CARD_LANGUAGES' | translate }}</span>
           </div>
           <p class="text-3xl font-bold text-white">{{ stats().translations }}</p>
-          <p class="text-gray-400 text-sm">Traduções</p>
+          <p class="text-gray-400 text-sm">{{ 'DASH_CARD_TRANSLATIONS' | translate }}</p>
         </div>
 
         <!-- Technologies -->
@@ -77,7 +77,7 @@ interface Activity {
             <span class="text-xs text-orange-400 bg-orange-500/10 px-2 py-1 rounded-full">Stack</span>
           </div>
           <p class="text-3xl font-bold text-white">{{ stats().technologies }}</p>
-          <p class="text-gray-400 text-sm">Tecnologias</p>
+          <p class="text-gray-400 text-sm">{{ 'DASH_CARD_TECH' | translate }}</p>
         </div>
       </div>
 
@@ -87,7 +87,7 @@ interface Activity {
         <div class="lg:col-span-2 bg-white/5 rounded-2xl border border-white/10 p-6">
           <div class="flex items-center justify-between mb-6">
             <h2 class="text-lg font-semibold text-white">{{ 'DASH_ACT_TITLE' | translate }}</h2>
-            <button class="text-tech-blue text-sm hover:underline">Ver tudo</button>
+            <button class="text-tech-blue text-sm hover:underline">{{ 'DASH_BTN_VIEW_ALL' | translate }}</button>
           </div>
           
           <div class="space-y-4">
@@ -101,18 +101,15 @@ interface Activity {
                   }
                 </span>
                 <div class="flex-1">
-                  <p class="text-white">{{ activity.messageKey }}</p>
+                  <p class="text-white">{{ activity.messageKey | translate }}</p>
                   <p class="text-gray-500 text-sm">
-                    {{ activity.timeKey | translate: activity.timeParam }}
-                    @if (activity.timeKey === 'ACT_TIME_HOURS') {
-                       {{ activity.timeParam }}
-                    }
+                    {{ activity.timeKey | translate: { '0': activity.timeParam } }}
                   </p>
                 </div>
               </div>
             } @empty {
               <div class="text-center py-8 text-gray-500">
-                Nenhuma atividade recente
+                {{ 'DASH_NO_ACTIVITY' | translate }}
               </div>
             }
           </div>
@@ -120,25 +117,25 @@ interface Activity {
 
         <!-- Quick Actions -->
         <div class="bg-white/5 rounded-2xl border border-white/10 p-6">
-          <h2 class="text-lg font-semibold text-white mb-6">Ações Rápidas</h2>
+          <h2 class="text-lg font-semibold text-white mb-6">{{ 'DASH_QUICK_ACTIONS' | translate }}</h2>
           
           <div class="space-y-3">
             <a routerLink="/admin/projects" 
                class="flex items-center gap-3 p-4 bg-tech-blue/10 rounded-xl text-tech-blue hover:bg-tech-blue/20 transition-colors">
               <span class="text-xl">➕</span>
-              <span class="font-medium">Adicionar Projeto</span>
+              <span class="font-medium">{{ 'DASH_ACTION_ADD_PROJECT' | translate }}</span>
             </a>
             
             <a routerLink="/admin/contacts"
                class="flex items-center gap-3 p-4 bg-green-500/10 rounded-xl text-green-400 hover:bg-green-500/20 transition-colors">
               <span class="text-xl">📬</span>
-              <span class="font-medium">Ver Contatos</span>
+              <span class="font-medium">{{ 'DASH_ACTION_VIEW_CONTACTS' | translate }}</span>
             </a>
             
             <a routerLink="/admin/translations"
                class="flex items-center gap-3 p-4 bg-purple-500/10 rounded-xl text-purple-400 hover:bg-purple-500/20 transition-colors">
               <span class="text-xl">🌍</span>
-              <span class="font-medium">Gerenciar Traduções</span>
+              <span class="font-medium">{{ 'DASH_ACTION_MANAGE_TRANSLATIONS' | translate }}</span>
             </a>
             
             <a routerLink="/"
@@ -182,13 +179,13 @@ interface Activity {
           }
         </div>
         <div class="flex justify-between mt-2 px-4 text-xs text-gray-500">
-          <span>Seg</span>
-          <span>Ter</span>
-          <span>Qua</span>
-          <span>Qui</span>
-          <span>Sex</span>
-          <span>Sáb</span>
-          <span>Dom</span>
+          <span>{{ 'DASH_CHART_WEEK_DAYS_MON' | translate }}</span>
+          <span>{{ 'DASH_CHART_WEEK_DAYS_TUE' | translate }}</span>
+          <span>{{ 'DASH_CHART_WEEK_DAYS_WED' | translate }}</span>
+          <span>{{ 'DASH_CHART_WEEK_DAYS_THU' | translate }}</span>
+          <span>{{ 'DASH_CHART_WEEK_DAYS_FRI' | translate }}</span>
+          <span>{{ 'DASH_CHART_WEEK_DAYS_SAT' | translate }}</span>
+          <span>{{ 'DASH_CHART_WEEK_DAYS_SUN' | translate }}</span>
         </div>
       </div>
     </div>
@@ -207,9 +204,9 @@ export class DashboardComponent implements OnInit {
   unreadContacts = signal(3);
   
   activities = signal<Activity[]>([
-    { id: '1', type: 'contact', messageKey: 'Novo contato recebido', timeKey: 'ACT_TIME_HOURS', timeParam: '2' },
-    { id: '2', type: 'project', messageKey: 'Projeto BarberBoss atualizado', timeKey: 'ACT_TIME_HOURS', timeParam: '5' },
-    { id: '3', type: 'translation', messageKey: '15 novas chaves adicionadas', timeKey: 'ACT_TIME_YESTERDAY' }
+    { id: '1', type: 'contact', messageKey: 'DASH_ACT_CONTACT_MSG', timeKey: 'TIME_HOURS_AGO', timeParam: '2' },
+    { id: '2', type: 'project', messageKey: 'DASH_ACT_PROJECT_MSG', timeKey: 'TIME_HOURS_AGO', timeParam: '5' },
+    { id: '3', type: 'translation', messageKey: 'DASH_ACT_TRANS_MSG', timeKey: 'TIME_DAYS_AGO', timeParam: '1' }
   ]);
   
   period = signal(7);
