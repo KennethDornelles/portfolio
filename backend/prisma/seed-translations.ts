@@ -310,6 +310,42 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'EXP_PURPLE_HIGHLIGHT_2', lang: 'PT_BR', value: 'Implementação de infraestrutura AWS, pipelines CI/CD e testes automatizados com Jest.' },
     { key: 'EXP_TECH_MICROSERVICES', lang: 'EN_US', value: 'Microservices' },
     { key: 'EXP_TECH_MICROSERVICES', lang: 'PT_BR', value: 'Microsserviços' },
+    // Dashboard - Admin Layout & Sidebar
+    { key: 'ADMIN_PANEL_TITLE', lang: 'EN_US', value: 'Admin Panel' },
+    { key: 'ADMIN_PANEL_TITLE', lang: 'PT_BR', value: 'Painel Administrativo' },
+    { key: 'ADMIN_SEARCH_PLACEHOLDER', lang: 'EN_US', value: 'Search...' },
+    { key: 'ADMIN_SEARCH_PLACEHOLDER', lang: 'PT_BR', value: 'Buscar...' },
+    { key: 'ADMIN_BTN_NEW', lang: 'EN_US', value: '+ New' },
+    { key: 'ADMIN_BTN_NEW', lang: 'PT_BR', value: '+ Novo' },
+    
+    { key: 'SIDEBAR_DASHBOARD', lang: 'EN_US', value: 'Dashboard' },
+    { key: 'SIDEBAR_DASHBOARD', lang: 'PT_BR', value: 'Dashboard' },
+    { key: 'SIDEBAR_PROJECTS', lang: 'EN_US', value: 'Projects' },
+    { key: 'SIDEBAR_PROJECTS', lang: 'PT_BR', value: 'Projetos' },
+    { key: 'SIDEBAR_CONTACTS', lang: 'EN_US', value: 'Contacts' },
+    { key: 'SIDEBAR_CONTACTS', lang: 'PT_BR', value: 'Contatos' },
+    { key: 'SIDEBAR_TRANSLATIONS', lang: 'EN_US', value: 'Translations' },
+    { key: 'SIDEBAR_TRANSLATIONS', lang: 'PT_BR', value: 'Traduções' },
+    { key: 'SIDEBAR_TECHNOLOGIES', lang: 'EN_US', value: 'Technologies' },
+    { key: 'SIDEBAR_TECHNOLOGIES', lang: 'PT_BR', value: 'Tecnologias' },
+    
+    { key: 'SIDEBAR_LOGOUT', lang: 'EN_US', value: 'Logout' },
+    { key: 'SIDEBAR_LOGOUT', lang: 'PT_BR', value: 'Sair' },
+    { key: 'SIDEBAR_DEMO_MODE', lang: 'EN_US', value: 'Demo Mode' },
+    { key: 'SIDEBAR_DEMO_MODE', lang: 'PT_BR', value: 'Modo Demonstração' },
+    
+    { key: 'ROLE_ADMIN', lang: 'EN_US', value: 'Administrator' },
+    { key: 'ROLE_ADMIN', lang: 'PT_BR', value: 'Administrador' },
+    { key: 'ROLE_GUEST', lang: 'EN_US', value: 'Guest' },
+    { key: 'ROLE_GUEST', lang: 'PT_BR', value: 'Visitante' },
+    { key: 'ROLE_GUEST_DEMO', lang: 'EN_US', value: 'Demo Guest' },
+    { key: 'ROLE_GUEST_DEMO', lang: 'PT_BR', value: 'Visitante Demo' },
+
+    { key: 'ACT_TIME_HOURS', lang: 'EN_US', value: '{0} hours ago' },
+    { key: 'ACT_TIME_HOURS', lang: 'PT_BR', value: 'há {0} horas' },
+    { key: 'ACT_TIME_YESTERDAY', lang: 'EN_US', value: 'Yesterday' },
+    { key: 'ACT_TIME_YESTERDAY', lang: 'PT_BR', value: 'Ontem' },
+
     // About Section
     { key: 'ABOUT_TITLE_PREFIX', lang: 'EN_US', value: 'Kenneth' },
     { key: 'ABOUT_TITLE_PREFIX', lang: 'PT_BR', value: 'Kenneth' },
