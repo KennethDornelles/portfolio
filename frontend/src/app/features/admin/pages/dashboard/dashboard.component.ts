@@ -204,9 +204,9 @@ export class DashboardComponent implements OnInit {
   unreadContacts = signal(3);
   
   activities = signal<Activity[]>([
-    { id: '1', type: 'contact', messageKey: 'DASH_ACT_CONTACT_MSG', timeKey: 'TIME_HOURS_AGO', timeParam: '2' },
-    { id: '2', type: 'project', messageKey: 'DASH_ACT_PROJECT_MSG', timeKey: 'TIME_HOURS_AGO', timeParam: '5' },
-    { id: '3', type: 'translation', messageKey: 'DASH_ACT_TRANS_MSG', timeKey: 'TIME_DAYS_AGO', timeParam: '1' }
+    { id: '1', type: 'contact', messageKey: 'DASH_ACT_CONTACT_MSG', timeKey: 'ACT_TIME_HOURS', timeParam: '2' },
+    { id: '2', type: 'project', messageKey: 'DASH_ACT_PROJECT_MSG', timeKey: 'ACT_TIME_HOURS', timeParam: '5' },
+    { id: '3', type: 'translation', messageKey: 'DASH_ACT_TRANS_MSG', timeKey: 'ACT_TIME_YESTERDAY', timeParam: '1' }
   ]);
   
   period = signal(7);
