@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../core/services/language.service';
@@ -6,14 +7,14 @@ import { LanguageService } from '../../core/services/language.service';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   template: `
     <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center min-h-[calc(100vh-4rem)] text-center">
       
       <!-- Badge -->
       <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 mb-8 backdrop-blur-md">
         <span class="w-1.5 h-1.5 rounded-full bg-tech-blue animate-pulse"></span>
-        <span class="text-xs text-gray-300 tracking-wide uppercase">{{ t('HOME_BADGE') }}</span>
+        <span class="text-xs text-gray-300 tracking-wide uppercase">{{ 'HOME_BADGE' | translate }}</span>
       </div>
 
       <!-- Hero Title -->
@@ -37,10 +38,10 @@ import { LanguageService } from '../../core/services/language.service';
       <!-- CTA Buttons -->
       <div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
         <a routerLink="/projects" class="w-full sm:w-auto px-8 py-4 rounded-full bg-tech-blue text-black font-bold text-lg hover:bg-tech-blue/80 transition-all transform hover:scale-105 hover:shadow-lg hover:shadow-tech-blue/25">
-          {{ t('BTN_VIEW_PROJECTS') }}
+          {{ 'BTN_VIEW_PROJECTS' | translate }}
         </a>
         <a routerLink="/contact" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white/5 text-white border border-white/10 hover:bg-white/10 transition-all font-medium backdrop-blur-sm hover:border-tech-blue/50">
-          {{ t('BTN_CONTACT') }}
+          {{ 'BTN_CONTACT' | translate }}
         </a>
       </div>
 
@@ -84,8 +85,4 @@ import { LanguageService } from '../../core/services/language.service';
 })
 export class HomeComponent {
   langService = inject(LanguageService);
-
-  get t() {
-    return (key: string) => this.langService.translate(key);
-  }
 }

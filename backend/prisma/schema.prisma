@@ -7,7 +7,8 @@ generator client {
 datasource db {
   provider   = "postgresql"
   url        = env("DATABASE_URL")
-  extensions = [postgis, uuidOssp(map: "uuid-ossp")]
+  directUrl  = env("DIRECT_URL")
+  extensions = [postgis, uuidOssp(map: "uuid-ossp"), pg_graphql, pg_stat_statements, pgcrypto, supabase_vault]
 }
 
 enum UserRole {
@@ -167,4 +168,23 @@ model Profile {
   updatedAt   DateTime @updatedAt
 
   @@map("profiles")
+}
+
+model Experience {
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  role        String
+  company     String
+  period      String
+  focus       String
+  description String?
+  cases       String[]
+  highlights  String[]
+  techStack   Json
+  startDate   DateTime?
+  endDate     DateTime?
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("experiences")
 }

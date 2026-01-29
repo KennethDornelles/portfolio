@@ -1,4 +1,5 @@
 import { Component, inject } from '@angular/core';
+import { TranslatePipe } from '../../pipes/translate.pipe';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { LanguageService } from '../../services/language.service';
@@ -8,7 +9,7 @@ import { AdminAuthService } from '../../services/admin-auth.service';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive],
+  imports: [CommonModule, RouterLink, RouterLinkActive, TranslatePipe],
   template: `
     <nav class="fixed top-0 left-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,19 +26,19 @@ import { AdminAuthService } from '../../services/admin-auth.service';
             <div class="ml-10 flex items-baseline space-x-8">
               <a routerLink="/" routerLinkActive="text-tech-blue" [routerLinkActiveOptions]="{exact: true}" 
                  class="text-gray-300 hover:text-white transition-colors duration-200 px-3 py-2 rounded-md text-sm font-medium">
-                {{ t('NAV_HOME') }}
+                {{ 'NAV_HOME' | translate }}
               </a>
               <a routerLink="/projects" routerLinkActive="text-tech-blue" 
                  class="text-gray-300 hover:text-white transition-colors duration-200 px-3 py-2 rounded-md text-sm font-medium">
-                {{ t('NAV_PROJECTS') }}
+                {{ 'NAV_PROJECTS' | translate }}
               </a>
               <a routerLink="/services" routerLinkActive="text-tech-blue"
                  class="text-gray-300 hover:text-white transition-colors duration-200 px-3 py-2 rounded-md text-sm font-medium">
-                {{ t('NAV_SERVICES') }}
+                {{ 'NAV_SERVICES' | translate }}
               </a>
               <a routerLink="/about" routerLinkActive="text-tech-blue"
                  class="text-gray-300 hover:text-white transition-colors duration-200 px-3 py-2 rounded-md text-sm font-medium">
-                {{ t('NAV_ABOUT') }}
+                {{ 'NAV_ABOUT' | translate }}
               </a>
             </div>
           </div>
@@ -59,9 +60,9 @@ import { AdminAuthService } from '../../services/admin-auth.service';
                 <span class="animate-spin h-3 w-3 border-2 border-white/30 border-t-white rounded-full"></span>
               }
               @if (authService.isAuthenticated()) {
-                ✓ {{ t('NAV_DEMO') }}
+                ✓ {{ 'NAV_DEMO' | translate }}
               } @else {
-                {{ t('NAV_DEMO') }}
+                {{ 'NAV_DEMO' | translate }}
               }
             </button>
 
@@ -114,9 +115,5 @@ export class NavbarComponent {
   logout() {
     this.authService.logout();
     this.adminAuthService.logout();
-  }
-
-  get t() {
-    return (key: string) => this.langService.translate(key);
   }
 }

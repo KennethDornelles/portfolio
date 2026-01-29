@@ -171,6 +171,28 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'ERR_NETWORK', lang: 'EN_US', value: 'Network error. Check your connection.' },
     { key: 'ERR_NETWORK', lang: 'PT_BR', value: 'Erro de rede. Verifique sua conexão.' },
 
+    // Timeline Page
+    { key: 'TIMELINE_TITLE', lang: 'EN_US', value: 'Professional Career' },
+    { key: 'TIMELINE_TITLE', lang: 'PT_BR', value: 'Trajetória Profissional' },
+    { key: 'TIMELINE_HERO_TITLE_PREFIX', lang: 'EN_US', value: 'Experience that Creates' },
+    { key: 'TIMELINE_HERO_TITLE_PREFIX', lang: 'PT_BR', value: 'Experiência que Gera' },
+    { key: 'TIMELINE_HERO_TITLE_HIGHLIGHT', lang: 'EN_US', value: 'Value' },
+    { key: 'TIMELINE_HERO_TITLE_HIGHLIGHT', lang: 'PT_BR', value: 'Valor' },
+    { key: 'TIMELINE_HERO_DESC', lang: 'EN_US', value: 'From complex backend solutions to scalable SaaS product delivery.' },
+    { key: 'TIMELINE_HERO_DESC', lang: 'PT_BR', value: 'De soluções complexas de backend à entrega de produtos SaaS escaláveis.' },
+    { key: 'TIMELINE_FOCUS', lang: 'EN_US', value: 'Focus:' },
+    { key: 'TIMELINE_FOCUS', lang: 'PT_BR', value: 'Foco:' },
+    { key: 'TIMELINE_CASES', lang: 'EN_US', value: 'Cases:' },
+    { key: 'TIMELINE_CASES', lang: 'PT_BR', value: 'Cases:' },
+    { key: 'TIMELINE_HIGHLIGHTS', lang: 'EN_US', value: 'Highlights:' },
+    { key: 'TIMELINE_HIGHLIGHTS', lang: 'PT_BR', value: 'Destaques:' },
+    { key: 'TIMELINE_CTA_TITLE', lang: 'EN_US', value: 'Ready to scale your project?' },
+    { key: 'TIMELINE_CTA_TITLE', lang: 'PT_BR', value: 'Pronto para escalar seu projeto?' },
+    { key: 'TIMELINE_CTA_DESC', lang: 'EN_US', value: 'Let\'s talk about how robust architecture can transform your business.' },
+    { key: 'TIMELINE_CTA_DESC', lang: 'PT_BR', value: 'Vamos conversar sobre como uma arquitetura robusta pode transformar seu negócio.' },
+    { key: 'TIMELINE_CTA_BUTTON', lang: 'EN_US', value: 'Schedule Technical Meeting' },
+    { key: 'TIMELINE_CTA_BUTTON', lang: 'PT_BR', value: 'Agendar Reunião Técnica' },
+
     // Shared / Common
     { key: 'COMMON_LOADING', lang: 'EN_US', value: 'Loading...' },
     { key: 'COMMON_LOADING', lang: 'PT_BR', value: 'Carregando...' },

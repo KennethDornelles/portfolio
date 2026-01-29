@@ -2,7 +2,13 @@
 import { PrismaClient, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: process.env.DIRECT_URL,
+    },
+  },
+});
 import { seedTranslations } from './seed-translations';
 
 async function main() {

@@ -175,7 +175,4 @@ import { LanguageService } from '../../core/services/language.service';
 export class AboutComponent {
   langService = inject(LanguageService);
 
-  get t() {
-    return (key: string) => this.langService.translate(key);
-  }
 }
