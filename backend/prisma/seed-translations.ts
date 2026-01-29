@@ -262,8 +262,8 @@ export async function seedTranslations(prisma: PrismaClient) {
     // OluStack
     { key: 'EXP_OLU_ROLE', lang: 'EN_US', value: 'Co-Founder & Product Engineer' },
     { key: 'EXP_OLU_ROLE', lang: 'PT_BR', value: 'Sócio-Fundador & Product Engineer' },
-    { key: 'EXP_OLU_PERIOD', lang: 'EN_US', value: 'January 2024 - Present' },
-    { key: 'EXP_OLU_PERIOD', lang: 'PT_BR', value: 'Janeiro 2024 - Presente' },
+    { key: 'EXP_OLU_PERIOD', lang: 'EN_US', value: 'January 2020 - Present' },
+    { key: 'EXP_OLU_PERIOD', lang: 'PT_BR', value: 'Janeiro 2020 - Presente' },
     { key: 'EXP_OLU_FOCUS', lang: 'EN_US', value: 'Conception and development of end-to-end SaaS ecosystems.' },
     { key: 'EXP_OLU_FOCUS', lang: 'PT_BR', value: 'Concepção e desenvolvimento de ecossistemas SaaS de ponta a ponta.' },
     { key: 'EXP_OLU_HIGHLIGHT_1', lang: 'EN_US', value: 'BarberBoss: SaaS platform for commercial management focusing on UX and payments.' },
