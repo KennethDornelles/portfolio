@@ -21,6 +21,9 @@
       }
     ]
   },
+  "overrides": {
+    "undici": "^7.19.2"
+  },
   "private": true,
   "packageManager": "npm@11.6.2",
   "dependencies": {
