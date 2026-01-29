@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { TimelineService } from '../../core/services/timeline.service';
 import { Observable, Subscription, of } from 'rxjs';
 import { Experience } from '../../core/models/experience.model';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
 @Component({
   selector: 'app-timeline',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.scss']
 })
