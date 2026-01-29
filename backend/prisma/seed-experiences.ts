@@ -10,13 +10,13 @@ async function main() {
 
   const experiences = [
     {
-      role: 'Desenvolvedor Full Stack Pleno',
+      role: 'EXP_CROS_ROLE',
       company: 'CroSoften',
-      period: 'Abril 2025 - Presente',
-      focus: 'Desenvolvimento de arquiteturas escaláveis e modernização de sistemas de alta demanda.',
+      period: 'EXP_CROS_PERIOD',
+      focus: 'EXP_CROS_FOCUS',
       highlights: [
-        'Liderança técnica no desenvolvimento de novas features utilizando Node.js e NestJS.',
-        'Otimização estratégica de queries e reestruturação de bancos de dados para garantir performance.'
+        'EXP_CROS_HIGHLIGHT_1',
+        'EXP_CROS_HIGHLIGHT_2'
       ],
       techStack: [
         { name: 'Node.js', color: 'bg-green-600' },
@@ -26,13 +26,13 @@ async function main() {
       order: 1
     },
     {
-      role: 'Sócio-Fundador & Product Engineer',
+      role: 'EXP_OLU_ROLE',
       company: 'OluStack',
-      period: 'Janeiro 2024 - Presente',
-      focus: 'Concepção e desenvolvimento de ecossistemas SaaS de ponta a ponta.',
+      period: 'EXP_OLU_PERIOD',
+      focus: 'EXP_OLU_FOCUS',
       highlights: [
-        'BarberBoss: Plataforma SaaS de gestão comercial com foco em experiência do usuário e pagamentos.',
-        'PetBoss: Engine de logística e geolocalização utilizando PostGIS para serviços pet.'
+        'EXP_OLU_HIGHLIGHT_1',
+        'EXP_OLU_HIGHLIGHT_2'
       ],
       techStack: [
         { name: 'NestJS', color: 'bg-red-600' },
@@ -43,13 +43,13 @@ async function main() {
       order: 2
     },
     {
-      role: 'Backend Developer',
+      role: 'EXP_UNIMED_ROLE',
       company: 'Unimed',
-      period: 'Fevereiro 2025 - Outubro 2025',
-      focus: 'Desenvolvimento em ambiente crítico de saúde com foco em integração de dados.',
+      period: 'EXP_UNIMED_PERIOD',
+      focus: 'EXP_UNIMED_FOCUS',
       highlights: [
-        'Criação de APIs de integração e rotinas complexas em SQL (Oracle/PL-SQL).',
-        'Garantia de integridade e performance em sistemas de missão crítica hospitalar.'
+        'EXP_UNIMED_HIGHLIGHT_1',
+        'EXP_UNIMED_HIGHLIGHT_2'
       ],
       techStack: [
         { name: 'SQL', color: 'bg-orange-600' },
@@ -59,33 +59,33 @@ async function main() {
       order: 3
     },
     {
-      role: 'Analista de Sistemas',
+      role: 'EXP_RENNER_ROLE',
       company: 'Lojas Renner S.A.',
-      period: 'Janeiro 2024 - Dezembro 2024',
-      focus: 'Sustentação e monitoramento de sistemas transacionais de larga escala.',
+      period: 'EXP_RENNER_PERIOD',
+      focus: 'EXP_RENNER_FOCUS',
       highlights: [
-        'Resolução de incidentes críticos em ambiente de varejo com alta volumetria de dados.',
-        'Análise de performance e otimização de fluxos sistêmicos de alta demanda.'
+        'EXP_RENNER_HIGHLIGHT_1',
+        'EXP_RENNER_HIGHLIGHT_2'
       ],
       techStack: [
-        { name: 'Sistemas Distribuídos', color: 'bg-gray-600' },
+        { name: 'EXP_TECH_DISTRIBUTED', color: 'bg-gray-600' },
         { name: 'Performance Tuning', color: 'bg-yellow-600' }
       ],
       order: 4
     },
     {
-      role: 'Desenvolvedor Backend (Node.js)',
+      role: 'EXP_PURPLE_ROLE',
       company: 'PurpleCats',
-      period: 'Março 2022 - Dezembro 2023',
-      focus: 'Arquitetura de microsserviços para o setor de Fintech.',
+      period: 'EXP_PURPLE_PERIOD',
+      focus: 'EXP_PURPLE_FOCUS',
       highlights: [
-        'Desenvolvimento de APIs atendendo mais de 10.000 usuários ativos diários.',
-        'Implementação de infraestrutura AWS, pipelines CI/CD e testes automatizados com Jest.'
+        'EXP_PURPLE_HIGHLIGHT_1',
+        'EXP_PURPLE_HIGHLIGHT_2'
       ],
       techStack: [
         { name: 'Node.js', color: 'bg-green-600' },
         { name: 'AWS', color: 'bg-orange-500' },
-        { name: 'Microsserviços', color: 'bg-purple-600' },
+        { name: 'EXP_TECH_MICROSERVICES', color: 'bg-purple-600' },
         { name: 'Jest', color: 'bg-red-800' }
       ],
       order: 5
