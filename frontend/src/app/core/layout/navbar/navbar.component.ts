@@ -32,6 +32,10 @@ import { AdminAuthService } from '../../services/admin-auth.service';
                  class="text-gray-300 hover:text-white transition-colors duration-200 px-3 py-2 rounded-md text-sm font-medium">
                 {{ 'NAV_PROJECTS' | translate }}
               </a>
+              <a routerLink="/timeline" routerLinkActive="text-tech-blue" 
+                 class="text-gray-300 hover:text-white transition-colors duration-200 px-3 py-2 rounded-md text-sm font-medium">
+                {{ 'NAV_EXPERIENCE' | translate }}
+              </a>
               <a routerLink="/services" routerLinkActive="text-tech-blue"
                  class="text-gray-300 hover:text-white transition-colors duration-200 px-3 py-2 rounded-md text-sm font-medium">
                 {{ 'NAV_SERVICES' | translate }}

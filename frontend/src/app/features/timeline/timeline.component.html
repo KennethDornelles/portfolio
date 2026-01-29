@@ -34,16 +34,16 @@
             <!-- Header -->
             <div class="flex flex-col items-start mb-4">
               <span class="inline-block py-1 px-3 rounded-full bg-zinc-800 text-cyan-400 text-xs font-semibold tracking-wide mb-2 border border-zinc-700">
-                {{ exp.period }}
+                {{ exp.period | translate }}
               </span>
-              <h3 class="text-2xl font-bold text-white mb-1">{{ exp.role }}</h3>
+              <h3 class="text-2xl font-bold text-white mb-1">{{ exp.role | translate }}</h3>
               <div class="text-blue-400 text-sm font-medium">{{ exp.company }}</div>
             </div>
 
             <!-- Focus -->
             <div class="mb-4">
               <p class="text-zinc-300 font-medium">{{ 'TIMELINE_FOCUS' | translate }}</p>
-              <p class="text-zinc-400 text-sm">{{ exp.focus }}</p>
+              <p class="text-zinc-400 text-sm">{{ exp.focus | translate }}</p>
             </div>
 
             <!-- Cases/Highlights -->
@@ -51,7 +51,7 @@
               <p class="text-zinc-300 font-medium mb-2">{{ 'TIMELINE_CASES' | translate }}</p>
               <ul class="space-y-1">
                 <li *ngFor="let c of exp.cases" class="text-zinc-400 text-sm flex items-start">
-                  <span class="mr-2 text-cyan-500">▹</span> {{ c }}
+                  <span class="mr-2 text-cyan-500">▹</span> {{ c | translate }}
                 </li>
               </ul>
             </div>
@@ -60,7 +60,7 @@
               <p class="text-zinc-300 font-medium mb-2">{{ 'TIMELINE_HIGHLIGHTS' | translate }}</p>
               <ul class="space-y-1">
                 <li *ngFor="let h of exp.highlights" class="text-zinc-400 text-sm flex items-start">
-                  <span class="mr-2 text-cyan-500">▹</span> {{ h }}
+                  <span class="mr-2 text-cyan-500">▹</span> {{ h | translate }}
                 </li>
               </ul>
             </div>
@@ -71,7 +71,7 @@
                 <span *ngFor="let tech of exp.techStack" 
                       class="px-2.5 py-0.5 rounded-md text-xs font-medium text-white shadow-sm filter saturate-150"
                       [ngClass]="tech.color">
-                  {{ tech.name }}
+                  {{ tech.name | translate }}
                 </span>
               </div>
             </div>
