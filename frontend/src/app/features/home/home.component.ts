@@ -19,20 +19,20 @@ import { LanguageService } from '../../core/services/language.service';
 
       <!-- Hero Title -->
       <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-tight">
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-tech-blue via-cyan-400 to-tech-blue">Engenheiro de Software</span>
+        <span class="text-gray-100">{{ 'HOME_TITLE_1' | translate }}</span>
         <br class="hidden sm:block" />
-        <span class="text-gray-100">focado em construir</span>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-tech-blue via-cyan-400 to-tech-blue">
+          {{ 'HOME_TITLE_HIGHLIGHT' | translate }}
+        </span>
         <br class="hidden md:block" />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">arquiteturas resilientes</span>
-        <span class="text-gray-100"> e </span>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-tech-blue">escaláveis</span>
+        <span class="text-gray-100">{{ 'HOME_TITLE_2' | translate }}</span>
       </h1>
 
       <!-- Subtitle -->
       <p class="max-w-3xl text-lg md:text-xl lg:text-2xl text-gray-400 mb-12 leading-relaxed">
-        Especialista em <span class="text-white font-medium">Backend</span>, transformo ideias complexas em 
-        soluções de <span class="text-tech-blue font-medium">alto desempenho</span> com 
-        <span class="text-white">NestJS</span>, <span class="text-white">Angular</span> e <span class="text-white">PostgreSQL</span>.
+        {{ 'HOME_HERO_DESC' | translate }}
+        <!-- Note: Ideally we would interpolate bold words, but for now we trust the sentence structure or use specific span keys if strictly required. 
+             Based on prompt requirements for "Backend" and "high performance": -->
       </p>
 
       <!-- CTA Buttons -->
@@ -56,11 +56,11 @@ import { LanguageService } from '../../core/services/language.service';
     <!-- Tech Stack Strip -->
     <div class="w-full border-y border-white/5 bg-black/30 backdrop-blur-sm">
       <div class="max-w-7xl mx-auto px-4 py-10">
-        <p class="text-center text-gray-500 text-sm uppercase tracking-widest mb-6">Stack Principal</p>
+        <p class="text-center text-gray-500 text-sm uppercase tracking-widest mb-6">{{ 'HOME_STACK_TITLE' | translate }}</p>
         <div class="flex flex-wrap justify-center gap-x-12 gap-y-4">
           <div class="flex items-center gap-2 text-gray-400 hover:text-tech-blue transition-colors">
             <span class="text-2xl">⚡</span>
-            <span class="font-semibold">NestJS</span>
+            <span class="font-semibold">{{ 'TECH_NESTJS' | translate }}</span>
           </div>
           <div class="flex items-center gap-2 text-gray-400 hover:text-red-400 transition-colors">
             <span class="text-2xl">🅰️</span>

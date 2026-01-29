@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
 interface StatsData {
   projects: number;
@@ -14,21 +15,23 @@ interface StatsData {
 interface Activity {
   id: string;
   type: 'contact' | 'project' | 'translation';
-  message: string;
-  time: string;
+  messageKey: string;
+  messageParams?: any;
+  timeKey: string;
+  timeParam?: string;
 }
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, TranslatePipe],
   template: `
     <div class="space-y-6">
       <!-- Page Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-white">Dashboard</h1>
-          <p class="text-gray-400">Visão geral do seu portfolio</p>
+          <h1 class="text-2xl font-bold text-white">{{ 'DASH_TITLE' | translate }}</h1>
+          <p class="text-gray-400">{{ 'DASH_SUBTITLE' | translate }}</p>
         </div>
         <div class="text-sm text-gray-500">
           Última atualização: {{ lastUpdate }}
@@ -44,7 +47,7 @@ interface Activity {
             <span class="text-xs text-tech-blue bg-tech-blue/10 px-2 py-1 rounded-full">+2 este mês</span>
           </div>
           <p class="text-3xl font-bold text-white">{{ stats().projects }}</p>
-          <p class="text-gray-400 text-sm">Projetos</p>
+          <p class="text-gray-400 text-sm">{{ 'DASH_STAT_PROJECTS' | translate }}</p>
         </div>
 
         <!-- Contacts -->
@@ -83,7 +86,7 @@ interface Activity {
         <!-- Recent Activity -->
         <div class="lg:col-span-2 bg-white/5 rounded-2xl border border-white/10 p-6">
           <div class="flex items-center justify-between mb-6">
-            <h2 class="text-lg font-semibold text-white">Atividade Recente</h2>
+            <h2 class="text-lg font-semibold text-white">{{ 'DASH_ACT_TITLE' | translate }}</h2>
             <button class="text-tech-blue text-sm hover:underline">Ver tudo</button>
           </div>
           
@@ -98,8 +101,13 @@ interface Activity {
                   }
                 </span>
                 <div class="flex-1">
-                  <p class="text-white">{{ activity.message }}</p>
-                  <p class="text-gray-500 text-sm">{{ activity.time }}</p>
+                  <p class="text-white">{{ activity.messageKey }}</p>
+                  <p class="text-gray-500 text-sm">
+                    {{ activity.timeKey | translate: activity.timeParam }}
+                    @if (activity.timeKey === 'ACT_TIME_HOURS') {
+                       {{ activity.timeParam }}
+                    }
+                  </p>
                 </div>
               </div>
             } @empty {
@@ -136,7 +144,7 @@ interface Activity {
             <a routerLink="/"
                class="flex items-center gap-3 p-4 bg-white/5 rounded-xl text-gray-400 hover:bg-white/10 transition-colors">
               <span class="text-xl">🌐</span>
-              <span class="font-medium">Visualizar Site</span>
+              <span class="font-medium">{{ 'SIDEBAR_VER_SITE' | translate }}</span>
             </a>
           </div>
         </div>
@@ -145,18 +153,30 @@ interface Activity {
       <!-- Chart Placeholder -->
       <div class="bg-white/5 rounded-2xl border border-white/10 p-6">
         <div class="flex items-center justify-between mb-6">
-          <h2 class="text-lg font-semibold text-white">Visitas do Portfolio</h2>
+          <h2 class="text-lg font-semibold text-white">{{ 'DASH_VISITS' | translate }}</h2>
           <div class="flex gap-2">
-            <button class="px-3 py-1 text-sm bg-tech-blue/10 text-tech-blue rounded-lg">7 dias</button>
-            <button class="px-3 py-1 text-sm text-gray-400 hover:bg-white/5 rounded-lg">30 dias</button>
-            <button class="px-3 py-1 text-sm text-gray-400 hover:bg-white/5 rounded-lg">90 dias</button>
+            <button (click)="changePeriod(7)" 
+                    [class]="period() === 7 ? 'bg-tech-blue/10 text-tech-blue' : 'text-gray-400 hover:bg-white/5'"
+                    class="px-3 py-1 text-sm rounded-lg transition-colors">
+              <span class="font-bold">7</span> {{ 'DASH_CHART_7D' | translate | slice:2 }}
+            </button>
+            <button (click)="changePeriod(30)" 
+                    [class]="period() === 30 ? 'bg-tech-blue/10 text-tech-blue' : 'text-gray-400 hover:bg-white/5'"
+                    class="px-3 py-1 text-sm rounded-lg transition-colors">
+              <span class="font-bold">30</span> {{ 'DASH_CHART_30D' | translate | slice:3 }}
+            </button>
+            <button (click)="changePeriod(90)" 
+                    [class]="period() === 90 ? 'bg-tech-blue/10 text-tech-blue' : 'text-gray-400 hover:bg-white/5'"
+                    class="px-3 py-1 text-sm rounded-lg transition-colors">
+              <span class="font-bold">90</span> {{ 'DASH_CHART_90D' | translate | slice:3 }}
+            </button>
           </div>
         </div>
         
         <!-- Simple Chart Placeholder -->
         <div class="h-64 flex items-end gap-2 px-4">
-          @for (height of chartData; track $index) {
-            <div class="flex-1 bg-gradient-to-t from-tech-blue/50 to-tech-blue rounded-t-lg transition-all hover:from-tech-blue/70"
+          @for (height of chartData(); track $index) {
+            <div class="flex-1 bg-gradient-to-t from-tech-blue/50 to-tech-blue rounded-t-lg transition-all duration-500 hover:from-tech-blue/70"
                  [style.height.%]="height">
             </div>
           }
@@ -187,17 +207,25 @@ export class DashboardComponent implements OnInit {
   unreadContacts = signal(3);
   
   activities = signal<Activity[]>([
-    { id: '1', type: 'contact', message: 'Novo contato recebido de João Silva', time: 'Há 2 horas' },
-    { id: '2', type: 'project', message: 'Projeto BarberBoss atualizado', time: 'Há 5 horas' },
-    { id: '3', type: 'translation', message: '15 novas chaves de tradução adicionadas', time: 'Ontem' }
+    { id: '1', type: 'contact', messageKey: 'Novo contato recebido', timeKey: 'ACT_TIME_HOURS', timeParam: '2' },
+    { id: '2', type: 'project', messageKey: 'Projeto BarberBoss atualizado', timeKey: 'ACT_TIME_HOURS', timeParam: '5' },
+    { id: '3', type: 'translation', messageKey: '15 novas chaves adicionadas', timeKey: 'ACT_TIME_YESTERDAY' }
   ]);
   
-  chartData = [45, 62, 78, 55, 89, 72, 95];
+  period = signal(7);
+  chartData = signal([45, 62, 78, 55, 89, 72, 95]);
   
   lastUpdate = new Date().toLocaleString('pt-BR');
 
   ngOnInit() {
     this.loadStats();
+  }
+  
+  changePeriod(days: number) {
+    this.period.set(days);
+    // Mock data update - In real app, this would fetch from backend
+    const newData = Array.from({length: 7}, () => Math.floor(Math.random() * 80) + 20);
+    this.chartData.set(newData);
   }
 
   private loadStats() {

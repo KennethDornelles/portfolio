@@ -145,7 +145,7 @@ import { LanguageService } from '../../core/services/language.service';
               <a routerLink="/contact" class="px-8 py-4 bg-tech-blue text-black font-bold rounded-full hover:bg-tech-blue/80 transition-all hover:scale-105">
                 Iniciar Conversa
               </a>
-              <a href="https://linkedin.com/in/kennethdornelles" target="_blank" 
+              <a href="https://linkedin.com/in/kennethjesus" target="_blank" 
                  class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2">
                 <span>💼</span> LinkedIn
               </a>
@@ -159,7 +159,7 @@ import { LanguageService } from '../../core/services/language.service';
              class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110">
             🐙
           </a>
-          <a href="https://linkedin.com/in/kennethdornelles" target="_blank" 
+          <a href="https://linkedin.com/in/kennethjesus" target="_blank" 
              class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110">
             💼
           </a>
