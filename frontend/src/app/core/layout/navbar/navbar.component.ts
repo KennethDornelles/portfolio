@@ -81,18 +81,71 @@ import { AdminAuthService } from '../../services/admin-auth.service';
             </a>
           </div>
           
-          <!-- Mobile menu button (Simple placeholder) -->
+          <!-- Mobile menu button -->
           <div class="-mr-2 flex md:hidden">
-             <button type="button" class="bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
+             <button type="button" 
+                     (click)="toggleMobileMenu()"
+                     class="bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
                <span class="sr-only">Open main menu</span>
-               <!-- Icon placeholder -->
                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                 @if (isMobileMenuOpen) {
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                 } @else {
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                 }
                </svg>
              </button>
           </div>
         </div>
       </div>
+
+      <!-- Mobile Menu -->
+      @if (isMobileMenuOpen) {
+        <div class="md:hidden bg-black/95 backdrop-blur-xl border-b border-white/10">
+          <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="bg-white/5 text-white" [routerLinkActiveOptions]="{exact: true}"
+               class="text-gray-300 hover:bg-white/5 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+              {{ 'NAV_HOME' | translate }}
+            </a>
+            <a routerLink="/projects" (click)="closeMobileMenu()" routerLinkActive="bg-white/5 text-white"
+               class="text-gray-300 hover:bg-white/5 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+              {{ 'NAV_PROJECTS' | translate }}
+            </a>
+            <a routerLink="/timeline" (click)="closeMobileMenu()" routerLinkActive="bg-white/5 text-white"
+               class="text-gray-300 hover:bg-white/5 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+              {{ 'NAV_EXPERIENCE' | translate }}
+            </a>
+            <a routerLink="/services" (click)="closeMobileMenu()" routerLinkActive="bg-white/5 text-white"
+               class="text-gray-300 hover:bg-white/5 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+              {{ 'NAV_SERVICES' | translate }}
+            </a>
+            <a routerLink="/about" (click)="closeMobileMenu()" routerLinkActive="bg-white/5 text-white"
+               class="text-gray-300 hover:bg-white/5 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
+              {{ 'NAV_ABOUT' | translate }}
+            </a>
+          </div>
+          
+          <div class="pt-4 pb-4 border-t border-white/10">
+            <div class="flex items-center px-5 space-x-4">
+               <!-- Language Selector Mobile -->
+               <div class="flex items-center space-x-3 text-sm text-gray-400">
+                  <button (click)="switchLang('PT_BR')" [class.text-white]="langService.currentLang() === 'PT_BR'" class="px-2 py-1 hover:bg-white/5 rounded">PT</button>
+                  <button (click)="switchLang('EN_US')" [class.text-white]="langService.currentLang() === 'EN_US'" class="px-2 py-1 hover:bg-white/5 rounded">EN</button>
+               </div>
+            </div>
+            <div class="mt-3 px-2 space-y-1">
+               <button (click)="loginAsGuest(); closeMobileMenu()" 
+                       class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">
+                 {{ authService.isAuthenticated() ? ('NAV_DEMO' | translate) + ' (Active)' : ('NAV_DEMO' | translate) }}
+               </button>
+               <a routerLink="/login" (click)="closeMobileMenu()"
+                  class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">
+                 Admin Login
+               </a>
+            </div>
+          </div>
+        </div>
+      }
     </nav>
   `
 })
@@ -102,6 +155,15 @@ export class NavbarComponent {
   adminAuthService = inject(AdminAuthService);
   
   isLoading = false;
+  isMobileMenuOpen = false;
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
 
   switchLang(lang: string) {
     this.langService.setLanguage(lang);
