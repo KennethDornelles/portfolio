@@ -103,7 +103,7 @@ interface Activity {
                 <div class="flex-1">
                   <p class="text-white">{{ activity.messageKey | translate }}</p>
                   <p class="text-gray-500 text-sm">
-                    {{ activity.timeKey | translate: { '0': activity.timeParam } }}
+                    {{ activity.timeKey | translate:activity.timeParam }}
                   </p>
                 </div>
               </div>

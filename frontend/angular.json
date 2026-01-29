@@ -27,6 +27,7 @@
               "zone.js"
             ],
             "styles": [
+              "node_modules/devicon/devicon.min.css",
               "src/styles.scss"
             ],
             "tsConfig": "tsconfig.app.json",
