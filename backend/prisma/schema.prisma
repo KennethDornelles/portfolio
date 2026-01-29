@@ -134,11 +134,13 @@ model Project {
 }
 
 model Technology {
-  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name      String    @unique
-  icon      String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id               String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name             String    @unique
+  icon             String?
+  category         String    @default("Other")
+  proficiencyLevel Int       @default(75)
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 
   projects  Project[]
 

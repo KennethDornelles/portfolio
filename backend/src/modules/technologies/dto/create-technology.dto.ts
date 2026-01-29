@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsInt, Min, Max } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateTechnologyDto {
@@ -7,8 +7,20 @@ export class CreateTechnologyDto {
   @IsNotEmpty()
   name: string;
 
-  @ApiPropertyOptional({ example: 'https://cdn.icon.com/react.png' })
+  @ApiPropertyOptional({ example: '⚛️' })
   @IsString()
   @IsOptional()
   icon?: string;
+
+  @ApiPropertyOptional({ example: 'Frontend', default: 'Other' })
+  @IsString()
+  @IsOptional()
+  category?: string;
+
+  @ApiPropertyOptional({ example: 85, default: 75, minimum: 0, maximum: 100 })
+  @IsInt()
+  @Min(0)
+  @Max(100)
+  @IsOptional()
+  proficiencyLevel?: number;
 }
