@@ -161,7 +161,4 @@ export class ServicesComponent {
     }
   ];
 
-  get t() {
-    return (key: string) => this.langService.translate(key);
-  }
 }

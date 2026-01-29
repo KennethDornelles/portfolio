@@ -1,4 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -15,17 +16,17 @@ interface ContactForm {
 @Component({
   selector: 'app-contact',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   template: `
     <section class="py-24 px-4 sm:px-6 lg:px-8">
       <div class="max-w-2xl mx-auto">
         <!-- Header -->
         <div class="text-center mb-12">
           <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">
-            {{ t('CONTACT_TITLE') }}
+            {{ 'CONTACT_TITLE' | translate }}
           </h1>
           <p class="text-gray-400 text-lg">
-            {{ t('CONTACT_SUBTITLE') }}
+            {{ 'CONTACT_SUBTITLE' | translate }}
           </p>
         </div>
 
@@ -33,8 +34,8 @@ interface ContactForm {
         @if (submitted()) {
           <div class="p-6 bg-green-500/10 border border-green-500/30 rounded-2xl text-center mb-8">
             <div class="text-4xl mb-3">✅</div>
-            <h3 class="text-xl font-bold text-white mb-2">{{ t('CONTACT_SUCCESS_TITLE') }}</h3>
-            <p class="text-gray-400">{{ t('CONTACT_SUCCESS_DESC') }}</p>
+            <h3 class="text-xl font-bold text-white mb-2">{{ 'CONTACT_SUCCESS_TITLE' | translate }}</h3>
+            <p class="text-gray-400">{{ 'CONTACT_SUCCESS_DESC' | translate }}</p>
           </div>
         }
 
@@ -43,15 +44,15 @@ interface ContactForm {
           <form (ngSubmit)="onSubmit()" class="space-y-6">
             <!-- Name -->
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">{{ t('CONTACT_NAME') }}</label>
+              <label class="block text-sm font-medium text-gray-300 mb-2">{{ 'CONTACT_NAME' | translate }}</label>
               <input type="text" [(ngModel)]="form.name" name="name" required
                      class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-tech-blue focus:outline-none transition-colors"
-                     [placeholder]="t('CONTACT_NAME_PLACEHOLDER')">
+                     [placeholder]="'CONTACT_NAME_PLACEHOLDER' | translate">
             </div>
 
             <!-- Email -->
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">{{ t('CONTACT_EMAIL') }}</label>
+              <label class="block text-sm font-medium text-gray-300 mb-2">{{ 'CONTACT_EMAIL' | translate }}</label>
               <input type="email" [(ngModel)]="form.email" name="email" required
                      class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-tech-blue focus:outline-none transition-colors"
                      placeholder="seu@email.com">
@@ -59,18 +60,18 @@ interface ContactForm {
 
             <!-- Subject -->
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">{{ t('CONTACT_SUBJECT') }}</label>
+              <label class="block text-sm font-medium text-gray-300 mb-2">{{ 'CONTACT_SUBJECT' | translate }}</label>
               <input type="text" [(ngModel)]="form.subject" name="subject" required
                      class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-tech-blue focus:outline-none transition-colors"
-                     [placeholder]="t('CONTACT_SUBJECT_PLACEHOLDER')">
+                     [placeholder]="'CONTACT_SUBJECT_PLACEHOLDER' | translate">
             </div>
 
             <!-- Message -->
             <div>
-              <label class="block text-sm font-medium text-gray-300 mb-2">{{ t('CONTACT_MESSAGE') }}</label>
+              <label class="block text-sm font-medium text-gray-300 mb-2">{{ 'CONTACT_MESSAGE' | translate }}</label>
               <textarea [(ngModel)]="form.message" name="message" required rows="5"
                         class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-tech-blue focus:outline-none transition-colors resize-none"
-                        [placeholder]="t('CONTACT_MESSAGE_PLACEHOLDER')"></textarea>
+                        [placeholder]="'CONTACT_MESSAGE_PLACEHOLDER' | translate"></textarea>
             </div>
 
             <!-- Submit Button -->
@@ -79,7 +80,7 @@ interface ContactForm {
               @if (submitting()) {
                 <span class="animate-spin h-5 w-5 border-2 border-black/30 border-t-black rounded-full"></span>
               }
-              {{ t('BTN_SEND') }}
+              {{ 'BTN_SEND' | translate }}
             </button>
 
             <!-- Error Message -->
@@ -93,7 +94,7 @@ interface ContactForm {
 
         <!-- Alternative Contact -->
         <div class="mt-12 text-center text-gray-400">
-          <p>{{ t('CONTACT_ALT') }}</p>
+          <p>{{ 'CONTACT_ALT' | translate }}</p>
           <a href="mailto:contact@olustack.dev" class="text-tech-blue hover:underline">
             contact@olustack.dev
           </a>
@@ -133,7 +134,4 @@ export class ContactComponent {
     });
   }
 
-  get t() {
-    return (key: string) => this.langService.translate(key);
-  }
 }
