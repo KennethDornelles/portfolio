@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { LanguageService } from '../../../../core/services/language.service';
 
 interface Contact {
   id: string;
@@ -17,30 +19,30 @@ interface Contact {
 @Component({
   selector: 'app-contacts-admin',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   template: `
     <div class="space-y-6">
       <!-- Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-white">Contatos</h1>
-          <p class="text-gray-400">Mensagens recebidas pelo formulário de contato</p>
+          <h1 class="text-2xl font-bold text-white">{{ 'ADMIN_CONTACTS_TITLE' | translate }}</h1>
+          <p class="text-gray-400">{{ 'ADMIN_CONTACTS_SUBTITLE' | translate }}</p>
         </div>
         <div class="flex gap-2">
           @if (!adminAuth.canEdit()) {
             <span class="px-4 py-2 bg-yellow-500/10 text-yellow-400 rounded-xl text-sm">
-              👁️ Modo Visualização
+              👁️ {{ 'ADMIN_VIEW_MODE' | translate }}
             </span>
           }
           <button (click)="filter = 'all'" 
                   [class]="filter === 'all' ? 'bg-tech-blue text-black' : 'bg-white/5 text-gray-400'"
                   class="px-4 py-2 rounded-xl font-medium transition-colors">
-            Todos ({{ contacts().length }})
+            {{ 'ADMIN_CONTACTS_ALL' | translate }} ({{ contacts().length }})
           </button>
           <button (click)="filter = 'unread'"
                   [class]="filter === 'unread' ? 'bg-tech-blue text-black' : 'bg-white/5 text-gray-400'"
                   class="px-4 py-2 rounded-xl font-medium transition-colors">
-            Não lidos ({{ unreadCount() }})
+            {{ 'ADMIN_CONTACTS_UNREAD' | translate }} ({{ unreadCount() }})
           </button>
         </div>
       </div>
@@ -72,12 +74,12 @@ interface Contact {
                   @if (adminAuth.canEdit()) {
                     <button (click)="toggleRead(contact)"
                             class="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-                            [title]="contact.read ? 'Marcar como não lido' : 'Marcar como lido'">
+                            [title]="contact.read ? ('ADMIN_CONTACTS_MARK_UNREAD' | translate) : ('ADMIN_CONTACTS_MARK_READ' | translate)">
                       {{ contact.read ? '📭' : '📬' }}
                     </button>
                     <button (click)="deleteContact(contact.id)"
                             class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
-                            title="Excluir">
+                            [title]="'ADMIN_CONTACTS_DELETE' | translate">
                       🗑️
                     </button>
                   }
@@ -85,7 +87,7 @@ interface Contact {
               </div>
               
               <div class="mb-3">
-                <span class="text-tech-blue text-sm font-medium">Assunto:</span>
+                <span class="text-tech-blue text-sm font-medium">{{ 'ADMIN_CONTACTS_SUBJECT' | translate }}</span>
                 <span class="text-white ml-2">{{ contact.subject }}</span>
               </div>
               
@@ -95,11 +97,11 @@ interface Contact {
                 <div class="mt-4 pt-4 border-t border-white/10 flex gap-3">
                   <a [href]="'mailto:' + contact.email + '?subject=Re: ' + contact.subject"
                      class="px-4 py-2 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors">
-                    📧 Responder
+                    📧 {{ 'ADMIN_CONTACTS_REPLY' | translate }}
                   </a>
                   <button (click)="copyEmail(contact.email)"
                           class="px-4 py-2 bg-white/5 text-gray-300 rounded-xl hover:bg-white/10 transition-colors">
-                    📋 Copiar Email
+                    📋 {{ 'ADMIN_CONTACTS_COPY' | translate }}
                   </button>
                 </div>
               }
@@ -109,7 +111,7 @@ interface Contact {
           <div class="bg-white/5 rounded-2xl border border-white/10 p-12 text-center">
             <span class="text-4xl mb-4 block">📬</span>
             <p class="text-gray-400">
-              {{ filter === 'unread' ? 'Nenhuma mensagem não lida' : 'Nenhum contato recebido' }}
+              {{ filter === 'unread' ? ('ADMIN_CONTACTS_EMPTY_UNREAD' | translate) : ('ADMIN_CONTACTS_EMPTY' | translate) }}
             </p>
           </div>
         }
@@ -119,6 +121,7 @@ interface Contact {
 })
 export class ContactsAdminComponent implements OnInit {
   private http = inject(HttpClient);
+  private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
   
   contacts = signal<Contact[]>([]);
@@ -159,10 +162,10 @@ export class ContactsAdminComponent implements OnInit {
 
   deleteContact(id: string) {
     if (!this.adminAuth.canEdit()) return;
-    if (confirm('Tem certeza que deseja excluir este contato?')) {
+    if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_CONTACT'))) {
       this.http.delete(`${environment.apiUrl}/contacts/${id}`).subscribe({
         next: () => this.contacts.update(contacts => contacts.filter(c => c.id !== id)),
-        error: (err) => console.error('Failed to delete contact', err)
+        error: (err: any) => console.error('Failed to delete contact', err)
       });
     }
   }
