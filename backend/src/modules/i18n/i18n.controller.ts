@@ -7,13 +7,6 @@ export class I18nController {
   constructor(private readonly i18nService: I18nService) {}
 
   @Public()
-  @Get(':lang')
-  async getTranslations(@Param('lang') lang: string) {
-    // Ideally validation for lang code here
-    return this.i18nService.getTranslations(lang);
-  }
-
-  @Public()
   @Get('cache/clear')
   async clearCache(@Param() _params: any, @Query('secret') secret: string) {
     if (!secret || (secret !== process.env.JWT_SECRET && secret !== 'temp-admin-secret-2024')) {
@@ -39,5 +32,12 @@ export class I18nController {
         throw new BadRequestException('Invalid secret');
     }
     return this.i18nService.debugDB();
+  }
+
+  @Public()
+  @Get(':lang')
+  async getTranslations(@Param('lang') lang: string) {
+    // Ideally validation for lang code here
+    return this.i18nService.getTranslations(lang);
   }
 }
