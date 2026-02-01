@@ -3,5 +3,32 @@
         "api",
         "config",
         "frontend"
-    ]
+    ],
+    // --- MATA TODOS OS SONS DE ACESSIBILIDADE ---
+  "editor.accessibilitySupport": "off",
+  "accessibility.signals.volume": 0,
+
+  // --- CONFIGURAÇÃO ESPECÍFICA (Objeto) ---
+  "accessibility.signals.lineHasError": {
+    "sound": "off",
+    "announcement": "off"
+  },
+  "accessibility.signals.lineHasWarning": {
+    "sound": "off",
+    "announcement": "off"
+  },
+  "accessibility.signals.taskCompleted": {
+    "sound": "off",
+    "announcement": "off"
+  },
+  "accessibility.signalOptions.volume": 0,
+
+  // --- DESABILITAR RED HAT DEPENDENCY ANALYTICS ---
+  "redhat.telemetry.enabled": false,
+  "redhat.dependencyAnalytics.enableSnykAnalysis": false,
+  "redhat.dependencyAnalytics.autoRun": false,
+  // Reduzir severidade exibida para apenas HIGH/CRITICAL
+  "redhat.dependencyAnalytics.severityThreshold": "high",
+  // Desabilitar diagnósticos em Problems
+  "redhat.dependencyAnalytics.showDiagnostics": false
 }

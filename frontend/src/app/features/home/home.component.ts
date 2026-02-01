@@ -21,7 +21,7 @@ import { LanguageService } from '../../core/services/language.service';
       <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-tight">
         <span class="text-gray-100">{{ 'HOME_TITLE_1' | translate }}</span>
         <br class="hidden sm:block" />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-tech-blue via-cyan-400 to-tech-blue">
+        <span class="inline-block text-transparent bg-clip-text bg-gradient-to-r from-tech-blue via-cyan-400 to-tech-blue">
           {{ 'HOME_TITLE_HIGHLIGHT' | translate }}
         </span>
         <br class="hidden md:block" />
