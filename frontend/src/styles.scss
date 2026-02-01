@@ -20,7 +20,7 @@
   overflow: visible !important;
   transform: translateZ(0) !important; /* Forces hardware acceleration */
   will-change: transform !important; /* Hints browser for better rendering */
-  
+
   /* Additional fix for WebKit rendering */
   -webkit-font-smoothing: antialiased !important;
   -moz-osx-font-smoothing: grayscale !important;
