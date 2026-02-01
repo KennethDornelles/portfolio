@@ -10,6 +10,7 @@
 .bg-clip-text {
   -webkit-background-clip: text;
   background-clip: text;
+  display: inline-block; /* Fix for Chrome rendering */
 }
 
 /* Gradient text utility */
