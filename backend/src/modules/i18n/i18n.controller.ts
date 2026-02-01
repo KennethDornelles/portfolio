@@ -1,10 +1,27 @@
-import { Controller, Get, Param, Query, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, BadRequestException } from '@nestjs/common';
 import { I18nService } from './i18n.service';
 import { Public } from '../../common/decorators/public.decorator';
 
 @Controller('i18n')
 export class I18nController {
   constructor(private readonly i18nService: I18nService) {}
+
+  @Public()
+  @Post('webhook/deploy')
+  async handleDeployWebhook(@Body() payload: any) {
+    console.log('🚀 Deploy detected', payload);
+    
+    // Invalidate and re-warmup
+    await this.i18nService.refreshCache();
+    
+    return { success: true, timestamp: new Date().toISOString() };
+  }
+
+  @Public()
+  @Get('health/cache')
+  async cacheHealth() {
+    return this.i18nService.debugDB();
+  }
 
   @Public()
   @Get('cache/clear')

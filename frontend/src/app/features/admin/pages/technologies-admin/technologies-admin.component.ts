@@ -12,8 +12,52 @@ interface Technology {
   name: string;
   category: string;
   icon?: string;
+  iconClass?: string;
   proficiencyLevel: number;
 }
+
+// Mapping of technology names to devicon classes
+const DEVICON_MAP: Record<string, string> = {
+  'react': 'devicon-react-original colored',
+  'angular': 'devicon-angularjs-plain colored',
+  'vue': 'devicon-vuejs-plain colored',
+  'vue.js': 'devicon-vuejs-plain colored',
+  'nodejs': 'devicon-nodejs-plain colored',
+  'node.js': 'devicon-nodejs-plain colored',
+  'nestjs': 'devicon-nestjs-original colored',
+  'typescript': 'devicon-typescript-plain colored',
+  'javascript': 'devicon-javascript-plain colored',
+  'python': 'devicon-python-plain colored',
+  'docker': 'devicon-docker-plain colored',
+  'kubernetes': 'devicon-kubernetes-plain colored',
+  'postgresql': 'devicon-postgresql-plain colored',
+  'mysql': 'devicon-mysql-plain colored',
+  'mongodb': 'devicon-mongodb-plain colored',
+  'redis': 'devicon-redis-plain colored',
+  'git': 'devicon-git-plain colored',
+  'github': 'devicon-github-original colored',
+  'aws': 'devicon-amazonwebservices-plain-wordmark colored',
+  'azure': 'devicon-azure-plain colored',
+  'gcp': 'devicon-googlecloud-plain colored',
+  'tailwindcss': 'devicon-tailwindcss-plain colored',
+  'sass': 'devicon-sass-original colored',
+  'prisma': 'devicon-prisma-original colored',
+  'graphql': 'devicon-graphql-plain colored',
+  'express': 'devicon-express-original colored',
+  'nextjs': 'devicon-nextjs-original colored',
+  'next.js': 'devicon-nextjs-original colored',
+  'flutter': 'devicon-flutter-plain colored',
+  'html5': 'devicon-html5-plain colored',
+  'css3': 'devicon-css3-plain colored',
+  'java': 'devicon-java-plain colored',
+  'spring': 'devicon-spring-plain colored',
+  'linux': 'devicon-linux-plain colored',
+  'nginx': 'devicon-nginx-original colored',
+  'jest': 'devicon-jest-plain colored',
+  'webpack': 'devicon-webpack-plain colored',
+  'vscode': 'devicon-vscode-plain colored',
+  'figma': 'devicon-figma-plain colored',
+};
 
 @Component({
   selector: 'app-technologies-admin',
@@ -61,7 +105,7 @@ interface Technology {
           <div class="p-6 bg-white/5 rounded-2xl border border-white/10 hover:border-tech-blue/30 transition-all group">
             <div class="flex items-start justify-between mb-4">
               <div class="flex items-center gap-3">
-                <span class="text-3xl">{{ tech.icon || '⚡' }}</span>
+                <i [class]="getIconClass(tech)" class="text-3xl"></i>
                 <div>
                   <h3 class="text-white font-semibold">{{ tech.name }}</h3>
                   <span class="text-xs text-gray-500 bg-white/5 px-2 py-0.5 rounded">{{ tech.category }}</span>
@@ -257,5 +301,15 @@ export class TechnologiesAdminComponent implements OnInit {
         error: (err: any) => console.error('Failed to delete technology', err)
       });
     }
+  }
+
+  getIconClass(tech: Technology): string {
+    // Priority: iconClass from DB > lookup by name > fallback
+    if (tech.iconClass) {
+      return tech.iconClass;
+    }
+    
+    const normalizedName = tech.name.toLowerCase().replace(/\s/g, '').replace(/\./g, '');
+    return DEVICON_MAP[normalizedName] || DEVICON_MAP[tech.name.toLowerCase()] || 'devicon-devicon-plain colored';
   }
 }
