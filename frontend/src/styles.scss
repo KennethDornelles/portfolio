@@ -4,10 +4,7 @@
 
 /*
   COMPREHENSIVE GRADIENT TEXT FIX
-  Fixes Chrome/Safari text wrapping issues with gradients
-
-  IMPORTANT: Uses display: inline instead of inline-block to prevent
-  line breaks in Chrome when using background-clip: text
+  Fixes Chrome/Safari gradient rendering while keeping text together
 */
 .gradient-text, .bg-clip-text {
   /* Core gradient properties */
@@ -17,14 +14,16 @@
   color: transparent !important;
 
   /* Fixes for rendering engines (Chrome/Safari) */
-  display: inline !important;
-  white-space: normal !important;
+  display: inline-block !important;
+  white-space: nowrap !important; /* Prevents text from breaking into multiple lines */
+  max-width: 100% !important;
   overflow: visible !important;
   transform: translateZ(0) !important; /* Forces hardware acceleration */
-
-  /* Ensure it works in multiline text, maintaining gradient across line breaks */
-  box-decoration-break: clone;
-  -webkit-box-decoration-break: clone;
+  will-change: transform !important; /* Hints browser for better rendering */
+  
+  /* Additional fix for WebKit rendering */
+  -webkit-font-smoothing: antialiased !important;
+  -moz-osx-font-smoothing: grayscale !important;
 }
 
 /* Global form styles for better contrast */
