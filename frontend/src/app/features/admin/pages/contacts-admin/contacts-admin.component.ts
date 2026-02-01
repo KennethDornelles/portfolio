@@ -23,25 +23,25 @@ interface Contact {
   template: `
     <div class="space-y-6">
       <!-- Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-3">
         <div>
-          <h1 class="text-2xl font-bold text-white">{{ 'ADMIN_CONTACTS_TITLE' | translate }}</h1>
-          <p class="text-gray-400">{{ 'ADMIN_CONTACTS_SUBTITLE' | translate }}</p>
+          <h1 class="text-xl lg:text-2xl font-bold text-white">{{ 'ADMIN_CONTACTS_TITLE' | translate }}</h1>
+          <p class="text-sm lg:text-base text-gray-400">{{ 'ADMIN_CONTACTS_SUBTITLE' | translate }}</p>
         </div>
-        <div class="flex gap-2">
+        <div class="flex flex-wrap gap-2">
           @if (!adminAuth.canEdit()) {
             <span class="px-4 py-2 bg-yellow-500/10 text-yellow-400 rounded-xl text-sm">
               👁️ {{ 'ADMIN_VIEW_MODE' | translate }}
             </span>
           }
-          <button (click)="filter = 'all'" 
+          <button (click)="filter = 'all'"
                   [class]="filter === 'all' ? 'bg-tech-blue text-black' : 'bg-white/5 text-gray-400'"
-                  class="px-4 py-2 rounded-xl font-medium transition-colors">
+                  class="px-3 lg:px-4 py-2 rounded-xl text-xs lg:text-sm font-medium transition-colors">
             {{ 'ADMIN_CONTACTS_ALL' | translate }} ({{ contacts().length }})
           </button>
           <button (click)="filter = 'unread'"
                   [class]="filter === 'unread' ? 'bg-tech-blue text-black' : 'bg-white/5 text-gray-400'"
-                  class="px-4 py-2 rounded-xl font-medium transition-colors">
+                  class="px-3 lg:px-4 py-2 rounded-xl text-xs lg:text-sm font-medium transition-colors">
             {{ 'ADMIN_CONTACTS_UNREAD' | translate }} ({{ unreadCount() }})
           </button>
         </div>
@@ -53,10 +53,10 @@ interface Contact {
           <div class="bg-white/5 rounded-2xl border border-white/10 overflow-hidden hover:border-tech-blue/30 transition-all"
                [class.border-l-4]="!contact.read"
                [class.border-l-tech-blue]="!contact.read">
-            <div class="p-6">
-              <div class="flex items-start justify-between mb-4">
-                <div class="flex items-center gap-4">
-                  <div class="w-12 h-12 bg-tech-blue/10 rounded-full flex items-center justify-center text-xl">
+            <div class="p-4 lg:p-6">
+              <div class="flex flex-col sm:flex-row items-start justify-between gap-3 mb-4">
+                <div class="flex items-center gap-3 lg:gap-4">
+                  <div class="w-10 lg:w-12 h-10 lg:h-12 bg-tech-blue/10 rounded-full flex items-center justify-center text-lg lg:text-xl">
                     {{ contact.name.charAt(0).toUpperCase() }}
                   </div>
                   <div>
@@ -85,14 +85,14 @@ interface Contact {
                   }
                 </div>
               </div>
-              
+
               <div class="mb-3">
                 <span class="text-tech-blue text-sm font-medium">{{ 'ADMIN_CONTACTS_SUBJECT' | translate }}</span>
                 <span class="text-white ml-2">{{ contact.subject }}</span>
               </div>
-              
+
               <p class="text-gray-300 leading-relaxed whitespace-pre-wrap">{{ contact.message }}</p>
-              
+
               @if (adminAuth.canEdit()) {
                 <div class="mt-4 pt-4 border-t border-white/10 flex gap-3">
                   <a [href]="'mailto:' + contact.email + '?subject=Re: ' + contact.subject"
@@ -123,7 +123,7 @@ export class ContactsAdminComponent implements OnInit {
   private http = inject(HttpClient);
   private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
-  
+
   contacts = signal<Contact[]>([]);
   filter: 'all' | 'unread' = 'all';
 
@@ -153,7 +153,7 @@ export class ContactsAdminComponent implements OnInit {
     if (!this.adminAuth.canEdit()) return;
     this.http.patch(`${environment.apiUrl}/contacts/${contact.id}`, { read: !contact.read }).subscribe({
       next: () => {
-        this.contacts.update(contacts => 
+        this.contacts.update(contacts =>
           contacts.map(c => c.id === contact.id ? { ...c, read: !c.read } : c)
         );
       }

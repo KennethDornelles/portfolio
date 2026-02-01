@@ -31,18 +31,18 @@ interface Technology {
   template: `
     <div class="space-y-6">
       <!-- Header -->
-      <div class="flex items-center justify-between">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
         <div>
-          <h1 class="text-2xl font-bold text-white">{{ 'ADMIN_PROJECTS_TITLE' | translate }}</h1>
-          <p class="text-gray-400">{{ 'ADMIN_PROJECTS_SUBTITLE' | translate }}</p>
+          <h1 class="text-xl lg:text-2xl font-bold text-white">{{ 'ADMIN_PROJECTS_TITLE' | translate }}</h1>
+          <p class="text-sm lg:text-base text-gray-400">{{ 'ADMIN_PROJECTS_SUBTITLE' | translate }}</p>
         </div>
         @if (adminAuth.canEdit()) {
           <button (click)="showModal = true; editingProject = null; resetForm()"
-                  class="px-4 py-2 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors">
+                  class="w-full sm:w-auto px-4 py-2 bg-tech-blue text-black font-medium text-sm rounded-xl hover:bg-tech-blue/80 transition-colors">
             {{ 'ADMIN_BTN_NEW_PROJECT' | translate }}
           </button>
         } @else {
-          <span class="px-4 py-2 bg-yellow-500/10 text-yellow-400 rounded-xl text-sm">
+          <span class="px-4 py-2 bg-yellow-500/10 text-yellow-400 rounded-xl text-xs lg:text-sm">
             👁️ {{ 'ADMIN_VIEW_MODE' | translate }}
           </span>
         }
@@ -50,13 +50,14 @@ interface Technology {
 
       <!-- Projects Table -->
       <div class="bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
-        <table class="w-full">
+        <div class="overflow-x-auto">
+        <table class="w-full min-w-[640px]">
           <thead class="bg-white/5">
             <tr>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_NAME' | translate }}</th>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_TECHNOLOGIES' | translate }}</th>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_STATUS' | translate }}</th>
-              <th class="text-left px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_DATE' | translate }}</th>
+              <th class="text-left px-3 lg:px-6 py-3 lg:py-4 text-gray-400 font-medium text-xs lg:text-sm">{{ 'ADMIN_TBL_NAME' | translate }}</th>
+              <th class="text-left px-3 lg:px-6 py-3 lg:py-4 text-gray-400 font-medium text-xs lg:text-sm">{{ 'ADMIN_TBL_TECHNOLOGIES' | translate }}</th>
+              <th class="text-left px-3 lg:px-6 py-3 lg:py-4 text-gray-400 font-medium text-xs lg:text-sm">{{ 'ADMIN_TBL_STATUS' | translate }}</th>
+              <th class="text-left px-3 lg:px-6 py-3 lg:py-4 text-gray-400 font-medium text-xs lg:text-sm">{{ 'ADMIN_TBL_DATE' | translate }}</th>
               @if (adminAuth.canEdit()) {
                 <th class="text-right px-6 py-4 text-gray-400 font-medium text-sm">{{ 'ADMIN_TBL_ACTIONS' | translate }}</th>
               }
@@ -97,7 +98,7 @@ interface Technology {
                 @if (adminAuth.canEdit()) {
                   <td class="px-6 py-4">
                     <div class="flex justify-end gap-2">
-                      <button (click)="editProject(project)" 
+                      <button (click)="editProject(project)"
                               class="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors">
                         ✏️
                       </button>
@@ -118,6 +119,7 @@ interface Technology {
             }
           </tbody>
         </table>
+        </div>
       </div>
 
       <!-- Modal (only for admin) -->
@@ -127,7 +129,7 @@ interface Technology {
             <h2 class="text-xl font-bold text-white mb-6">
               {{ (editingProject ? 'ADMIN_PROJECTS_MODAL_EDIT' : 'ADMIN_PROJECTS_MODAL_NEW') | translate }}
             </h2>
-            
+
             <form (submit)="saveProject($event)" class="space-y-4">
               @if (errorMessage()) {
                 <div class="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-500 text-sm">
@@ -139,20 +141,20 @@ interface Technology {
                 <input type="text" [(ngModel)]="form.title" name="title" required
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50">
               </div>
-              
+
               <div>
                 <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_DESCRIPTION' | translate }}</label>
                 <textarea [(ngModel)]="form.description" name="description" rows="3"
                           class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 resize-none"></textarea>
               </div>
-              
+
               <div>
                 <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_TECH_HINT' | translate }}</label>
                 <input type="text" [(ngModel)]="form.technologiesStr" name="technologies"
                        class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50"
                        placeholder="React, Node.js, PostgreSQL">
               </div>
-              
+
               <div class="grid grid-cols-2 gap-4">
                 <div>
                   <label class="block text-gray-400 text-sm mb-2">GitHub URL</label>
@@ -165,13 +167,13 @@ interface Technology {
                          class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50">
                 </div>
               </div>
-              
+
               <div class="flex items-center gap-3">
                 <input type="checkbox" [(ngModel)]="form.isActive" name="isActive" id="isActive"
                        class="w-5 h-5 rounded bg-white/5 border-white/10">
                 <label for="isActive" class="text-gray-300">{{ 'ADMIN_FORM_PROJECT_ACTIVE' | translate }}</label>
               </div>
-              
+
               <div class="flex gap-3 pt-4">
                 <button type="button" (click)="showModal = false"
                         class="flex-1 px-4 py-3 bg-white/5 text-gray-300 rounded-xl hover:bg-white/10 transition-colors">
@@ -193,14 +195,14 @@ export class ProjectsAdminComponent implements OnInit {
   private http = inject(HttpClient);
   private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
-  
+
   projects = signal<Project[]>([]);
   availableTechnologies = signal<Technology[]>([]);
   loading = signal(false);
   errorMessage = signal<string | null>(null);
   showModal = false;
   editingProject: Project | null = null;
-  
+
   form = {
     title: '',
     description: '',
@@ -291,7 +293,7 @@ export class ProjectsAdminComponent implements OnInit {
       error: (err: any) => {
         console.error('Failed to save project', err);
         this.loading.set(false);
-        
+
         if (err.status === 500 || err.status === 400) {
           this.errorMessage.set(this.i18n.translate('ADMIN_ERR_DUPLICATE'));
         } else {
