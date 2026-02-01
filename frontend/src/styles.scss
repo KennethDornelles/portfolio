@@ -2,9 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
-  COMPREHENSIVE GRADIENT TEXT FIX 
-  Fixes Chrome/Safari clipping issues globally
+/*
+  COMPREHENSIVE GRADIENT TEXT FIX
+  Fixes Chrome/Safari text wrapping issues with gradients
+
+  IMPORTANT: Uses display: inline instead of inline-block to prevent
+  line breaks in Chrome when using background-clip: text
 */
 .gradient-text, .bg-clip-text {
   /* Core gradient properties */
@@ -12,14 +15,14 @@
   -webkit-background-clip: text !important;
   -webkit-text-fill-color: transparent !important;
   color: transparent !important;
-  
+
   /* Fixes for rendering engines (Chrome/Safari) */
-  display: inline-block !important;
-  width: fit-content !important;
+  display: inline !important;
+  white-space: normal !important;
   overflow: visible !important;
   transform: translateZ(0) !important; /* Forces hardware acceleration */
-  
-  /* Ensure it works in multiline fixes if needed, though inline-block usually prefers single lines */
+
+  /* Ensure it works in multiline text, maintaining gradient across line breaks */
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
 }
@@ -29,17 +32,17 @@ input, textarea, select {
   color: white !important;
   background-color: rgba(255, 255, 255, 0.08) !important;
   border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  
+
   &::placeholder {
     color: rgba(255, 255, 255, 0.5) !important;
   }
-  
+
   &:focus {
     border-color: #00D4FF !important;
     outline: none !important;
     box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2) !important;
   }
-  
+
   /* Select dropdown arrow */
   option {
     background-color: #1a1a1a;
@@ -57,7 +60,7 @@ input[type="checkbox"] {
   width: 18px;
   height: 18px;
   accent-color: #00D4FF;
-  
+
   &:checked {
     background-color: #00D4FF;
   }
