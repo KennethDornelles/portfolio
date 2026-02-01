@@ -2,23 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Chrome/Safari gradient text fix */
-.text-transparent {
-  -webkit-text-fill-color: transparent;
-}
-
-.bg-clip-text {
-  -webkit-background-clip: text;
-  background-clip: text;
-  display: inline-block; /* Fix for Chrome rendering */
-}
-
-/* Gradient text utility */
-.gradient-text {
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
+/* 
+  COMPREHENSIVE GRADIENT TEXT FIX 
+  Fixes Chrome/Safari clipping issues globally
+*/
+.gradient-text, .bg-clip-text {
+  /* Core gradient properties */
+  background-clip: text !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  color: transparent !important;
+  
+  /* Fixes for rendering engines (Chrome/Safari) */
+  display: inline-block !important;
+  width: fit-content !important;
+  overflow: visible !important;
+  transform: translateZ(0) !important; /* Forces hardware acceleration */
+  
+  /* Ensure it works in multiline fixes if needed, though inline-block usually prefers single lines */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
 /* Global form styles for better contrast */
