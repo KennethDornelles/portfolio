@@ -25,6 +25,7 @@ async function bootstrap() {
     console.log('Detected Supabase URL');
   }
   console.log('-----------------------------------');
+  // Cache flush trigger
 
   // Helmet - HTTP Security Headers
   app.use(helmet({
