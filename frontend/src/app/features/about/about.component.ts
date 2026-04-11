@@ -14,14 +14,8 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
         
         <!-- Header Section -->
         <div class="text-center mb-16">
-          <div class="relative inline-block mb-8">
-            <div class="w-44 h-44 rounded-full bg-gradient-to-br from-tech-blue via-cyan-500 to-purple-600 p-1 shadow-2xl shadow-tech-blue/20">
-              <img src="assets/avatar.svg" alt="Kenneth Olusegun" 
-                   class="w-full h-full rounded-full object-cover bg-graphite-950">
-            </div>
-            <div class="absolute -bottom-2 -right-2 w-12 h-12 bg-tech-blue rounded-full flex items-center justify-center text-xl border-4 border-graphite-950 shadow-lg">
-              🚀
-            </div>
+          <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-tech-blue/20 to-purple-500/20 rounded-2xl border border-tech-blue/30 text-3xl mb-8 shadow-lg shadow-tech-blue/20">
+            🏢
           </div>
           <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">
             {{ 'ABOUT_TITLE_PREFIX' | translate }} <span class="text-tech-blue">{{ 'ABOUT_TITLE_SUFFIX' | translate }}</span>
@@ -40,6 +34,53 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
             <p class="text-lg md:text-xl text-gray-300 leading-relaxed">
               {{ 'ABOUT_BIO_2' | translate }}
             </p>
+          </div>
+        </div>
+
+        <!-- Liderança Técnica Section -->
+        <div class="mb-20">
+          <div class="bg-gradient-to-br from-white/5 to-transparent rounded-3xl border border-white/10 p-8 md:p-12">
+            <div class="flex flex-col md:flex-row items-center gap-8">
+              <div class="relative flex-shrink-0">
+                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-tech-blue via-cyan-500 to-purple-600 p-1 shadow-2xl shadow-tech-blue/20">
+                  <img src="assets/avatar.svg" alt="Kenneth Olusegun" 
+                       class="w-full h-full rounded-full object-cover bg-graphite-950">
+                </div>
+                <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-tech-blue rounded-full flex items-center justify-center text-lg border-4 border-graphite-950 shadow-lg" title="CTO & Founder">
+                  👨‍💻
+                </div>
+              </div>
+              <div class="text-center md:text-left">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">{{ 'ABOUT_LEADERSHIP_TITLE' | translate }}</h2>
+                <h3 class="text-tech-blue font-medium mb-4">{{ 'ABOUT_LEADERSHIP_ROLE' | translate }}</h3>
+                <p class="text-gray-400 leading-relaxed max-w-2xl" [innerHTML]="'ABOUT_LEADERSHIP_DESC' | translate">
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Proximidade Regional Section -->
+        <div class="mb-20">
+          <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-white mb-4">{{ 'ABOUT_REACH_TITLE' | translate }}</h2>
+            <p class="text-gray-400">{{ 'ABOUT_REACH_SUBTITLE' | translate }}</p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="p-8 bg-white/5 rounded-2xl border border-tech-blue/20 flex items-start gap-4 hover:bg-white/10 transition-colors">
+              <div class="w-12 h-12 bg-tech-blue/10 rounded-xl flex items-center justify-center text-2xl shrink-0">📍</div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">{{ 'ABOUT_REACH_LOCAL_TITLE' | translate }}</h3>
+                <p class="text-gray-400 text-sm">{{ 'ABOUT_REACH_LOCAL_DESC' | translate }}</p>
+              </div>
+            </div>
+            <div class="p-8 bg-white/5 rounded-2xl border border-white/10 flex items-start gap-4 hover:bg-white/10 transition-colors">
+              <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-2xl shrink-0">🌍</div>
+              <div>
+                <h3 class="text-xl font-bold text-white mb-2">{{ 'ABOUT_REACH_GLOBAL_TITLE' | translate }}</h3>
+                <p class="text-gray-400 text-sm">{{ 'ABOUT_REACH_GLOBAL_DESC' | translate }}</p>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -51,7 +51,7 @@ interface Project {
                 <!-- Header -->
                 <div class="flex items-start justify-between mb-6">
                   <div>
-                    <span class="text-xs text-gray-500 uppercase tracking-widest">Case Study</span>
+                    <span class="text-xs text-gray-500 uppercase tracking-widest">{{ 'PROJECTS_LABEL' | translate }}</span>
                     <h2 class="text-2xl md:text-3xl font-bold text-white mt-1">{{ project.name }}</h2>
                     <p class="text-gray-400 text-sm mt-1">{{ project.taglineKey | translate }}</p>
                   </div>
