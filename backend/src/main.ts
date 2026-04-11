@@ -27,7 +27,9 @@ async function bootstrap() {
   console.log('-----------------------------------');
 
   // Helmet - HTTP Security Headers
-  app.use(helmet());
+  app.use(helmet({
+  contentSecurityPolicy: false, // Desativa apenas o CSP se necessário, mantendo as outras proteções
+}));
 
   // Global Validation Pipe - OBRIGATÓRIO para class-validator funcionar
   app.useGlobalPipes(
@@ -42,27 +44,33 @@ async function bootstrap() {
   );
 
   // Configurar CORS
-  app.enableCors({
-    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-      const allowedOrigins = [
-        'http://localhost:3000',
-        'http://localhost:4200',
-      ];
-      
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) return callback(null, true);
-      
-      if (allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
-        callback(null, true);
-      } else {
-        console.warn(`Blocked CORS for origin: ${origin}`);
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-    allowedHeaders: 'Content-Type,Accept,Authorization',
-  });
+app.enableCors({
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:4200',
+      'https://olustack.com.br',       // Adicionado
+      'https://www.olustack.com.br',   // Adicionado
+    ];
+    
+    if (!origin) return callback(null, true);
+    
+    // Verifica se está na lista, se termina em .vercel.app ou se é o seu novo domínio
+    if (
+      allowedOrigins.includes(origin) || 
+      origin.endsWith('.vercel.app') || 
+      origin.endsWith('olustack.com.br') // Cobre subdomínios também
+    ) {
+      callback(null, true);
+    } else {
+      console.warn(`Blocked CORS for origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  credentials: true,
+  allowedHeaders: 'Content-Type,Accept,Authorization',
+});
 
   // Global prefix
   app.setGlobalPrefix('api');
