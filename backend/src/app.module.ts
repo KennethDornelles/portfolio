@@ -22,27 +22,7 @@ import { join } from 'path';
 import { LoggerModule } from 'nestjs-pino';
 import { BullModule } from '@nestjs/bullmq';
 
-const parseRedisUrl = (url: string) => {
-  if (!url) return undefined;
-  
-  // Sanitize: Remove quotes and trim
-  const cleanUrl = url.replace(/(^["']|["']$)/g, '').trim(); 
-  
-  try {
-    const parsed = new URL(cleanUrl);
-    console.log(`Redis parsed successfully: ${parsed.hostname}:${parsed.port} (TLS: ${parsed.protocol === 'rediss:'})`);
-    return {
-      host: parsed.hostname,
-      port: parseInt(parsed.port || '6379', 10),
-      password: parsed.password || undefined,
-      username: parsed.username || undefined,
-      tls: parsed.protocol === 'rediss:' ? {} : undefined,
-    };
-  } catch (e) {
-    console.error(`Redis URL parsing failed for input length ${url.length}: ${e instanceof Error ? e.message : String(e)}`);
-    return undefined;
-  }
-};
+import { parseRedisUrl } from './common/utils/redis.util';
 
 @Module({
   imports: [
@@ -85,11 +65,12 @@ const parseRedisUrl = (url: string) => {
         return {
           store: await redisStore(
             parsed
-              ? { socket: { ...parsed, tls: parsed.tls === undefined ? false : parsed.tls } as any, password: parsed.password }
+              ? { socket: { ...parsed, tls: parsed.tls === undefined ? false : parsed.tls, connectTimeout: 10000 } as any, password: parsed.password }
               : {
                   socket: {
                     host: configService.get<string>('REDIS_HOST') || process.env.REDIS_HOST || 'localhost',
                     port: configService.get<number>('REDIS_PORT') || parseInt(process.env.REDIS_PORT || '6379', 10),
+                    connectTimeout: 10000,
                   },
                 },
           ),

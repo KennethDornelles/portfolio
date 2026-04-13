@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Param, Query, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Query, BadRequestException, UseInterceptors } from '@nestjs/common';
 import { I18nService } from './i18n.service';
 import { Public } from '../../common/decorators/public.decorator';
+import { PerformanceInterceptor } from '../../common/interceptors/performance.interceptor';
 
 @Controller('i18n')
+@UseInterceptors(PerformanceInterceptor)
 export class I18nController {
   constructor(private readonly i18nService: I18nService) {}
 

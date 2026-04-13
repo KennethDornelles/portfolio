@@ -16,13 +16,18 @@ export class PrismaI18nRepository implements II18nRepository {
     });
   }
 
-  async findAllByLang(language: string): Promise<Translation[]> {
+  async findAllByLang(language: string): Promise<any[]> {
     return this.prisma.translation.findMany({
       where: {
         language: language === 'PT_BR' ? 'PT_BR' : 'EN_US',
       },
-      include: {
-        translationKey: true,
+      select: {
+        value: true,
+        translationKey: {
+          select: {
+            key: true,
+          },
+        },
       },
     });
   }

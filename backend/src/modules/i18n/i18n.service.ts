@@ -11,7 +11,7 @@ export class I18nService implements OnModuleInit {
     @Inject(CACHE_MANAGER) private cacheManager: any,
     private i18nRepository: II18nRepository,
   ) {
-    this.cacheVersion = process.env.RENDER_GIT_COMMIT || String(Date.now());
+    this.cacheVersion = 'v1'; // Static version to avoid Cache Stampede on deploy
   }
 
   async onModuleInit() {
