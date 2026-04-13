@@ -21,13 +21,8 @@ export class PrismaI18nRepository implements II18nRepository {
       where: {
         language: language === 'PT_BR' ? 'PT_BR' : 'EN_US',
       },
-      select: {
-        value: true,
-        translationKey: {
-          select: {
-            key: true,
-          },
-        },
+      include: {
+        translationKey: true,
       },
     });
   }

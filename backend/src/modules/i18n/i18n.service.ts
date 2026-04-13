@@ -71,12 +71,18 @@ export class I18nService implements OnModuleInit {
 
     const records = await this.i18nRepository.findAllByLang(lang);
     
+    console.log(`🔍 DB found ${records.length} records for ${lang}`);
+
     // Transform to Key-Value map
     const map: Record<string, string> = {};
     records.forEach(r => {
+        if (!r) return;
+        
         const key = (r as any).translationKey?.key;
         if (key) {
             map[key] = r.value;
+        } else {
+            console.warn(`Translation mapping warning: Record missing translationKey. ID: ${r.id}`);
         }
     });
 
