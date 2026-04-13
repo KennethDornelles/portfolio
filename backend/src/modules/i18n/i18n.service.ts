@@ -1,6 +1,5 @@
 import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import { createClient } from 'redis';
 import { II18nRepository } from './repositories/i18n.repository.interface';
 
 @Injectable()
@@ -96,34 +95,14 @@ export class I18nService implements OnModuleInit {
   }
 
   async clearCache() {
-    console.log('Attempting to clear cache via direct Redis client...');
-    let client;
+    console.log('Attempting to clear cache via CacheManager store...');
     try {
-        // Construct Redis URL from env or use existing REDIS_URL
-        const url = process.env.REDIS_URL || 
-             (process.env.REDIS_HOST ? `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT || 6379}` : undefined);
-
-        if (!url) {
-            throw new Error('REDIS_URL not found in environment');
+        const client = (this.cacheManager.store as any).client;
+        
+        if (!client) {
+            throw new Error('Redis client not found in CacheManager store');
         }
 
-        // Handle Render's rediss:// if needed
-        const options: any = { url };
-        if (url.startsWith('rediss://')) {
-            options.socket = {
-                tls: true,
-                rejectUnauthorized: false 
-            };
-        }
-
-        client = createClient(options);
-        
-        client.on('error', err => console.error('Direct Redis Client Error', err));
-        
-        await client.connect();
-        
-        // Clear keys for ALL versions to ensure a clean slate on manual clear
-        // Or strictly we could clear only current version, but manual clear usually implies "reset everything"
         const keys = await client.keys('i18n:*');
         
         let count = 0;
@@ -131,15 +110,11 @@ export class I18nService implements OnModuleInit {
             count = await client.del(keys);
         }
         
-        return { success: true, method: 'direct-redis-client', keysFound: keys.length, keysDeleted: count };
+        return { success: true, method: 'cache-manager-store', keysFound: keys.length, keysDeleted: count };
 
     } catch (e) {
-        console.error('Failed to clear cache', e);
+        console.error('Failed to clear cache via store', e);
         throw e;
-    } finally {
-        if (client && client.isOpen) {
-            await client.disconnect();
-        }
     }
   }
 
