@@ -1,6 +1,8 @@
 import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { II18nRepository } from './repositories/i18n.repository.interface';
+import { createClient } from 'redis';
+import { parseRedisUrl } from '../../common/utils/redis.util';
 
 @Injectable()
 export class I18nService implements OnModuleInit {
@@ -100,8 +102,9 @@ export class I18nService implements OnModuleInit {
         const store = this.cacheManager?.store as any;
         const client = store?.client || store?.redisClient;
         
+        // Nível 1: Client Nativo
         if (client && typeof client.keys === 'function') {
-            console.log('Found native Redis client. Executing pattern-delete...');
+            console.log('Level 1: Found native Redis client. Executing pattern-delete...');
             const keys = await client.keys('i18n:*');
             
             let count = 0;
@@ -109,11 +112,11 @@ export class I18nService implements OnModuleInit {
                 count = await client.del(keys);
             }
             
-            return { success: true, method: 'pattern-delete', keysFound: keys?.length || 0, keysDeleted: count };
+            return { success: true, method: 'native-client', keysFound: keys?.length || 0, keysDeleted: count };
         }
         
-        console.log('Native Redis client not found or unsupported. Falling back to global reset()...');
-        
+        // Nível 2: Manager Reset
+        console.log('Level 1 failed. Trying Level 2: manager-reset...');
         if (typeof this.cacheManager?.reset === 'function') {
             await this.cacheManager.reset();
             return { success: true, method: 'manager-reset' };
@@ -122,7 +125,46 @@ export class I18nService implements OnModuleInit {
             return { success: true, method: 'store-reset' };
         }
         
-        throw new Error('No reset mechanism found in CacheManager or underlying Store');
+        // Nível 3: Conexão Direta (Emergência)
+        console.log('Level 2 failed. Resorting to Level 3: emergency-direct-connect...');
+        
+        const url = process.env.REDIS_URL;
+        const parsedUrl = parseRedisUrl(url || '');
+
+        let options: any = {
+           socket: {
+               host: process.env.REDIS_HOST || 'localhost',
+               port: parseInt(process.env.REDIS_PORT || '6379', 10),
+               connectTimeout: 5000,
+           }
+        };
+
+        if (parsedUrl) {
+           options = {
+               socket: {
+                   host: parsedUrl.host,
+                   port: parsedUrl.port,
+                   tls: parsedUrl.tls === undefined ? false : parsedUrl.tls,
+                   connectTimeout: 5000,
+               },
+               password: parsedUrl.password,
+               username: parsedUrl.username,
+           };
+        }
+
+        const emergencyClient = createClient(options);
+        
+        emergencyClient.on('error', err => console.error('Emergency Redis Client Error:', err));
+        
+        await emergencyClient.connect();
+        const keys = await emergencyClient.keys('i18n:*');
+        let count = 0;
+        if (keys && keys.length > 0) {
+            count = await emergencyClient.del(keys);
+        }
+        await emergencyClient.quit();
+
+        return { success: true, method: 'emergency-direct-connect', keysFound: keys?.length || 0, keysDeleted: count };
 
     } catch (e) {
         console.error('Failed to clear cache safely', e);
