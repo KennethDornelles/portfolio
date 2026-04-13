@@ -38,7 +38,7 @@ export class HealthController {
 
     return this.health.check([
       () => this.memory.checkHeap('memory_heap', 150 * 1024 * 1024),
-      () => this.db.pingCheck('database', this.prisma, { timeout: 3000 }).catch(error => {
+      () => this.db.pingCheck('database', this.prisma, { timeout: 5000 }).catch(error => {
           if (process.env.NODE_ENV === 'production' && error instanceof HealthCheckError) {
              const causes = error.causes;
              if (causes && causes.database) {
