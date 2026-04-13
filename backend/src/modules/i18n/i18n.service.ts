@@ -95,26 +95,41 @@ export class I18nService implements OnModuleInit {
   }
 
   async clearCache() {
-    console.log('Attempting to clear cache via CacheManager store...');
+    console.log('Attempting to clear cache...');
     try {
-        const client = (this.cacheManager.store as any).client;
+        const store = this.cacheManager?.store as any;
+        const client = store?.client || store?.redisClient;
         
-        if (!client) {
-            throw new Error('Redis client not found in CacheManager store');
+        if (client && typeof client.keys === 'function') {
+            console.log('Found native Redis client. Executing pattern-delete...');
+            const keys = await client.keys('i18n:*');
+            
+            let count = 0;
+            if (Array.isArray(keys) && keys.length > 0) {
+                count = await client.del(keys);
+            }
+            
+            return { success: true, method: 'pattern-delete', keysFound: keys?.length || 0, keysDeleted: count };
         }
-
-        const keys = await client.keys('i18n:*');
         
-        let count = 0;
-        if (keys.length > 0) {
-            count = await client.del(keys);
+        console.log('Native Redis client not found or unsupported. Falling back to global reset()...');
+        
+        if (typeof this.cacheManager?.reset === 'function') {
+            await this.cacheManager.reset();
+            return { success: true, method: 'manager-reset' };
+        } else if (store && typeof store.reset === 'function') {
+            await store.reset();
+            return { success: true, method: 'store-reset' };
         }
         
-        return { success: true, method: 'cache-manager-store', keysFound: keys.length, keysDeleted: count };
+        throw new Error('No reset mechanism found in CacheManager or underlying Store');
 
     } catch (e) {
-        console.error('Failed to clear cache via store', e);
-        throw e;
+        console.error('Failed to clear cache safely', e);
+        return { 
+           success: false, 
+           message: e instanceof Error ? e.message : String(e) 
+        };
     }
   }
 
