@@ -54,7 +54,7 @@
 
 **Escopo:**
 
-- remover `temp-admin-secret-2024`;
+- remover o segredo administrativo literal;
 - substituir segredo em query string por autorização adequada;
 - validar webhook com assinatura HMAC e proteção contra replay;
 - transformar limpeza de cache em operação `POST`;
@@ -365,4 +365,3 @@ Observabilidade, performance e documentação operacional
 ```
 
 Itens P0 devem ser entregues em PRs pequenos e independentes sempre que possível. Refactors de arquitetura devem começar somente depois que CI e testes críticos estiverem ativos, para reduzir o risco de corrigir e introduzir regressões simultaneamente.
-

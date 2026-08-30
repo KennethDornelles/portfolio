@@ -41,7 +41,7 @@ Enquanto esses pontos permanecerem, funcionalidades aparentemente concluídas po
 - webhook de deploy público sem validação de assinatura;
 - diagnóstico de cache/banco público;
 - limpeza de cache por `GET`;
-- segredo literal `temp-admin-secret-2024` aceito como credencial;
+- segredo administrativo literal aceito como credencial;
 - segredo recebido por query string;
 - stack trace retornado ao cliente em falhas.
 
@@ -211,4 +211,3 @@ Os READMEs do backend e frontend são os textos gerados pelos frameworks e não 
 ## Limitações desta análise
 
 `node_modules` não estava instalado no frontend nem no backend. Por isso, não foram executados build, lint, testes, migrations ou auditoria de dependências. As descobertas são baseadas no código e nas configurações versionadas e devem ser complementadas pelos resultados da primeira execução do pipeline descrito no backlog.
-
