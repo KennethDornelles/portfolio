@@ -1,7 +1,7 @@
 import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { II18nRepository } from './repositories/i18n.repository.interface';
-import { createClient } from 'redis';
+import Redis from 'ioredis';
 import { parseRedisUrl } from '../../common/utils/redis.util';
 
 @Injectable()
@@ -137,36 +137,33 @@ export class I18nService implements OnModuleInit {
         const url = process.env.REDIS_URL;
         const parsedUrl = parseRedisUrl(url || '');
 
-        let options: any = {
-           socket: {
+        let emergencyClient: Redis;
+        if (parsedUrl) {
+           emergencyClient = new Redis({
+               host: parsedUrl.host,
+               port: parsedUrl.port,
+               password: parsedUrl.password,
+               username: parsedUrl.username,
+               tls: parsedUrl.tls ? {} : undefined,
+               connectTimeout: 5000,
+               lazyConnect: true,
+           });
+        } else {
+           emergencyClient = new Redis({
                host: process.env.REDIS_HOST || 'localhost',
                port: parseInt(process.env.REDIS_PORT || '6379', 10),
                connectTimeout: 5000,
-           }
-        };
-
-        if (parsedUrl) {
-           options = {
-               socket: {
-                   host: parsedUrl.host,
-                   port: parsedUrl.port,
-                   tls: parsedUrl.tls === undefined ? false : parsedUrl.tls,
-                   connectTimeout: 5000,
-               },
-               password: parsedUrl.password,
-               username: parsedUrl.username,
-           };
+               lazyConnect: true,
+           });
         }
 
-        const emergencyClient = createClient(options);
-        
-        emergencyClient.on('error', err => console.error('Emergency Redis Client Error:', err));
+        emergencyClient.on('error', (err: Error) => console.error('Emergency Redis Client Error:', err));
         
         await emergencyClient.connect();
         const keys = await emergencyClient.keys('i18n:*');
         let count = 0;
         if (keys && keys.length > 0) {
-            count = await emergencyClient.del(keys);
+            count = await emergencyClient.del(...keys);
         }
         await emergencyClient.quit();
 

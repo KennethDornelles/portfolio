@@ -1,4 +1,4 @@
-import { createClient } from 'redis';
+import Redis from 'ioredis';
 import * as dotenv from 'dotenv';
 import { join } from 'path';
 
@@ -10,41 +10,23 @@ dotenv.config();
 async function clearCache() {
   console.log('Starting cache clearing...');
   
-  const url = process.env.REDIS_URL || 
-             (process.env.REDIS_HOST ? `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT || 6379}` : undefined);
+  const url = process.env.REDIS_URL;
+  const host = process.env.REDIS_HOST || 'localhost';
+  const port = parseInt(process.env.REDIS_PORT || '6379', 10);
 
-  if (!url) {
-    console.error('REDIS_URL or REDIS_HOST not defined in environment variables.');
-    process.exit(1);
-  }
+  const client = url ? new Redis(url, { lazyConnect: true }) : new Redis({ host, port, lazyConnect: true });
 
-  // Handle Render's rediss:// if needed, or simple parsing. 
-  // The 'redis' package handles most connection strings automatically.
-  // We need to be careful about TLS if it's 'rediss'
-  
-  const options: any = { url };
-  if (url.startsWith('rediss://')) {
-      options.socket = {
-          tls: true,
-          rejectUnauthorized: false // Often needed for some managed redis
-      }
-  }
-
-  console.log(`Connecting to Redis at ${url.replace(/:[^:@]*@/, ':****@')}...`);
-
-  const client = createClient(options);
-
-  client.on('error', (err) => console.error('Redis Client Error', err));
+  client.on('error', (err: Error) => console.error('Redis Client Error', err));
 
   try {
     await client.connect();
-    console.log('Connected.');
+    console.log('Connected to Redis.');
 
     const keys = await client.keys('i18n:*');
     console.log(`Found ${keys.length} keys matching 'i18n:*'`);
 
     if (keys.length > 0) {
-      await client.del(keys);
+      await client.del(...keys);
       console.log('Successfully deleted i18n keys.');
     } else {
       console.log('No keys to delete.');
@@ -53,9 +35,10 @@ async function clearCache() {
   } catch (e) {
     console.error('Error during execution:', e);
   } finally {
-    await client.disconnect();
+    await client.quit();
     console.log('Disconnected.');
   }
 }
 
 clearCache();
+
