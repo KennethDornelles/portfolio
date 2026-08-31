@@ -1,7 +1,21 @@
-import { Controller, Get, Post, Body, Param, Query, BadRequestException, UseInterceptors } from '@nestjs/common';
-import { I18nService } from './i18n.service';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  ServiceUnavailableException,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { UserRole } from '@prisma/client';
 import { Public } from '../../common/decorators/public.decorator';
+import { Roles } from '../../common/decorators/roles.decorator';
+import { RolesGuard } from '../../common/guards/roles.guard';
 import { PerformanceInterceptor } from '../../common/interceptors/performance.interceptor';
+import { I18nService } from './i18n.service';
+import { I18nWebhookGuard } from './i18n-webhook.guard';
 
 @Controller('i18n')
 @UseInterceptors(PerformanceInterceptor)
@@ -9,54 +23,39 @@ export class I18nController {
   constructor(private readonly i18nService: I18nService) {}
 
   @Public()
+  @UseGuards(I18nWebhookGuard)
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @Post('webhook/deploy')
-  async handleDeployWebhook(@Body() payload: any) {
-    console.log('🚀 Deploy detected', payload);
-    
-    // Invalidate and re-warmup
+  async handleDeployWebhook() {
     await this.i18nService.refreshCache();
-    
-    return { success: true, timestamp: new Date().toISOString() };
+    return { success: true };
   }
 
-  @Public()
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Get('health/cache')
   async cacheHealth() {
-    return this.i18nService.debugDB();
+    return this.i18nService.getCacheHealth();
   }
 
-  @Public()
-  @Get('cache/clear')
-  async clearCache(@Param() _params: any, @Query('secret') secret: string) {
-    if (!secret || (secret !== process.env.JWT_SECRET && secret !== 'temp-admin-secret-2024')) {
-        throw new BadRequestException('Invalid secret');
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
+  @Throttle({ default: { limit: 3, ttl: 60000 } })
+  @Post('cache/clear')
+  async clearCache() {
+    const result = await this.i18nService.clearCache();
+    if (!result.success) {
+      throw new ServiceUnavailableException('I18n cache operation failed');
     }
-    
-    try {
-      return await this.i18nService.clearCache();
-    } catch (error) {
-      console.error('Clear Cache Error:', error);
-      return { 
-        success: false, 
-        message: error instanceof Error ? error.message : 'Unknown error',
-        stack: error instanceof Error ? error.stack : undefined 
-      };
-    }
-  }
-
-  @Public()
-  @Get('debug/db')
-  async debugDB(@Query('secret') secret: string) {
-     if (!secret || (secret !== process.env.JWT_SECRET && secret !== 'temp-admin-secret-2024')) {
-        throw new BadRequestException('Invalid secret');
-    }
-    return this.i18nService.debugDB();
+    return { success: true };
   }
 
   @Public()
   @Get(':lang')
   async getTranslations(@Param('lang') lang: string) {
-    // Ideally validation for lang code here
     return this.i18nService.getTranslations(lang);
   }
 }

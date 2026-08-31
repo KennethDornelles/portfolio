@@ -1,24 +1,33 @@
-import { Injectable, Inject, OnModuleInit } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  Logger,
+  OnModuleInit,
+  ServiceUnavailableException,
+} from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import type { Cache } from 'cache-manager';
 import { II18nRepository } from './repositories/i18n.repository.interface';
-import { createClient } from 'redis';
-import { parseRedisUrl } from '../../common/utils/redis.util';
+import { getI18nRedisStore } from './i18n-redis-store';
 
 @Injectable()
 export class I18nService implements OnModuleInit {
+  private readonly logger = new Logger(I18nService.name);
   private cacheVersion: string;
 
   constructor(
-    @Inject(CACHE_MANAGER) private cacheManager: any,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private i18nRepository: II18nRepository,
   ) {
     this.cacheVersion = 'v1'; // Static version to avoid Cache Stampede on deploy
   }
 
   async onModuleInit() {
-    console.log(`🔥 Starting i18n cache warm-up (Version: ${this.cacheVersion})...`);
+    this.logger.log(
+      `Starting i18n cache warm-up (Version: ${this.cacheVersion})`,
+    );
     await this.warmupCache();
-    console.log('✅ i18n cache warmed up successfully');
+    this.logger.log('I18n cache warmed up successfully');
   }
 
   private getCacheKey(key: string, lang: string): string {
@@ -41,178 +50,100 @@ export class I18nService implements OnModuleInit {
     try {
       const cached = await this.cacheManager.get(cacheKey);
       if (cached) return cached as string;
-    } catch (e) {
-      console.warn(`Redis Cache Error (getTranslation): ${e instanceof Error ? e.message : e}`);
+    } catch {
+      this.logger.warn('I18n cache read failed');
     }
 
     const record = await this.i18nRepository.findTranslation(lang, key);
 
     const value = record?.value || key;
-    
+
     // Cache for 24 hours (86400000 ms)
     try {
       await this.cacheManager.set(cacheKey, value, 86400000);
-    } catch (e) {
-       console.warn(`Redis Cache Set Error: ${e instanceof Error ? e.message : e}`);
+    } catch {
+      this.logger.warn('I18n cache write failed');
     }
 
     return value;
   }
 
-  async getTranslations(lang: string = 'PT_BR'): Promise<Record<string, string>> {
+  async getTranslations(
+    lang: string = 'PT_BR',
+  ): Promise<Record<string, string>> {
     const cacheKey = this.getAllCacheKey(lang);
-    
+
     try {
       const cached = await this.cacheManager.get(cacheKey);
       if (cached) return cached as Record<string, string>;
-    } catch (e) {
-       console.warn(`Redis Cache Error (getTranslations): ${e instanceof Error ? e.message : e}`);
+    } catch {
+      this.logger.warn('I18n cache read failed');
     }
 
     const records = await this.i18nRepository.findAllByLang(lang);
-    
-    console.log(`🔍 DB found ${records.length} records for ${lang}`);
+
+    this.logger.debug(`Loaded ${records.length} translations for ${lang}`);
 
     // Transform to Key-Value map
     const map: Record<string, string> = {};
-    records.forEach(r => {
-        if (!r) return;
-        
-        const key = (r as any).translationKey?.key;
-        if (key) {
-            map[key] = r.value;
-        } else {
-            console.warn(`Translation mapping warning: Record missing translationKey. ID: ${r.id}`);
-        }
+    records.forEach((r) => {
+      if (!r) return;
+
+      const key = r.translationKey?.key;
+      if (key) {
+        map[key] = r.value;
+      } else {
+        this.logger.warn('Translation record is missing its key relation');
+      }
     });
 
     try {
       // Cache for 24 hours (86400000 ms)
       await this.cacheManager.set(cacheKey, map, 86400000);
-    } catch (e) {
-       console.warn(`Redis Cache Set Error: ${e instanceof Error ? e.message : e}`);
+    } catch {
+      this.logger.warn('I18n cache write failed');
     }
     return map;
   }
 
   async refreshCache() {
-    console.log('🔄 Refreshing cache triggered...');
-    await this.clearCache();
+    this.logger.log('Refreshing i18n cache');
+    const result = await this.clearCache();
+    if (!result.success) {
+      throw new ServiceUnavailableException('I18n cache operation failed');
+    }
     await this.warmupCache();
-    console.log('✅ Cache refreshed successfully');
+    this.logger.log('I18n cache refreshed successfully');
   }
 
   async clearCache() {
-    console.log('Attempting to clear cache...');
     try {
-        const store = this.cacheManager?.store as any;
-        const client = store?.client || store?.redisClient;
-        
-        // Nível 1: Client Nativo
-        if (client && typeof client.keys === 'function') {
-            console.log('Level 1: Found native Redis client. Executing pattern-delete...');
-            const keys = await client.keys('i18n:*');
-            
-            let count = 0;
-            if (Array.isArray(keys) && keys.length > 0) {
-                count = await client.del(keys);
-            }
-            
-            return { success: true, method: 'native-client', keysFound: keys?.length || 0, keysDeleted: count };
-        }
-        
-        // Nível 2: Manager Reset
-        console.log('Level 1 failed. Trying Level 2: manager-reset...');
-        if (typeof this.cacheManager?.reset === 'function') {
-            await this.cacheManager.reset();
-            return { success: true, method: 'manager-reset' };
-        } else if (store && typeof store.reset === 'function') {
-            await store.reset();
-            return { success: true, method: 'store-reset' };
-        }
-        
-        // Nível 3: Conexão Direta (Emergência)
-        console.log('Level 2 failed. Resorting to Level 3: emergency-direct-connect...');
-        
-        const url = process.env.REDIS_URL;
-        const parsedUrl = parseRedisUrl(url || '');
+      const store = getI18nRedisStore(this.cacheManager);
+      if (!store) {
+        throw new Error('Redis store unavailable');
+      }
 
-        let options: any = {
-           socket: {
-               host: process.env.REDIS_HOST || 'localhost',
-               port: parseInt(process.env.REDIS_PORT || '6379', 10),
-               connectTimeout: 5000,
-           }
-        };
-
-        if (parsedUrl) {
-           options = {
-               socket: {
-                   host: parsedUrl.host,
-                   port: parsedUrl.port,
-                   tls: parsedUrl.tls === undefined ? false : parsedUrl.tls,
-                   connectTimeout: 5000,
-               },
-               password: parsedUrl.password,
-               username: parsedUrl.username,
-           };
-        }
-
-        const emergencyClient = createClient(options);
-        
-        emergencyClient.on('error', err => console.error('Emergency Redis Client Error:', err));
-        
-        await emergencyClient.connect();
-        const keys = await emergencyClient.keys('i18n:*');
-        let count = 0;
-        if (keys && keys.length > 0) {
-            count = await emergencyClient.del(keys);
-        }
-        await emergencyClient.quit();
-
-        return { success: true, method: 'emergency-direct-connect', keysFound: keys?.length || 0, keysDeleted: count };
-
-    } catch (e) {
-        console.error('Failed to clear cache safely', e);
-        return { 
-           success: false, 
-           message: e instanceof Error ? e.message : String(e) 
-        };
+      const keys = await store.client.keys('i18n:*');
+      if (keys.length > 0) {
+        await store.client.del(keys);
+      }
+      return { success: true };
+    } catch {
+      this.logger.error('I18n cache clear failed');
+      return { success: false };
     }
   }
 
-  async debugDB() {
+  async getCacheHealth(): Promise<{ status: 'up' }> {
     try {
-        const count = await this.i18nRepository.count();
-        const sample = await this.i18nRepository.findTranslation('EN_US', 'NAV_HOME');
-        
-        // Check cache status for current version
-        const ptCache = await this.cacheManager.get(this.getAllCacheKey('PT_BR'));
-        const enCache = await this.cacheManager.get(this.getAllCacheKey('EN_US'));
-
-        return {
-            database: {
-              totalTranslations: count,
-              sampleNavHome: sample,
-              connection: 'Active'
-            },
-            cache: {
-              version: this.cacheVersion,
-              PT_BR: {
-                count: ptCache ? Object.keys(ptCache).length : 0,
-                status: ptCache ? 'populated' : 'empty'
-              },
-              EN_US: {
-                count: enCache ? Object.keys(enCache).length : 0,
-                status: enCache ? 'populated' : 'empty'
-              }
-            }
-        };
-    } catch (e) {
-        return {
-            error: e instanceof Error ? e.message : String(e),
-            connection: 'Failed'
-        };
+      await this.i18nRepository.count();
+      await this.cacheManager.get(this.getAllCacheKey('PT_BR'));
+      return { status: 'up' };
+    } catch {
+      this.logger.error('I18n cache diagnostics failed');
+      throw new ServiceUnavailableException(
+        'I18n cache diagnostics unavailable',
+      );
     }
   }
 }

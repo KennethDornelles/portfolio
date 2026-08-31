@@ -7,7 +7,9 @@ import { Prisma, RefreshToken } from '@prisma/client';
 export class PrismaRefreshTokenRepository implements IRefreshTokenRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: Prisma.RefreshTokenUncheckedCreateInput): Promise<RefreshToken> {
+  async create(
+    data: Prisma.RefreshTokenUncheckedCreateInput,
+  ): Promise<RefreshToken> {
     return this.prisma.refreshToken.create({
       data,
     });
@@ -19,29 +21,47 @@ export class PrismaRefreshTokenRepository implements IRefreshTokenRepository {
     });
   }
 
-  async update(id: string, data: Prisma.RefreshTokenUpdateInput): Promise<RefreshToken> {
+  async update(
+    id: string,
+    data: Prisma.RefreshTokenUpdateInput,
+  ): Promise<RefreshToken> {
     return this.prisma.refreshToken.update({
       where: { id },
       data,
     });
   }
 
-  async updateMany(where: Prisma.RefreshTokenWhereInput, data: Prisma.RefreshTokenUpdateInput): Promise<Prisma.BatchPayload> {
+  async updateMany(
+    where: Prisma.RefreshTokenWhereInput,
+    data: Prisma.RefreshTokenUpdateInput,
+  ): Promise<Prisma.BatchPayload> {
     return this.prisma.refreshToken.updateMany({
       where,
       data,
     });
   }
 
-  async rotate(oldId: string, newData: Prisma.RefreshTokenUncheckedCreateInput): Promise<void> {
-    await this.prisma.$transaction([
-      this.prisma.refreshToken.update({
-        where: { id: oldId },
-        data: { revokedAt: new Date() },
-      }),
-      this.prisma.refreshToken.create({
-        data: newData,
-      }),
-    ]);
+  async rotate(
+    oldId: string,
+    newData: Prisma.RefreshTokenUncheckedCreateInput,
+    now: Date,
+  ): Promise<boolean> {
+    return this.prisma.$transaction(async (transaction) => {
+      const consumed = await transaction.refreshToken.updateMany({
+        where: {
+          id: oldId,
+          revokedAt: null,
+          expiresAt: { gt: now },
+        },
+        data: { revokedAt: now },
+      });
+
+      if (consumed.count !== 1) {
+        return false;
+      }
+
+      await transaction.refreshToken.create({ data: newData });
+      return true;
+    });
   }
 }
