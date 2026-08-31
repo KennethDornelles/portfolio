@@ -1,11 +1,23 @@
-import { Injectable, ForbiddenException, UnauthorizedException } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { UsersService } from '../users/users.service';
-import { User } from '@prisma/client';
+import { JwtService } from '@nestjs/jwt';
+import { User, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
-import { randomBytes } from 'crypto';
+import { randomUUID } from 'crypto';
+import { UsersService } from '../users/users.service';
+import { JwtPayload, RefreshJwtPayload } from './auth.types';
 import { IRefreshTokenRepository } from './repositories/refresh-token.repository.interface';
+
+type TokenDuration = `${number}${'s' | 'm' | 'h' | 'd'}`;
+type AuthenticatedUser = Omit<User, 'passwordHash'>;
+type LoginUser = Pick<User, 'id' | 'email' | 'role'> & { name?: string | null };
+
+const DURATION_MULTIPLIERS = {
+  s: 1_000,
+  m: 60_000,
+  h: 3_600_000,
+  d: 86_400_000,
+} as const;
 
 @Injectable()
 export class AuthService {
@@ -16,18 +28,25 @@ export class AuthService {
     private refreshTokenRepository: IRefreshTokenRepository,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(
+    email: string,
+    password: string,
+  ): Promise<AuthenticatedUser | null> {
     const user = await this.usersService.findByEmail(email);
-    if (user && await bcrypt.compare(pass, user.passwordHash)) {
-      const { passwordHash, ...result } = user;
-      return result;
+    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+      return null;
     }
-    return null;
+
+    const { passwordHash: _passwordHash, ...authenticatedUser } = user;
+    void _passwordHash;
+    return authenticatedUser;
   }
 
-  async login(user: any) {
-    const tokens = await this.generateTokens(user.id, user.role);
-    await this.updateRefreshToken(user.id, tokens.refreshToken);
+  async login(user: LoginUser) {
+    const now = new Date();
+    const tokens = await this.generateTokens(user.id, user.role, now);
+    await this.createRefreshToken(user.id, tokens.refreshToken, now);
+
     return {
       ...tokens,
       user: {
@@ -40,91 +59,68 @@ export class AuthService {
   }
 
   async logout(userId: string) {
-    await this.refreshTokenRepository.updateMany(
-      { 
-        userId, 
-        revokedAt: null 
-      },
-      { revokedAt: new Date() },
-    );
+    await this.revokeActiveTokens(userId, new Date());
   }
 
-  async refreshTokens(userId: string, rt: string) {
-    const tokenRecord = await this.refreshTokenRepository.findUnique(rt);
+  async refreshTokens(userId: string, refreshToken: string) {
+    const now = new Date();
+    const tokenRecord =
+      await this.refreshTokenRepository.findUnique(refreshToken);
 
-    if (!tokenRecord) throw new ForbiddenException('Access Denied');
+    if (!tokenRecord || tokenRecord.userId !== userId) {
+      throw new ForbiddenException('Access denied');
+    }
 
-    // Reuse Detection
     if (tokenRecord.revokedAt) {
-        // Security Risk: Revoke ALL tokens for this family/user
-        await this.refreshTokenRepository.updateMany(
-            { userId },
-            { revokedAt: new Date() }
-        );
-        throw new ForbiddenException('Reuse detected. Account protected.');
+      // There is no token-family column in the current schema, so reuse
+      // invalidates every active refresh session owned by this user.
+      await this.revokeActiveTokens(tokenRecord.userId, now);
+      throw new ForbiddenException('Access denied');
     }
 
-    if (tokenRecord.expiresAt < new Date()) {
-        throw new ForbiddenException('Token expired');
+    if (tokenRecord.expiresAt <= now) {
+      throw new ForbiddenException('Access denied');
     }
 
-    // Token Rotation: consuming the old one
-    const tokens = await this.generateTokens(userId, tokenRecord.userId); // userId fallback logic if needed
-    
-    await this.refreshTokenRepository.rotate(tokenRecord.id, {
-      token: tokens.refreshToken,
-      userId: userId,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
-    });
+    const user = await this.usersService.findById(tokenRecord.userId);
+    if (!user || !user.isActive || user.deletedAt) {
+      await this.revokeActiveTokens(tokenRecord.userId, now);
+      throw new ForbiddenException('Access denied');
+    }
+
+    const tokens = await this.generateTokens(user.id, user.role, now);
+    const rotated = await this.refreshTokenRepository.rotate(
+      tokenRecord.id,
+      {
+        token: tokens.refreshToken,
+        userId: user.id,
+        expiresAt: this.getRefreshTokenExpiration(now),
+      },
+      now,
+    );
+
+    if (!rotated) {
+      // Losing the conditional update means this token was consumed by a
+      // concurrent request and is therefore treated as reuse.
+      await this.revokeActiveTokens(user.id, now);
+      throw new ForbiddenException('Access denied');
+    }
 
     return tokens;
   }
 
-  private async generateTokens(userId: string, role?: string) {
-    const iat = Math.floor(Date.now() / 1000) - 300; // 5 minutes in the past to avoid future iat rejection
-    const payload = { sub: userId, role, iat };
-    const secret = this.configService.get<string>('JWT_SECRET') || 'secret';
-    
-    const [at, rt] = await Promise.all([
-      this.jwtService.signAsync(payload, {
-        secret,
-        expiresIn: '15m',
-      }),
-      this.jwtService.signAsync(payload, {
-        secret: this.configService.get('JWT_REFRESH_SECRET'),
-        expiresIn: '7d',
-      }),
-    ]);
-
-    return {
-      accessToken: at,
-      refreshToken: rt,
-    };
-  }
-
-  // Helper to persist/update RT (used in login)
-  private async updateRefreshToken(userId: string, rt: string) {
-    await this.refreshTokenRepository.create({
-      token: rt,
-      userId,
-      expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-    });
-  }
-
   async loginAsGuest() {
-    // Generate a random guest ID (simulated, not stored in DB to avoid clutter, or could be a fixed Guest User)
-    // If we want audit logs to work for guest, we might need a real user.
-    // But for "Demo Mode", read-only, maybe just a token is enough.
-    // The UUID must be valid for database constraints if we use it in relations?
-    // Refresh Tokens constrain on UserId. But we aren't creating a Refresh Token.
-    // So any UUID is fine.
-    const guestId = '00000000-0000-0000-0000-000000000000'; // Fixed Guest ID or random
-    
-    const payload = { sub: guestId, role: 'GUEST' };
-    
+    const guestId = '00000000-0000-0000-0000-000000000000';
+    const now = new Date();
+    const payload: JwtPayload = {
+      sub: guestId,
+      role: UserRole.GUEST,
+      iat: Math.floor(now.getTime() / 1_000),
+    };
+
     const accessToken = await this.jwtService.signAsync(payload, {
-      secret: this.configService.get('JWT_SECRET'),
-      expiresIn: '15m',
+      secret: this.configService.getOrThrow<string>('JWT_SECRET'),
+      expiresIn: this.getDuration('JWT_EXPIRATION', '15m'),
     });
 
     return {
@@ -132,9 +128,73 @@ export class AuthService {
       user: {
         id: guestId,
         email: 'guest@demo.com',
-        role: 'GUEST',
-        name: 'Demo Guest'
-      }
+        role: UserRole.GUEST,
+        name: 'Demo Guest',
+      },
     };
+  }
+
+  private async generateTokens(userId: string, role: UserRole, now: Date) {
+    const payload: JwtPayload = {
+      sub: userId,
+      role,
+      iat: Math.floor(now.getTime() / 1_000),
+    };
+    const refreshPayload: RefreshJwtPayload = {
+      ...payload,
+      jti: randomUUID(),
+    };
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(payload, {
+        secret: this.configService.getOrThrow<string>('JWT_SECRET'),
+        expiresIn: this.getDuration('JWT_EXPIRATION', '15m'),
+      }),
+      this.jwtService.signAsync(refreshPayload, {
+        secret: this.configService.getOrThrow<string>('JWT_REFRESH_SECRET'),
+        expiresIn: this.getDuration('JWT_REFRESH_EXPIRATION', '7d'),
+      }),
+    ]);
+
+    return { accessToken, refreshToken };
+  }
+
+  private async createRefreshToken(
+    userId: string,
+    refreshToken: string,
+    now: Date,
+  ) {
+    await this.refreshTokenRepository.create({
+      token: refreshToken,
+      userId,
+      expiresAt: this.getRefreshTokenExpiration(now),
+    });
+  }
+
+  private async revokeActiveTokens(userId: string, now: Date) {
+    await this.refreshTokenRepository.updateMany(
+      { userId, revokedAt: null },
+      { revokedAt: now },
+    );
+  }
+
+  private getRefreshTokenExpiration(now: Date): Date {
+    const duration = this.getDuration('JWT_REFRESH_EXPIRATION', '7d');
+    return new Date(now.getTime() + this.durationToMilliseconds(duration));
+  }
+
+  private getDuration(name: string, fallback: TokenDuration): TokenDuration {
+    const duration = this.configService.get<string>(name, fallback);
+    if (!/^[1-9]\d*[smhd]$/.test(duration)) {
+      throw new Error(`${name} must be a positive duration using s, m, h or d`);
+    }
+
+    return duration as TokenDuration;
+  }
+
+  private durationToMilliseconds(duration: TokenDuration): number {
+    const unit = duration.at(-1) as keyof typeof DURATION_MULTIPLIERS;
+    const amount = Number(duration.slice(0, -1));
+    return amount * DURATION_MULTIPLIERS[unit];
   }
 }

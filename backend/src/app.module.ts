@@ -24,6 +24,7 @@ import { BullModule } from '@nestjs/bullmq';
 
 import { parseRedisUrl } from './common/utils/redis.util';
 import { I18nRedisKeyvAdapter } from './modules/i18n/i18n-redis-store';
+import { validateEnvironment } from './config/environment.validation';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { I18nRedisKeyvAdapter } from './modules/i18n/i18n-redis-store';
       isGlobal: true,
       ignoreEnvFile: process.env.NODE_ENV === 'production',
       envFilePath: '.env',
+      validate: validateEnvironment,
     }),
     BullModule.forRootAsync({
       inject: [ConfigService],

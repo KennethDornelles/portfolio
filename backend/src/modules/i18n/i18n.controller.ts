@@ -8,6 +8,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { UserRole } from '@prisma/client';
 import { Public } from '../../common/decorators/public.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -32,6 +33,7 @@ export class I18nController {
 
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
   @Throttle({ default: { limit: 10, ttl: 60000 } })
   @Get('health/cache')
   async cacheHealth() {
@@ -40,6 +42,7 @@ export class I18nController {
 
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
+  @ApiBearerAuth()
   @Throttle({ default: { limit: 3, ttl: 60000 } })
   @Post('cache/clear')
   async clearCache() {

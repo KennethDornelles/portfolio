@@ -34,13 +34,13 @@ services:
       DIRECT_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-portfolio_db}
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      I18N_WEBHOOK_SECRET: ${I18N_WEBHOOK_SECRET}
+      I18N_WEBHOOK_SECRET: ${I18N_WEBHOOK_SECRET:?I18N_WEBHOOK_SECRET must be set}
       I18N_WEBHOOK_TOLERANCE_SECONDS: ${I18N_WEBHOOK_TOLERANCE_SECONDS:-300}
       PORT: ${PORT:-3000}
       BACKEND_URL: http://localhost:${PORT:-3000}
       FRONTEND_URL: http://localhost:4200
-      JWT_SECRET: "your-super-secret-jwt-key-change-in-production"
-      JWT_REFRESH_SECRET: "your-super-secret-refresh-key-change-in-production"
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET must be set}
+      JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET must be set}
       JWT_EXPIRATION: "15m"
       JWT_REFRESH_EXPIRATION: "7d"
       NODE_ENV: "development"
