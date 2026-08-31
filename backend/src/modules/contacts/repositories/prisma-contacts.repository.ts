@@ -25,4 +25,8 @@ export class PrismaContactsRepository implements IContactsRepository {
       data: { readAt: new Date() },
     });
   }
+
+  async delete(id: string): Promise<Contact> {
+    return this.prisma.contact.delete({ where: { id } });
+  }
 }

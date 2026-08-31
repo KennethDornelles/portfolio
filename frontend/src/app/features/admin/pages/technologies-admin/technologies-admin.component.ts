@@ -6,6 +6,7 @@ import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { LanguageService } from '../../../../core/services/language.service';
+import { getHttpErrorMessage } from '../../../../core/utils/http-error.util';
 
 interface Technology {
   id: string;
@@ -154,6 +155,11 @@ const DEVICON_MAP: Record<string, string> = {
             </h2>
             
             <form (submit)="saveTech($event)" class="space-y-4">
+              @if (errorMessage()) {
+                <div class="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+                  {{ errorMessage() }}
+                </div>
+              }
               <div>
                 <label class="block text-gray-400 text-sm mb-2">{{ 'ADMIN_FORM_NAME' | translate }}</label>
                 <input type="text" [(ngModel)]="form.name" name="name" required
@@ -212,6 +218,7 @@ export class TechnologiesAdminComponent implements OnInit {
   
   technologies = signal<Technology[]>([]);
   loading = signal(false);
+  errorMessage = signal<string | null>(null);
   showModal = false;
   editingTech: Technology | null = null;
   selectedCategory = '';
@@ -230,7 +237,8 @@ export class TechnologiesAdminComponent implements OnInit {
   loadTechnologies() {
     this.http.get<Technology[]>(`${environment.apiUrl}/technologies`).subscribe({
       next: (data) => this.technologies.set(data),
-      error: (err) => console.error('Failed to load technologies', err)
+      error: (err: unknown) =>
+        this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
     });
   }
 
@@ -244,6 +252,7 @@ export class TechnologiesAdminComponent implements OnInit {
   }
 
   resetForm() {
+    this.errorMessage.set(null);
     this.form = {
       name: '',
       category: '',
@@ -277,7 +286,7 @@ export class TechnologiesAdminComponent implements OnInit {
     };
 
     const request = this.editingTech
-      ? this.http.put(`${environment.apiUrl}/technologies/${this.editingTech.id}`, payload)
+      ? this.http.patch(`${environment.apiUrl}/technologies/${this.editingTech.id}`, payload)
       : this.http.post(`${environment.apiUrl}/technologies`, payload);
 
     request.subscribe({
@@ -285,10 +294,11 @@ export class TechnologiesAdminComponent implements OnInit {
         this.loadTechnologies();
         this.showModal = false;
         this.loading.set(false);
+        this.errorMessage.set(null);
       },
-      error: (err) => {
-        console.error('Failed to save technology', err);
+      error: (err: unknown) => {
         this.loading.set(false);
+        this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')));
       }
     });
   }
@@ -298,7 +308,8 @@ export class TechnologiesAdminComponent implements OnInit {
     if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_TECH'))) {
       this.http.delete(`${environment.apiUrl}/technologies/${id}`).subscribe({
         next: () => this.loadTechnologies(),
-        error: (err: any) => console.error('Failed to delete technology', err)
+        error: (err: unknown) =>
+          this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
       });
     }
   }

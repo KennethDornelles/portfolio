@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { getHttpErrorMessage } from '../../core/utils/http-error.util';
 
 @Component({
   selector: 'app-register',
@@ -39,13 +40,6 @@ import { environment } from '../../../environments/environment';
           }
 
           <form (submit)="handleRegister($event)" class="space-y-4">
-            <div>
-              <label class="block text-gray-400 text-sm mb-2">Nome Completo</label>
-              <input type="text" [(ngModel)]="name" name="name" required
-                     placeholder="Seu nome"
-                     class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 transition-colors">
-            </div>
-
             <div>
               <label class="block text-gray-400 text-sm mb-2">Email</label>
               <input type="email" [(ngModel)]="email" name="email" required
@@ -101,7 +95,6 @@ export class RegisterComponent {
   private http = inject(HttpClient);
   private router = inject(Router);
   
-  name = '';
   email = '';
   password = '';
   confirmPassword = '';
@@ -127,8 +120,7 @@ export class RegisterComponent {
 
     this.loading.set(true);
 
-    this.http.post<{ message: string }>(`${environment.apiUrl}/auth/register`, {
-      name: this.name,
+    this.http.post(`${environment.apiUrl}/auth/signup`, {
       email: this.email,
       password: this.password
     }).subscribe({
@@ -137,9 +129,9 @@ export class RegisterComponent {
         this.success.set('Conta criada com sucesso! Redirecionando...');
         setTimeout(() => this.router.navigate(['/login']), 2000);
       },
-      error: (err) => {
+      error: (err: unknown) => {
         this.loading.set(false);
-        this.error.set(err.error?.message || 'Erro ao criar conta. Tente novamente.');
+        this.error.set(getHttpErrorMessage(err, 'Erro ao criar conta. Tente novamente.'));
       }
     });
   }

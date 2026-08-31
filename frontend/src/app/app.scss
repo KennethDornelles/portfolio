@@ -1,0 +1,29 @@
+.i18n-error,
+.i18n-loading {
+  align-items: center;
+  background: #050505;
+  color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 2rem;
+  text-align: center;
+}
+
+.i18n-error button {
+  background: #2563eb;
+  border: 0;
+  border-radius: 0.5rem;
+  color: white;
+  cursor: pointer;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+}
+
+.i18n-warning {
+  background: #7c2d12;
+  color: white;
+  padding: 0.75rem 1rem;
+  text-align: center;
+}

@@ -4,4 +4,5 @@ export abstract class IContactsRepository {
   abstract create(data: Prisma.ContactCreateInput): Promise<Contact>;
   abstract findAll(): Promise<Contact[]>;
   abstract markAsRead(id: string): Promise<Contact>;
+  abstract delete(id: string): Promise<Contact>;
 }

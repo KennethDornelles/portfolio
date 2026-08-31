@@ -9,6 +9,7 @@ import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import type { Cache } from 'cache-manager';
 import { II18nRepository } from './repositories/i18n.repository.interface';
 import { getI18nRedisStore } from './i18n-redis-store';
+import { LanguageCode } from '@prisma/client';
 
 @Injectable()
 export class I18nService implements OnModuleInit {
@@ -19,7 +20,7 @@ export class I18nService implements OnModuleInit {
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private i18nRepository: II18nRepository,
   ) {
-    this.cacheVersion = 'v1'; // Static version to avoid Cache Stampede on deploy
+    this.cacheVersion = '1'; // Static version to avoid cache stampede on deploy
   }
 
   async onModuleInit() {
@@ -27,25 +28,41 @@ export class I18nService implements OnModuleInit {
       `Starting i18n cache warm-up (Version: ${this.cacheVersion})`,
     );
     await this.warmupCache();
-    this.logger.log('I18n cache warmed up successfully');
   }
 
-  private getCacheKey(key: string, lang: string): string {
+  private getCacheKey(key: string, lang: LanguageCode): string {
     return `i18n:v${this.cacheVersion}:${lang}:${key}`;
   }
 
-  private getAllCacheKey(lang: string): string {
+  private getAllCacheKey(lang: LanguageCode): string {
     return `i18n:v${this.cacheVersion}:all:${lang}`;
   }
 
   private async warmupCache() {
     // Pre-load translations for all supported languages
-    for (const lang of ['PT_BR', 'EN_US']) {
-      await this.getTranslations(lang);
+    let loadedLanguages = 0;
+    for (const lang of [LanguageCode.PT_BR, LanguageCode.EN_US]) {
+      try {
+        const translations = await this.getTranslations(lang);
+        loadedLanguages += 1;
+        this.logger.log(
+          `I18n warm-up loaded ${Object.keys(translations).length} translations for ${lang}`,
+        );
+      } catch {
+        this.logger.error(`I18n warm-up unavailable for ${lang}`);
+      }
+    }
+    if (loadedLanguages === 2) {
+      this.logger.log('I18n translations warm-up completed');
+    } else {
+      this.logger.error('I18n translations warm-up completed with errors');
     }
   }
 
-  async getTranslation(key: string, lang: string = 'PT_BR'): Promise<string> {
+  async getTranslation(
+    key: string,
+    lang: LanguageCode = LanguageCode.PT_BR,
+  ): Promise<string> {
     const cacheKey = this.getCacheKey(key, lang);
     try {
       const cached = await this.cacheManager.get(cacheKey);
@@ -69,18 +86,30 @@ export class I18nService implements OnModuleInit {
   }
 
   async getTranslations(
-    lang: string = 'PT_BR',
+    lang: LanguageCode = LanguageCode.PT_BR,
   ): Promise<Record<string, string>> {
     const cacheKey = this.getAllCacheKey(lang);
 
     try {
       const cached = await this.cacheManager.get(cacheKey);
-      if (cached) return cached as Record<string, string>;
+      if (
+        cached &&
+        typeof cached === 'object' &&
+        Object.keys(cached as Record<string, string>).length > 0
+      ) {
+        return cached as Record<string, string>;
+      }
     } catch {
       this.logger.warn('I18n cache read failed');
     }
 
-    const records = await this.i18nRepository.findAllByLang(lang);
+    let records;
+    try {
+      records = await this.i18nRepository.findAllByLang(lang);
+    } catch {
+      this.logger.error(`I18n database query failed for ${lang}`);
+      throw new ServiceUnavailableException('Translations unavailable');
+    }
 
     this.logger.debug(`Loaded ${records.length} translations for ${lang}`);
 
@@ -96,6 +125,11 @@ export class I18nService implements OnModuleInit {
         this.logger.warn('Translation record is missing its key relation');
       }
     });
+
+    if (Object.keys(map).length === 0) {
+      this.logger.error(`No translations available for required language ${lang}`);
+      throw new ServiceUnavailableException('Translations unavailable');
+    }
 
     try {
       // Cache for 24 hours (86400000 ms)
@@ -137,7 +171,7 @@ export class I18nService implements OnModuleInit {
   async getCacheHealth(): Promise<{ status: 'up' }> {
     try {
       await this.i18nRepository.count();
-      await this.cacheManager.get(this.getAllCacheKey('PT_BR'));
+      await this.cacheManager.get(this.getAllCacheKey(LanguageCode.PT_BR));
       return { status: 'up' };
     } catch {
       this.logger.error('I18n cache diagnostics failed');

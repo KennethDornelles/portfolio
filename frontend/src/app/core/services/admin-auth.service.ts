@@ -1,4 +1,5 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, PLATFORM_ID, computed, inject, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export type AdminRole = 'ADMIN' | 'GUEST' | null;
 
@@ -12,6 +13,7 @@ export interface AdminUser {
   providedIn: 'root'
 })
 export class AdminAuthService {
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private _user = signal<AdminUser | null>(null);
   
   user = this._user.asReadonly();
@@ -26,6 +28,7 @@ export class AdminAuthService {
   }
 
   private loadFromStorage() {
+    if (!this.isBrowser) return;
     const token = localStorage.getItem('admin_token');
     const userStr = localStorage.getItem('admin_user');
     
@@ -40,21 +43,27 @@ export class AdminAuthService {
   }
 
   login(token: string, user: AdminUser) {
-    localStorage.setItem('admin_token', token);
-    localStorage.setItem('admin_user', JSON.stringify(user));
+    if (this.isBrowser) {
+      localStorage.setItem('admin_token', token);
+      localStorage.setItem('admin_user', JSON.stringify(user));
+    }
     this._user.set(user);
   }
 
   loginAsGuest() {
     const user: AdminUser = { email: 'guest@demo.com', name: 'Visitante Demo', role: 'GUEST' };
-    localStorage.setItem('admin_token', 'demo-guest-token');
-    localStorage.setItem('admin_user', JSON.stringify(user));
+    if (this.isBrowser) {
+      localStorage.setItem('admin_token', 'demo-guest-token');
+      localStorage.setItem('admin_user', JSON.stringify(user));
+    }
     this._user.set(user);
   }
 
   logout() {
-    localStorage.removeItem('admin_token');
-    localStorage.removeItem('admin_user');
+    if (this.isBrowser) {
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+    }
     this._user.set(null);
   }
 

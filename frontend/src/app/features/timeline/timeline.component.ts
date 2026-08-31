@@ -1,5 +1,5 @@
-import { Component, inject, AfterViewInit, ElementRef, ViewChildren, QueryList, OnDestroy, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, AfterViewInit, ElementRef, ViewChildren, QueryList, OnDestroy, Input, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { TimelineService } from '../../core/services/timeline.service';
 import { Observable, Subscription, of } from 'rxjs';
 import { Experience } from '../../core/models/experience.model';
@@ -14,6 +14,7 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
 })
 export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   private timelineService = inject(TimelineService);
+  private platformId = inject(PLATFORM_ID);
   
   // Allow passing data via Input()
   @Input() data: Experience[] | null = null;
@@ -22,7 +23,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   experiences$!: Observable<Experience[]>;
   
   @ViewChildren('timelineItem') timelineItems!: QueryList<ElementRef>;
-  private observer!: IntersectionObserver;
+  private observer?: IntersectionObserver;
   private sub = new Subscription();
 
   constructor() {}
@@ -37,6 +38,8 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     this.setupIntersectionObserver();
     
     // Re-observe when items change (e.g. async data load)
@@ -51,6 +54,7 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private setupIntersectionObserver() {
+    if (!isPlatformBrowser(this.platformId)) return;
     if (this.observer) this.observer.disconnect();
 
     const options = {
@@ -64,13 +68,13 @@ export class TimelineComponent implements OnInit, AfterViewInit, OnDestroy {
         if (entry.isIntersecting) {
           entry.target.classList.add('opacity-100', 'translate-y-0');
           entry.target.classList.remove('opacity-0', 'translate-y-12');
-          this.observer.unobserve(entry.target); // Animate only once
+          this.observer?.unobserve(entry.target); // Animate only once
         }
       });
     }, options);
 
     this.timelineItems.forEach(item => {
-      this.observer.observe(item.nativeElement);
+      this.observer?.observe(item.nativeElement);
     });
   }
 }

@@ -5,14 +5,14 @@ import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { LanguageService } from '../../../../core/services/language.service';
+import { getHttpErrorMessage } from '../../../../core/utils/http-error.util';
 
 interface Contact {
   id: string;
   name: string;
   email: string;
-  subject: string;
   message: string;
-  read: boolean;
+  readAt: string | null;
   createdAt: string;
 }
 
@@ -47,12 +47,18 @@ interface Contact {
         </div>
       </div>
 
+      @if (errorMessage()) {
+        <div class="p-3 bg-red-500/10 border border-red-500/20 rounded-lg text-red-400 text-sm">
+          {{ errorMessage() }}
+        </div>
+      }
+
       <!-- Contacts List -->
       <div class="space-y-4">
         @for (contact of filteredContacts(); track contact.id) {
           <div class="bg-white/5 rounded-2xl border border-white/10 overflow-hidden hover:border-tech-blue/30 transition-all"
-               [class.border-l-4]="!contact.read"
-               [class.border-l-tech-blue]="!contact.read">
+               [class.border-l-4]="!contact.readAt"
+               [class.border-l-tech-blue]="!contact.readAt">
             <div class="p-6">
               <div class="flex items-start justify-between mb-4">
                 <div class="flex items-center gap-4">
@@ -62,7 +68,7 @@ interface Contact {
                   <div>
                     <h3 class="text-white font-semibold flex items-center gap-2">
                       {{ contact.name }}
-                      @if (!contact.read) {
+                      @if (!contact.readAt) {
                         <span class="w-2 h-2 bg-tech-blue rounded-full"></span>
                       }
                     </h3>
@@ -72,11 +78,13 @@ interface Contact {
                 <div class="flex items-center gap-2">
                   <span class="text-gray-500 text-sm">{{ contact.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
                   @if (adminAuth.canEdit()) {
-                    <button (click)="toggleRead(contact)"
+                    @if (!contact.readAt) {
+                    <button (click)="markAsRead(contact)"
                             class="p-2 text-gray-400 hover:text-white hover:bg-white/10 rounded-lg transition-colors"
-                            [title]="contact.read ? ('ADMIN_CONTACTS_MARK_UNREAD' | translate) : ('ADMIN_CONTACTS_MARK_READ' | translate)">
-                      {{ contact.read ? '📭' : '📬' }}
+                            [title]="'ADMIN_CONTACTS_MARK_READ' | translate">
+                      📬
                     </button>
+                    }
                     <button (click)="deleteContact(contact.id)"
                             class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                             [title]="'ADMIN_CONTACTS_DELETE' | translate">
@@ -86,16 +94,11 @@ interface Contact {
                 </div>
               </div>
               
-              <div class="mb-3">
-                <span class="text-tech-blue text-sm font-medium">{{ 'ADMIN_CONTACTS_SUBJECT' | translate }}</span>
-                <span class="text-white ml-2">{{ contact.subject }}</span>
-              </div>
-              
               <p class="text-gray-300 leading-relaxed whitespace-pre-wrap">{{ contact.message }}</p>
               
               @if (adminAuth.canEdit()) {
                 <div class="mt-4 pt-4 border-t border-white/10 flex gap-3">
-                  <a [href]="'mailto:' + contact.email + '?subject=Re: ' + contact.subject"
+                  <a [href]="'mailto:' + contact.email + '?subject=Re: Portfolio contact'"
                      class="px-4 py-2 bg-tech-blue text-black font-medium rounded-xl hover:bg-tech-blue/80 transition-colors">
                     📧 {{ 'ADMIN_CONTACTS_REPLY' | translate }}
                   </a>
@@ -125,6 +128,7 @@ export class ContactsAdminComponent implements OnInit {
   adminAuth = inject(AdminAuthService);
   
   contacts = signal<Contact[]>([]);
+  errorMessage = signal<string | null>(null);
   filter: 'all' | 'unread' = 'all';
 
   ngOnInit() {
@@ -133,30 +137,37 @@ export class ContactsAdminComponent implements OnInit {
 
   loadContacts() {
     this.http.get<Contact[]>(`${environment.apiUrl}/contacts`).subscribe({
-      next: (data) => this.contacts.set(data),
-      error: (err) => console.error('Failed to load contacts', err)
+      next: (data) => {
+        this.contacts.set(data);
+        this.errorMessage.set(null);
+      },
+      error: (err: unknown) =>
+        this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
     });
   }
 
   filteredContacts() {
     if (this.filter === 'unread') {
-      return this.contacts().filter(c => !c.read);
+      return this.contacts().filter(c => !c.readAt);
     }
     return this.contacts();
   }
 
   unreadCount() {
-    return this.contacts().filter(c => !c.read).length;
+    return this.contacts().filter(c => !c.readAt).length;
   }
 
-  toggleRead(contact: Contact) {
+  markAsRead(contact: Contact) {
     if (!this.adminAuth.canEdit()) return;
-    this.http.patch(`${environment.apiUrl}/contacts/${contact.id}`, { read: !contact.read }).subscribe({
-      next: () => {
-        this.contacts.update(contacts => 
-          contacts.map(c => c.id === contact.id ? { ...c, read: !c.read } : c)
+    this.http.patch<Contact>(`${environment.apiUrl}/contacts/${contact.id}/read`, {}).subscribe({
+      next: (updatedContact) => {
+        this.contacts.update(contacts =>
+          contacts.map(c => c.id === contact.id ? updatedContact : c)
         );
-      }
+        this.errorMessage.set(null);
+      },
+      error: (err: unknown) =>
+        this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
     });
   }
 
@@ -165,7 +176,8 @@ export class ContactsAdminComponent implements OnInit {
     if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_CONTACT'))) {
       this.http.delete(`${environment.apiUrl}/contacts/${id}`).subscribe({
         next: () => this.contacts.update(contacts => contacts.filter(c => c.id !== id)),
-        error: (err: any) => console.error('Failed to delete contact', err)
+        error: (err: unknown) =>
+          this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
       });
     }
   }

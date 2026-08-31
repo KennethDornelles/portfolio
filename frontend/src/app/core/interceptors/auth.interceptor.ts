@@ -1,9 +1,12 @@
-import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { catchError, throwError } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
+import { inject, PLATFORM_ID } from '@angular/core';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const token = localStorage.getItem('admin_token') ||
-                localStorage.getItem('access_token');
+  const platformId = inject(PLATFORM_ID);
+  const token = isPlatformBrowser(platformId)
+    ? localStorage.getItem('admin_token') || localStorage.getItem('access_token')
+    : null;
 
   // Helper para identificar endpoints i18n
   const isI18nEndpoint = (url: string): boolean => {
@@ -35,17 +38,5 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     });
   }
 
-  // Tratamento de erro com logging específico
-  return next(clonedReq).pipe(
-    catchError((error: HttpErrorResponse) => {
-      if (isI18nEndpoint(req.url)) {
-        console.error('[I18N] Translation request failed:', {
-          url: req.url,
-          status: error.status,
-          message: error.message
-        });
-      }
-      return throwError(() => error);
-    })
-  );
+  return next(clonedReq);
 };
