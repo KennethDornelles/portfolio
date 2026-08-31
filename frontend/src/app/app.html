@@ -1,1 +1,14 @@
-<router-outlet />
+@if (languageService.state() === 'error') {
+  <main class="i18n-error" role="alert">
+    <h1>Conteúdo temporariamente indisponível</h1>
+    <p>{{ languageService.errorMessage() }}</p>
+    <button type="button" (click)="languageService.initialize()">Tentar novamente</button>
+  </main>
+} @else if (languageService.state() === 'ready') {
+  @if (languageService.errorMessage()) {
+    <div class="i18n-warning" role="status">{{ languageService.errorMessage() }}</div>
+  }
+  <router-outlet />
+} @else {
+  <main class="i18n-loading" role="status">Carregando conteúdo…</main>
+}

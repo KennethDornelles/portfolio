@@ -6,6 +6,7 @@ import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { LanguageService } from '../../../../core/services/language.service';
+import { getHttpErrorMessage } from '../../../../core/utils/http-error.util';
 
 interface Project {
   id: string;
@@ -218,14 +219,16 @@ export class ProjectsAdminComponent implements OnInit {
   loadProjects() {
     this.http.get<Project[]>(`${environment.apiUrl}/projects`).subscribe({
       next: (data) => this.projects.set(data),
-      error: (err) => console.error('Failed to load projects', err)
+      error: (err: unknown) =>
+        this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
     });
   }
 
   loadTechnologies() {
     this.http.get<Technology[]>(`${environment.apiUrl}/technologies`).subscribe({
       next: (data) => this.availableTechnologies.set(data),
-      error: (err) => console.error('Failed to load technologies', err)
+      error: (err: unknown) =>
+        this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
     });
   }
 
@@ -272,13 +275,13 @@ export class ProjectsAdminComponent implements OnInit {
       slug: this.form.title.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]+/g, ''),
       description: this.form.description,
       technologyIds,
-      repositoryUrl: this.form.repositoryUrl || null,
-      liveUrl: this.form.liveUrl || null,
+      repositoryUrl: this.form.repositoryUrl || undefined,
+      liveUrl: this.form.liveUrl || undefined,
       isActive: this.form.isActive
     };
 
     const request = this.editingProject
-      ? this.http.put(`${environment.apiUrl}/projects/${this.editingProject.id}`, payload)
+      ? this.http.patch(`${environment.apiUrl}/projects/${this.editingProject.id}`, payload)
       : this.http.post(`${environment.apiUrl}/projects`, payload);
 
     request.subscribe({
@@ -288,15 +291,9 @@ export class ProjectsAdminComponent implements OnInit {
         this.loading.set(false);
         this.errorMessage.set(null);
       },
-      error: (err: any) => {
-        console.error('Failed to save project', err);
+      error: (err: unknown) => {
         this.loading.set(false);
-        
-        if (err.status === 500 || err.status === 400) {
-          this.errorMessage.set(this.i18n.translate('ADMIN_ERR_DUPLICATE'));
-        } else {
-          this.errorMessage.set(this.i18n.translate('ADMIN_ERR_GENERIC'));
-        }
+        this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')));
       }
     });
   }
@@ -306,7 +303,8 @@ export class ProjectsAdminComponent implements OnInit {
     if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_PROJECT'))) {
       this.http.delete(`${environment.apiUrl}/projects/${id}`).subscribe({
         next: () => this.loadProjects(),
-        error: (err: any) => console.error('Failed to delete project', err)
+        error: (err: unknown) =>
+          this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
       });
     }
   }

@@ -4,6 +4,8 @@ import { environment } from '../../../environments/environment';
 import { tap, catchError, timeout } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { PLATFORM_ID } from '@angular/core';
 
 interface AuthResponse {
   accessToken: string;
@@ -16,6 +18,7 @@ interface AuthResponse {
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   
   // Signal to track auth state
   currentUser = signal<any>(null);
@@ -23,7 +26,7 @@ export class AuthService {
 
   constructor() {
     // Check if we have a token on startup
-    const token = localStorage.getItem('access_token');
+    const token = this.isBrowser ? localStorage.getItem('access_token') : null;
     if (token) {
         this.isAuthenticated.set(true);
         // Ideally we decode the token or fetch /me
@@ -34,7 +37,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/guest`, {}).pipe(
       timeout(3000), // 3 second timeout
       tap(response => {
-        localStorage.setItem('access_token', response.accessToken);
+        if (this.isBrowser) localStorage.setItem('access_token', response.accessToken);
         this.currentUser.set(response.user);
         this.isAuthenticated.set(true);
       }),
@@ -44,7 +47,7 @@ export class AuthService {
           accessToken: 'demo-guest-token',
           user: { email: 'guest@demo.com', role: 'GUEST', name: 'Visitante Demo' }
         };
-        localStorage.setItem('access_token', mockResponse.accessToken);
+        if (this.isBrowser) localStorage.setItem('access_token', mockResponse.accessToken);
         this.currentUser.set(mockResponse.user);
         this.isAuthenticated.set(true);
         return of(mockResponse);
@@ -53,7 +56,7 @@ export class AuthService {
   }
 
   logout() {
-    localStorage.removeItem('access_token');
+    if (this.isBrowser) localStorage.removeItem('access_token');
     this.isAuthenticated.set(false);
     this.currentUser.set(null);
     this.router.navigate(['/']);

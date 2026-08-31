@@ -2,7 +2,7 @@ import { Component, inject } from '@angular/core';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { LanguageService } from '../../services/language.service';
+import { LanguageService, SupportedLanguage } from '../../services/language.service';
 import { AuthService } from '../../services/auth.service';
 import { AdminAuthService } from '../../services/admin-auth.service';
 
@@ -165,8 +165,8 @@ export class NavbarComponent {
     this.isMobileMenuOpen = false;
   }
 
-  switchLang(lang: string) {
-    this.langService.setLanguage(lang);
+  switchLang(lang: SupportedLanguage) {
+    void this.langService.setLanguage(lang);
   }
 
   loginAsGuest() {
