@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseEnumPipe,
   Post,
   ServiceUnavailableException,
   UseGuards,
@@ -9,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { UserRole } from '@prisma/client';
+import { LanguageCode, UserRole } from '@prisma/client';
 import { Public } from '../../common/decorators/public.decorator';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -55,7 +56,9 @@ export class I18nController {
 
   @Public()
   @Get(':lang')
-  async getTranslations(@Param('lang') lang: string) {
+  async getTranslations(
+    @Param('lang', new ParseEnumPipe(LanguageCode)) lang: LanguageCode,
+  ) {
     return this.i18nService.getTranslations(lang);
   }
 }

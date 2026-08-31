@@ -1,4 +1,4 @@
-import { Translation } from '@prisma/client';
+import { LanguageCode, Translation } from '@prisma/client';
 
 export type TranslationWithKey = Translation & {
   translationKey: { key: string };
@@ -6,9 +6,9 @@ export type TranslationWithKey = Translation & {
 
 export abstract class II18nRepository {
   abstract findTranslation(
-    language: string,
+    language: LanguageCode,
     key: string,
   ): Promise<Translation | null>;
-  abstract findAllByLang(language: string): Promise<TranslationWithKey[]>;
+  abstract findAllByLang(language: LanguageCode): Promise<TranslationWithKey[]>;
   abstract count(): Promise<number>;
 }

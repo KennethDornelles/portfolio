@@ -148,4 +148,9 @@ describe('I18nController security', () => {
       .set('Authorization', 'Bearer admin')
       .expect(429);
   });
+
+  it('rejects unsupported languages', async () => {
+    await request(app.getHttpServer()).get('/api/i18n/ES_ES').expect(400);
+    expect(service.getTranslations).not.toHaveBeenCalled();
+  });
 });

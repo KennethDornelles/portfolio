@@ -33,4 +33,8 @@ export class ContactsService {
   async markAsRead(id: string) {
     return this.contactsRepository.markAsRead(id);
   }
+
+  async remove(id: string) {
+    return this.contactsRepository.delete(id);
+  }
 }

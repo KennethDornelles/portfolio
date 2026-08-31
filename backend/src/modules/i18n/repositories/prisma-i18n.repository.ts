@@ -4,28 +4,28 @@ import {
   II18nRepository,
   TranslationWithKey,
 } from './i18n.repository.interface';
-import { Translation } from '@prisma/client';
+import { LanguageCode, Translation } from '@prisma/client';
 
 @Injectable()
 export class PrismaI18nRepository implements II18nRepository {
   constructor(private prisma: PrismaService) {}
 
   async findTranslation(
-    language: string,
+    language: LanguageCode,
     key: string,
   ): Promise<Translation | null> {
     return this.prisma.translation.findFirst({
       where: {
-        language: language === 'PT_BR' ? 'PT_BR' : 'EN_US',
+        language,
         translationKey: { key },
       },
     });
   }
 
-  async findAllByLang(language: string): Promise<TranslationWithKey[]> {
+  async findAllByLang(language: LanguageCode): Promise<TranslationWithKey[]> {
     return this.prisma.translation.findMany({
       where: {
-        language: language === 'PT_BR' ? 'PT_BR' : 'EN_US',
+        language,
       },
       include: {
         translationKey: true,
