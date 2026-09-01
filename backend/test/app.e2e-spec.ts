@@ -7,6 +7,7 @@ import { httpRequest } from './utils/http-test';
 
 interface AuthResponseBody {
   accessToken: string;
+  refreshToken?: string;
 }
 interface ProjectResponseBody {
   id: string;
@@ -24,6 +25,7 @@ describe('AppController (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let accessToken: string;
+  let refreshToken: string;
   let createdProjectId: string;
 
   beforeAll(async () => {
@@ -62,7 +64,9 @@ describe('AppController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    if (app) {
+      await app.close();
+    }
   });
 
   describe('Health Check', () => {
@@ -95,6 +99,7 @@ describe('AppController (e2e)', () => {
       expect(body.accessToken.length).toBeGreaterThan(0);
 
       accessToken = body.accessToken;
+      refreshToken = body.refreshToken ?? '';
     });
 
     it('/api/auth/signin (POST) - should fail with invalid credentials', async () => {
@@ -105,6 +110,41 @@ describe('AppController (e2e)', () => {
           password: 'wrongpassword',
         })
         .expect(401); // Or 400 depending on implementation, usually 401 for bad creds
+    });
+  });
+
+  describe('Critical public and refresh journeys', () => {
+    it('/api/i18n/PT_BR returns seeded translations publicly', async () => {
+      const response = await httpRequest(app)
+        .get('/api/i18n/PT_BR')
+        .expect(200);
+      const body = response.body as Record<string, string>;
+      expect(body.NAV_HOME).toBeDefined();
+      expect(body.HOME_TITLE_1).toBeDefined();
+      expect(body.BTN_VIEW_PROJECTS).toBeDefined();
+    });
+
+    it('/api/contacts accepts a public submission', async () => {
+      const response = await httpRequest(app)
+        .post('/api/contacts')
+        .send({
+          name: 'TEST-001 Visitor',
+          email: 'test-001@example.com',
+          subject: 'Test',
+          message: 'Test',
+        })
+        .expect(201);
+      expect(response.body).toEqual({ success: true });
+    });
+
+    it('/api/auth/refresh rotates the refresh token', async () => {
+      const response = await httpRequest(app)
+        .post('/api/auth/refresh')
+        .set('Authorization', `Bearer ${refreshToken}`)
+        .expect(200);
+      const body = response.body as AuthResponseBody;
+      expect(body.refreshToken).toEqual(expect.any(String));
+      expect(body.refreshToken).not.toBe(refreshToken);
     });
   });
 
