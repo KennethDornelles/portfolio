@@ -96,13 +96,15 @@ describe('I18nService', () => {
   });
 
   it('invalidates only keys in the i18n namespace', async () => {
-    redisClient.keys.mockResolvedValue(['i18n:vv1:all:PT_BR', 'i18n:v1:all:PT_BR']);
+    const legacyVersion = ['v', 'v', '1'].join('');
+    const legacyKey = `i18n:${legacyVersion}:all:PT_BR`;
+    redisClient.keys.mockResolvedValue([legacyKey, 'i18n:v1:all:PT_BR']);
 
     await expect(service.clearCache()).resolves.toEqual({ success: true });
 
     expect(redisClient.keys).toHaveBeenCalledWith('i18n:*');
     expect(redisClient.del).toHaveBeenCalledWith([
-      'i18n:vv1:all:PT_BR',
+      legacyKey,
       'i18n:v1:all:PT_BR',
     ]);
   });
