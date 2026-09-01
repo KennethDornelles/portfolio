@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
 import { IAuditRepository } from './repositories/audit.repository.interface';
+import { Prisma } from '@prisma/client';
 
 export interface AuditEventDto {
   userId?: string;
@@ -9,7 +10,7 @@ export interface AuditEventDto {
   entityId?: string;
   ipAddress?: string;
   userAgent?: string;
-  metadata?: any;
+  metadata?: Prisma.InputJsonValue;
 }
 
 @Injectable()

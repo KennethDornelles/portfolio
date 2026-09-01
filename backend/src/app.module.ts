@@ -37,13 +37,19 @@ import { validateEnvironment } from './config/environment.validation';
     BullModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const url = configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
+        const url =
+          configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
         const parsed = parseRedisUrl(url || '');
-        
+
         return {
           connection: parsed || {
-            host: configService.get<string>('REDIS_HOST') || process.env.REDIS_HOST || 'localhost',
-            port: configService.get<number>('REDIS_PORT') || parseInt(process.env.REDIS_PORT || '6379', 10),
+            host:
+              configService.get<string>('REDIS_HOST') ||
+              process.env.REDIS_HOST ||
+              'localhost',
+            port:
+              configService.get<number>('REDIS_PORT') ||
+              parseInt(process.env.REDIS_PORT || '6379', 10),
           },
         };
       },
@@ -54,19 +60,23 @@ import { validateEnvironment } from './config/environment.validation';
           paths: ['req.headers["x-webhook-signature"]'],
           censor: '[REDACTED]',
         },
-        transport: process.env.NODE_ENV !== 'production' ? {
-          target: 'pino-pretty',
-          options: {
-            singleLine: true,
-          },
-        } : undefined,
+        transport:
+          process.env.NODE_ENV !== 'production'
+            ? {
+                target: 'pino-pretty',
+                options: {
+                  singleLine: true,
+                },
+              }
+            : undefined,
       },
     }),
     CacheModule.registerAsync({
       isGlobal: true,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const url = configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
+        const url =
+          configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
         const parsed = parseRedisUrl(url || '');
 
         return {
@@ -79,7 +89,9 @@ import { validateEnvironment } from './config/environment.validation';
                         ...parsed,
                         tls: parsed.tls === undefined ? false : parsed.tls,
                         connectTimeout: 10000,
-                      } as any,
+                      } as unknown as NonNullable<
+                        Parameters<typeof redisStore>[0]
+                      >['socket'],
                       password: parsed.password,
                     }
                   : {

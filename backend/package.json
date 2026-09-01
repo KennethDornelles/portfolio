@@ -23,7 +23,8 @@
     "seed:translations": "npx ts-node prisma/seed-translations.ts",
     "seed:experiences": "npx ts-node prisma/seed-experiences.ts",
     "seed:all": "npm run seed && npm run seed:translations && npm run seed:experiences",
-    "check-user": "npx ts-node prisma/check-user.ts"
+    "check-user": "npx ts-node prisma/check-user.ts",
+    "audit:any": "node scripts/audit-any.js"
   },
   "overrides": {
     "lodash": "^4.17.21"

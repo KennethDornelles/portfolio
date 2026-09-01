@@ -1,8 +1,13 @@
-
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { Inject, Logger } from '@nestjs/common';
 import { IMailProvider } from './mail.service';
+
+interface MailJobData {
+  to: string;
+  subject: string;
+  body: string;
+}
 
 @Processor('mail')
 export class MailProcessor extends WorkerHost {
@@ -12,9 +17,9 @@ export class MailProcessor extends WorkerHost {
     super();
   }
 
-  async process(job: Job<any, any, string>): Promise<any> {
+  async process(job: Job<MailJobData, void, string>): Promise<void> {
     this.logger.log(`Processing job ${job.id} of type ${job.name}`);
-    
+
     switch (job.name) {
       case 'send-email':
         const { to, subject, body } = job.data;

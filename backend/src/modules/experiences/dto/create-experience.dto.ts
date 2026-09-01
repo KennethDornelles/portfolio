@@ -1,5 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsString, IsOptional, IsArray, IsInt, IsDateString, IsNotEmpty } from 'class-validator';
+import { Prisma } from '@prisma/client';
+import {
+  IsString,
+  IsOptional,
+  IsArray,
+  IsInt,
+  IsDateString,
+  IsNotEmpty,
+} from 'class-validator';
 
 export class CreateExperienceDto {
   @ApiProperty()
@@ -39,9 +47,12 @@ export class CreateExperienceDto {
   @IsOptional()
   highlights?: string[];
 
-  @ApiProperty({ description: 'JSON structure for tech stack', example: [{ name: "NestJS", color: "bg-red-600" }] })
+  @ApiProperty({
+    description: 'JSON structure for tech stack',
+    example: [{ name: 'NestJS', color: 'bg-red-600' }],
+  })
   @IsNotEmpty()
-  techStack: any;
+  techStack: Prisma.InputJsonValue;
 
   @ApiPropertyOptional()
   @IsDateString()

@@ -1,4 +1,10 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  Logger,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
@@ -6,7 +12,7 @@ import { tap } from 'rxjs/operators';
 export class PerformanceInterceptor implements NestInterceptor {
   private readonly logger = new Logger('PerformanceInterceptor');
 
-  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
     const now = performance.now();
     const req = context.switchToHttp().getRequest();
     const method = req.method;
@@ -15,7 +21,9 @@ export class PerformanceInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap(() => {
         const time = performance.now() - now;
-        this.logger.log(`[Performance] ${method} ${url} took ${time.toFixed(2)}ms`);
+        this.logger.log(
+          `[Performance] ${method} ${url} took ${time.toFixed(2)}ms`,
+        );
       }),
     );
   }
