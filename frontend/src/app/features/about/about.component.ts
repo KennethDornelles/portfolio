@@ -193,7 +193,7 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
              class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110">
             💼
           </a>
-          <a href="mailto:contact@olustack.dev" 
+          <a href="mailto:kenneth.jesus@olustack.com.br" 
              class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110">
             ✉️
           </a>
