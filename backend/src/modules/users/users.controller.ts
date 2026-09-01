@@ -1,6 +1,11 @@
-import { Controller, Get, Param, UseGuards, HttpStatus, HttpCode } from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { ApiBearerAuth, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { UserDto } from './dto/user.dto';
 
@@ -23,7 +28,7 @@ export class UsersController {
     // For now, returning the service result directly (which is Prisma User model).
     // Ideally use interceptor or map manually.
     const users = await this.usersService.findAll(); // Assuming findAll exists or I add it
-    return users.map(user => new UserDto({ id: user.id, email: user.email }));
+    return users.map((user) => new UserDto({ id: user.id, email: user.email }));
   }
 
   @UseGuards(JwtAuthGuard)

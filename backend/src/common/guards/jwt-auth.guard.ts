@@ -29,10 +29,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   handleRequest<TUser = { jti?: string }>(
     err: unknown,
     user: TUser,
-    _info: unknown,
+    info: unknown,
   ): TUser {
+    void info;
     if (err || !user) {
-      throw err || new UnauthorizedException();
+      if (err instanceof Error) throw err;
+      throw new UnauthorizedException();
     }
     return user;
   }

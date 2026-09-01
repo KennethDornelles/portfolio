@@ -1,9 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/modules/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { httpRequest } from './utils/http-test';
+
+interface AuthResponseBody {
+  accessToken: string;
+}
+interface ProjectResponseBody {
+  id: string;
+  title: string;
+}
+interface HealthResponseBody {
+  status: string;
+  info?: { database?: { status: string } };
+}
+interface ValidationErrorBody {
+  message: string | string[];
+}
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -18,7 +33,7 @@ describe('AppController (e2e)', () => {
 
     app = moduleFixture.createNestApplication();
     prisma = app.get<PrismaService>(PrismaService);
-    
+
     // Seed Admin User
     await prisma.user.deleteMany({ where: { email: 'admin@portfolio.com' } });
     const passwordHash = await bcrypt.hash('password123', 10);
@@ -52,22 +67,21 @@ describe('AppController (e2e)', () => {
 
   describe('Health Check', () => {
     it('/api/health (GET) - should return health status', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/api/health')
-        .expect(200);
+      const response = await httpRequest(app).get('/api/health').expect(200);
 
       expect(response.body).toHaveProperty('status');
-      expect(response.body.status).toBe('ok');
+      const body = response.body as HealthResponseBody;
+      expect(body.status).toBe('ok');
       // Adjust based on actual health check response structure if needed
-      if (response.body.info) {
-         expect(response.body.info.database.status).toBe('up');
+      if (body.info?.database) {
+        expect(body.info.database.status).toBe('up');
       }
     });
   });
 
   describe('Authentication', () => {
     it('/api/auth/signin (POST) - should authenticate and return JWT token', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .post('/api/auth/signin')
         .send({
           email: 'admin@portfolio.com',
@@ -76,14 +90,15 @@ describe('AppController (e2e)', () => {
         .expect(200);
 
       expect(response.body).toHaveProperty('accessToken');
-      expect(typeof response.body.accessToken).toBe('string');
-      expect(response.body.accessToken.length).toBeGreaterThan(0);
+      const body = response.body as AuthResponseBody;
+      expect(typeof body.accessToken).toBe('string');
+      expect(body.accessToken.length).toBeGreaterThan(0);
 
-      accessToken = response.body.accessToken;
+      accessToken = body.accessToken;
     });
 
     it('/api/auth/signin (POST) - should fail with invalid credentials', async () => {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .post('/api/auth/signin')
         .send({
           email: 'admin@portfolio.com',
@@ -95,7 +110,7 @@ describe('AppController (e2e)', () => {
 
   describe('Projects CRUD', () => {
     it('/api/projects (POST) - should fail without authentication', async () => {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .post('/api/projects')
         .send({
           title: 'Unauthorized Project',
@@ -104,30 +119,31 @@ describe('AppController (e2e)', () => {
     });
 
     it('/api/projects (POST) - should create a new project with authentication', async () => {
-        // Ensure accessToken is available from previous tests
-        expect(accessToken).toBeDefined();
+      // Ensure accessToken is available from previous tests
+      expect(accessToken).toBeDefined();
 
-        const response = await request(app.getHttpServer())
-          .post('/api/projects')
-          .set('Authorization', `Bearer ${accessToken}`)
-          .send({
-            title: 'E2E Test Project',
-            slug: 'e2e-test-project-1',
-            description: 'Created during E2E testing',
-            content: 'E2E Short Content',
-            startDate: '2023-01-01T00:00:00.000Z',
-            isActive: true,
-            technologyIds: [],
-          })
-          .expect(201);
+      const response = await httpRequest(app)
+        .post('/api/projects')
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          title: 'E2E Test Project',
+          slug: 'e2e-test-project-1',
+          description: 'Created during E2E testing',
+          content: 'E2E Short Content',
+          startDate: '2023-01-01T00:00:00.000Z',
+          isActive: true,
+          technologyIds: [],
+        })
+        .expect(201);
 
-        expect(response.body).toHaveProperty('id');
-        expect(response.body.title).toBe('E2E Test Project');
-        createdProjectId = response.body.id;
+      expect(response.body).toHaveProperty('id');
+      const body = response.body as ProjectResponseBody;
+      expect(body.title).toBe('E2E Test Project');
+      createdProjectId = body.id;
     });
 
     it('/api/projects (POST) - should validate required fields', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .post('/api/projects')
         .set('Authorization', `Bearer ${accessToken}`)
         .send({
@@ -135,66 +151,66 @@ describe('AppController (e2e)', () => {
           // description missing
         })
         .expect(400);
-      
+
       // ValidationPipe usually returns message array
-      expect(response.body).toHaveProperty('message');
+      expect(response.body as ValidationErrorBody).toHaveProperty('message');
     });
 
     it('/api/projects (GET) - should list all projects', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/api/projects')
-        .expect(200);
+      const response = await httpRequest(app).get('/api/projects').expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
-      const project = response.body.find((p: { id: string; }) => p.id === createdProjectId);
+      const project = (response.body as ProjectResponseBody[]).find(
+        (item) => item.id === createdProjectId,
+      );
       expect(project).toBeDefined();
-      expect(project.title).toBe('E2E Test Project');
+      expect(project?.title).toBe('E2E Test Project');
     });
 
     it('/api/projects/:id (GET) - should get a specific project', async () => {
-        const response = await request(app.getHttpServer())
-            .get(`/api/projects/${createdProjectId}`)
-            .expect(200);
-        
-        expect(response.body.id).toBe(createdProjectId);
+      const response = await httpRequest(app)
+        .get(`/api/projects/${createdProjectId}`)
+        .expect(200);
+
+      expect((response.body as ProjectResponseBody).id).toBe(createdProjectId);
     });
 
     it('/api/projects/:id (PATCH) - should update a project', async () => {
-        const response = await request(app.getHttpServer())
-            .patch(`/api/projects/${createdProjectId}`)
-            .set('Authorization', `Bearer ${accessToken}`)
-            .send({
-                title: 'Updated Project Title',
-            })
-            .expect(200);
+      const response = await httpRequest(app)
+        .patch(`/api/projects/${createdProjectId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .send({
+          title: 'Updated Project Title',
+        })
+        .expect(200);
 
-        expect(response.body.title).toBe('Updated Project Title');
+      expect((response.body as ProjectResponseBody).title).toBe(
+        'Updated Project Title',
+      );
     });
 
     it('/api/projects/:id (DELETE) - should delete a project', async () => {
-        await request(app.getHttpServer())
-            .delete(`/api/projects/${createdProjectId}`)
-            .set('Authorization', `Bearer ${accessToken}`)
-            .expect(200); // 200 or 204
+      await httpRequest(app)
+        .delete(`/api/projects/${createdProjectId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
+        .expect(200); // 200 or 204
     });
 
     it('/api/projects/:id (GET) - should return 404 after deletion', async () => {
-        await request(app.getHttpServer())
-            .get(`/api/projects/${createdProjectId}`)
-            .expect(404);
+      await httpRequest(app)
+        .get(`/api/projects/${createdProjectId}`)
+        .expect(404);
     });
   });
 
   describe('Edge Cases', () => {
     it('/api/projects/:id (GET) - should return 404 for non-existent project', async () => {
-        const fakeId = '00000000-0000-0000-0000-000000000000'; // Valid UUID but non-existent
-        // If IDs are not UUIDs, adjust accordingly. Prisma usually uses UUID or CUID.
-        // Assuming UUID for now based on typical NestJS + Prisma
-        // If it throws 500 for invalid ID format, make sure ID format is valid mock.
-        
-        await request(app.getHttpServer())
-          .get(`/api/projects/${fakeId}`)
-          .expect(404);
+      const fakeId = '00000000-0000-0000-0000-000000000000'; // Valid UUID but non-existent
+      // If IDs are not UUIDs, adjust accordingly. Prisma usually uses UUID or CUID.
+      // Assuming UUID for now based on typical NestJS + Prisma
+      // If it throws 500 for invalid ID format, make sure ID format is valid mock.
+
+      await httpRequest(app).get(`/api/projects/${fakeId}`).expect(404);
     });
   });
 });

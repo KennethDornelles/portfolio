@@ -31,8 +31,8 @@ export class UsersService {
 
   async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {
     if (data.passwordHash && typeof data.passwordHash === 'string') {
-        const salt = await bcrypt.genSalt();
-        data.passwordHash = await bcrypt.hash(data.passwordHash, salt);
+      const salt = await bcrypt.genSalt();
+      data.passwordHash = await bcrypt.hash(data.passwordHash, salt);
     }
     return this.usersRepository.update(id, data);
   }

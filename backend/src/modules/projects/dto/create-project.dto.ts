@@ -1,4 +1,11 @@
-import { IsString, IsOptional, IsUrl, IsBoolean, IsDateString, IsArray } from 'class-validator';
+import {
+  IsString,
+  IsOptional,
+  IsUrl,
+  IsBoolean,
+  IsDateString,
+  IsArray,
+} from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
 export class CreateProjectDto {
@@ -49,7 +56,10 @@ export class CreateProjectDto {
   @IsDateString()
   endDate?: string;
 
-  @ApiPropertyOptional({ type: [String], description: 'Array of Technology IDs' })
+  @ApiPropertyOptional({
+    type: [String],
+    description: 'Array of Technology IDs',
+  })
   @IsOptional()
   @IsArray()
   @IsString({ each: true })

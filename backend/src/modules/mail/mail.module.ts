@@ -1,5 +1,9 @@
 import { Module, Global } from '@nestjs/common';
-import { MailService, ConsoleMailProvider, ResendMailProvider } from './mail.service';
+import {
+  MailService,
+  ConsoleMailProvider,
+  ResendMailProvider,
+} from './mail.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bullmq';
 import { MailProcessor } from './mail.processor';
@@ -18,7 +22,7 @@ import { MailProcessor } from './mail.processor';
     {
       provide: 'MAIL_PROVIDER',
       useFactory: (configService: ConfigService) => {
-        const apiKey = configService.get('RESEND_API_KEY');
+        const apiKey = configService.get<string>('RESEND_API_KEY');
         if (apiKey) {
           return new ResendMailProvider(configService);
         }

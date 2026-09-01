@@ -7,6 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
+import { Request } from 'express';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {
@@ -23,17 +24,18 @@ export class AllExceptionsFilter implements ExceptionFilter {
         ? exception.getStatus()
         : HttpStatus.INTERNAL_SERVER_ERROR;
 
+    const request = ctx.getRequest<Request>();
     const responseBody = {
       statusCode: httpStatus,
       timestamp: new Date().toISOString(),
-      path: httpAdapter.getRequestUrl(ctx.getRequest()),
+      path: String(httpAdapter.getRequestUrl(request)),
       message:
         exception instanceof HttpException
-          ? exception.getResponse()
+          ? (exception.getResponse() as unknown)
           : 'Internal server error',
     };
 
-    if (httpStatus === HttpStatus.INTERNAL_SERVER_ERROR) {
+    if (httpStatus === Number(HttpStatus.INTERNAL_SERVER_ERROR)) {
       this.logger.error(
         `Exception: ${JSON.stringify(responseBody)}`,
         exception instanceof Error ? exception.stack : '',

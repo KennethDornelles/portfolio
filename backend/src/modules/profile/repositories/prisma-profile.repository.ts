@@ -13,7 +13,10 @@ export class PrismaProfileRepository implements IProfileRepository {
     });
   }
 
-  async update(userId: string, data: Prisma.ProfileUpdateInput): Promise<Profile> {
+  async update(
+    userId: string,
+    data: Prisma.ProfileUpdateInput,
+  ): Promise<Profile> {
     return this.prisma.profile.update({
       where: { userId },
       data,

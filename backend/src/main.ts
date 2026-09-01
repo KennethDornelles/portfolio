@@ -31,9 +31,11 @@ async function bootstrap() {
   // Cache flush trigger
 
   // Helmet - HTTP Security Headers
-  app.use(helmet({
-    contentSecurityPolicy: false, // Desativa apenas o CSP se necessário, mantendo as outras proteções
-  }));
+  app.use(
+    helmet({
+      contentSecurityPolicy: false, // Desativa apenas o CSP se necessário, mantendo as outras proteções
+    }),
+  );
 
   // Global Validation Pipe - OBRIGATÓRIO para class-validator funcionar
   app.useGlobalPipes(
@@ -49,13 +51,16 @@ async function bootstrap() {
 
   // Configurar CORS
   app.enableCors({
-    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    origin: (
+      origin: string | undefined,
+      callback: (err: Error | null, allow?: boolean) => void,
+    ) => {
       const allowedOrigins = [
         'http://localhost:3000',
         'http://127.0.0.1:4200',
         'http://localhost:4200',
-        'https://olustack.com.br',       // Adicionado
-        'https://www.olustack.com.br',   // Adicionado
+        'https://olustack.com.br', // Adicionado
+        'https://www.olustack.com.br', // Adicionado
       ];
 
       if (!origin) return callback(null, true);

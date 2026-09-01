@@ -23,7 +23,10 @@ export class PrismaTechnologiesRepository implements ITechnologiesRepository {
     return this.prisma.technology.findUnique({ where: { name } });
   }
 
-  async update(id: string, data: Prisma.TechnologyUpdateInput): Promise<Technology> {
+  async update(
+    id: string,
+    data: Prisma.TechnologyUpdateInput,
+  ): Promise<Technology> {
     return this.prisma.technology.update({ where: { id }, data });
   }
 

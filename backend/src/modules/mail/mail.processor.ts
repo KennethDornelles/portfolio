@@ -22,8 +22,10 @@ export class MailProcessor extends WorkerHost {
 
     switch (job.name) {
       case 'send-email':
-        const { to, subject, body } = job.data;
-        await this.provider.sendEmail(to, subject, body);
+        {
+          const { to, subject, body } = job.data;
+          await this.provider.sendEmail(to, subject, body);
+        }
         break;
       default:
         this.logger.warn(`Unknown job name: ${job.name}`);

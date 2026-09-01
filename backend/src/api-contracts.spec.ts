@@ -1,7 +1,7 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Test } from '@nestjs/testing';
-import request from 'supertest';
+import { httpRequest } from '../test/utils/http-test';
 import { JwtAuthGuard } from './common/guards/jwt-auth.guard';
 import { RolesGuard } from './common/guards/roles.guard';
 import { AuthController } from './modules/auth/auth.controller';
@@ -88,7 +88,7 @@ describe('API-001 HTTP contracts', () => {
   it('registers through POST /auth/signup with the backend DTO', async () => {
     usersService.create.mockResolvedValue({ id: 'user-id' });
 
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .post('/api/auth/signup')
       .send({ email: 'user@example.com', password: 'password123' })
       .expect(201);
@@ -111,21 +111,16 @@ describe('API-001 HTTP contracts', () => {
     projectsService.update.mockResolvedValue({ id: 'project-id', ...payload });
     projectsService.remove.mockResolvedValue({ id: 'project-id' });
 
-    await request(app.getHttpServer())
-      .post('/api/projects')
-      .send(payload)
-      .expect(201);
-    await request(app.getHttpServer())
+    await httpRequest(app).post('/api/projects').send(payload).expect(201);
+    await httpRequest(app)
       .patch('/api/projects/project-id')
       .send({ title: 'Updated project' })
       .expect(200);
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .put('/api/projects/project-id')
       .send(payload)
       .expect(404);
-    await request(app.getHttpServer())
-      .delete('/api/projects/project-id')
-      .expect(200);
+    await httpRequest(app).delete('/api/projects/project-id').expect(200);
 
     expect(projectsService.update).toHaveBeenCalledWith('project-id', {
       title: 'Updated project',
@@ -148,19 +143,16 @@ describe('API-001 HTTP contracts', () => {
     });
     technologiesService.remove.mockResolvedValue({ id: 'technology-id' });
 
-    await request(app.getHttpServer())
-      .post('/api/technologies')
-      .send(payload)
-      .expect(201);
-    await request(app.getHttpServer())
+    await httpRequest(app).post('/api/technologies').send(payload).expect(201);
+    await httpRequest(app)
       .patch('/api/technologies/technology-id')
       .send({ proficiencyLevel: 90 })
       .expect(200);
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .put('/api/technologies/technology-id')
       .send(payload)
       .expect(404);
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .delete('/api/technologies/technology-id')
       .expect(200);
 
@@ -177,18 +169,16 @@ describe('API-001 HTTP contracts', () => {
     });
     contactsService.remove.mockResolvedValue({ id: 'contact-id' });
 
-    await request(app.getHttpServer()).get('/api/contacts').expect(200, []);
-    await request(app.getHttpServer())
+    await httpRequest(app).get('/api/contacts').expect(200, []);
+    await httpRequest(app)
       .patch('/api/contacts/contact-id/read')
       .send({})
       .expect(200);
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .patch('/api/contacts/contact-id')
       .send({ read: true })
       .expect(404);
-    await request(app.getHttpServer())
-      .delete('/api/contacts/contact-id')
-      .expect(200);
+    await httpRequest(app).delete('/api/contacts/contact-id').expect(200);
 
     expect(contactsService.markAsRead).toHaveBeenCalledWith('contact-id');
     expect(contactsService.remove).toHaveBeenCalledWith('contact-id');

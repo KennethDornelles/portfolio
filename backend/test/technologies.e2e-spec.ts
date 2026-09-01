@@ -1,9 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/modules/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { httpRequest } from './utils/http-test';
+
+interface AuthResponseBody {
+  accessToken: string;
+}
+interface TechnologyResponseBody {
+  id: string;
+  name: string;
+}
 
 describe('TechnologiesController (e2e)', () => {
   let app: INestApplication;
@@ -19,7 +27,9 @@ describe('TechnologiesController (e2e)', () => {
 
     // Seed Data
     const prisma = app.get<PrismaService>(PrismaService);
-    await prisma.user.deleteMany({ where: { email: 'tech_admin@portfolio.com' } });
+    await prisma.user.deleteMany({
+      where: { email: 'tech_admin@portfolio.com' },
+    });
     const passwordHash = await bcrypt.hash('password123', 10);
     await prisma.user.create({
       data: {
@@ -31,16 +41,18 @@ describe('TechnologiesController (e2e)', () => {
     });
 
     app.setGlobalPrefix('api');
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+    );
     await app.init();
-    
+
     // Login
-    const loginRes = await request(app.getHttpServer())
+    const loginRes = await httpRequest(app)
       .post('/api/auth/signin')
       .send({ email: 'tech_admin@portfolio.com', password: 'password123' })
       .expect(200);
 
-    accessToken = loginRes.body.accessToken;
+    accessToken = (loginRes.body as AuthResponseBody).accessToken;
   });
 
   afterAll(async () => {
@@ -49,7 +61,7 @@ describe('TechnologiesController (e2e)', () => {
 
   describe('Public Access', () => {
     it('/api/technologies (GET) - should list all technologies publicly', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .get('/api/technologies')
         .expect(200);
 
@@ -64,48 +76,53 @@ describe('TechnologiesController (e2e)', () => {
     };
 
     it('/api/technologies (POST) - should fail without authentication', async () => {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .post('/api/technologies')
         .send(newTech)
         .expect(401);
     });
 
     it('/api/technologies (POST) - should create new technology with admin token', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .post('/api/technologies')
         .set('Authorization', `Bearer ${accessToken}`)
         .send(newTech)
         .expect(201);
 
       expect(response.body).toHaveProperty('id');
-      expect(response.body.name).toBe(newTech.name);
-      createdTechId = response.body.id;
+      const body = response.body as TechnologyResponseBody;
+      expect(body.name).toBe(newTech.name);
+      createdTechId = body.id;
     });
 
     it('/api/technologies/:id (PATCH) - should update technology', async () => {
       const updateData = { name: newTech.name + ' Updated' };
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .patch(`/api/technologies/${createdTechId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send(updateData)
         .expect(200);
 
-      expect(response.body.name).toBe(updateData.name);
+      expect((response.body as TechnologyResponseBody).name).toBe(
+        updateData.name,
+      );
     });
 
     it('/api/technologies/:id (DELETE) - should delete technology', async () => {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .delete(`/api/technologies/${createdTechId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(200);
 
       // Verify deletion
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .get(`/api/technologies`)
         .expect(200)
         .then((res) => {
-            const found = res.body.find((t: any) => t.id === createdTechId);
-            expect(found).toBeUndefined();
+          const found = (res.body as TechnologyResponseBody[]).find(
+            (technology) => technology.id === createdTechId,
+          );
+          expect(found).toBeUndefined();
         });
     });
   });

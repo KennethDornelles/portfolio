@@ -33,6 +33,8 @@ describe('AuthService refresh rotation', () => {
   let service: AuthService;
   let usersService: jest.Mocked<Pick<UsersService, 'findById' | 'findByEmail'>>;
   let repository: jest.Mocked<IRefreshTokenRepository>;
+  let rotateMock: jest.Mock;
+  let updateManyMock: jest.Mock;
   let jwtService: jest.Mocked<Pick<JwtService, 'signAsync'>>;
 
   beforeEach(() => {
@@ -49,6 +51,8 @@ describe('AuthService refresh rotation', () => {
       updateMany: jest.fn(),
       rotate: jest.fn().mockResolvedValue(true),
     };
+    rotateMock = jest.spyOn(repository, 'rotate');
+    updateManyMock = jest.spyOn(repository, 'updateMany');
     jwtService = {
       signAsync: jest
         .fn()
@@ -91,11 +95,11 @@ describe('AuthService refresh rotation', () => {
       expect.objectContaining({
         sub: user.id,
         role: UserRole.ADMIN,
-        jti: expect.any(String),
-      }),
+        jti: expect.any(String) as unknown as string,
+      }) as unknown as Record<string, unknown>,
       expect.objectContaining({ expiresIn: '7d' }),
     );
-    expect(repository.rotate).toHaveBeenCalledWith(
+    expect(rotateMock).toHaveBeenCalledWith(
       tokenRecord.id,
       expect.objectContaining({
         token: 'new-refresh-token',
@@ -115,7 +119,7 @@ describe('AuthService refresh rotation', () => {
     ).rejects.toThrow('Access denied');
 
     expect(usersService.findById).not.toHaveBeenCalled();
-    expect(repository.rotate).not.toHaveBeenCalled();
+    expect(rotateMock).not.toHaveBeenCalled();
   });
 
   it('rejects a disabled user and revokes all active sessions', async () => {
@@ -125,11 +129,11 @@ describe('AuthService refresh rotation', () => {
       service.refreshTokens(user.id, tokenRecord.token),
     ).rejects.toThrow('Access denied');
 
-    expect(repository.updateMany).toHaveBeenCalledWith(
+    expect(updateManyMock).toHaveBeenCalledWith(
       { userId: user.id, revokedAt: null },
       { revokedAt: NOW },
     );
-    expect(repository.rotate).not.toHaveBeenCalled();
+    expect(rotateMock).not.toHaveBeenCalled();
   });
 
   it('detects reuse and revokes all remaining active sessions', async () => {
@@ -142,7 +146,7 @@ describe('AuthService refresh rotation', () => {
       service.refreshTokens(user.id, tokenRecord.token),
     ).rejects.toThrow('Access denied');
 
-    expect(repository.updateMany).toHaveBeenCalledWith(
+    expect(updateManyMock).toHaveBeenCalledWith(
       { userId: user.id, revokedAt: null },
       { revokedAt: NOW },
     );
@@ -158,7 +162,7 @@ describe('AuthService refresh rotation', () => {
       service.refreshTokens(user.id, tokenRecord.token),
     ).rejects.toThrow('Access denied');
 
-    expect(repository.rotate).not.toHaveBeenCalled();
+    expect(rotateMock).not.toHaveBeenCalled();
   });
 
   it('treats a lost atomic rotation race as reuse', async () => {
@@ -168,7 +172,7 @@ describe('AuthService refresh rotation', () => {
       service.refreshTokens(user.id, tokenRecord.token),
     ).rejects.toThrow('Access denied');
 
-    expect(repository.updateMany).toHaveBeenCalledWith(
+    expect(updateManyMock).toHaveBeenCalledWith(
       { userId: user.id, revokedAt: null },
       { revokedAt: NOW },
     );
@@ -189,10 +193,14 @@ describe('AuthService refresh rotation', () => {
       jti?: string;
     };
     expect(firstRefreshPayload).toEqual(
-      expect.objectContaining({ jti: expect.any(String) }),
+      expect.objectContaining({
+        jti: expect.any(String) as unknown as string,
+      }) as unknown as Record<string, unknown>,
     );
     expect(secondRefreshPayload).toEqual(
-      expect.objectContaining({ jti: expect.any(String) }),
+      expect.objectContaining({
+        jti: expect.any(String) as unknown as string,
+      }) as unknown as Record<string, unknown>,
     );
     expect(firstRefreshPayload.jti).not.toBe(secondRefreshPayload.jti);
   });
