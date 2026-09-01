@@ -127,7 +127,9 @@ export class I18nService implements OnModuleInit {
     });
 
     if (Object.keys(map).length === 0) {
-      this.logger.error(`No translations available for required language ${lang}`);
+      this.logger.error(
+        `No translations available for required language ${lang}`,
+      );
       throw new ServiceUnavailableException('Translations unavailable');
     }
 
