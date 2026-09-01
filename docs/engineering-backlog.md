@@ -31,7 +31,7 @@
 | 4 | API-001 | Corrigir contratos frontend/backend | P0 | M | — | Proposto |
 | 5 | API-002 | Restaurar submissão pública de contato | P0 | S | — | Proposto |
 | 6 | DB-001 | Eliminar drift de migrations | P0 | M | — | Proposto |
-| 7 | CI-001 | Implantar CI mínimo | P1 | M | DB-001 | Proposto |
+| 7 | CI-001 | Implantar CI mínimo | P1 | M | DB-001 | Concluído |
 | 8 | TEST-001 | Cobrir jornadas críticas | P1 | L | API-001, API-002, SEC-002 | Proposto |
 | 9 | AUTH-001 | Consolidar autenticação Angular | P1 | L | SEC-002, API-001 | Proposto |
 | 10 | API-003 | Gerar cliente TypeScript pelo OpenAPI | P1 | L | API-001, CI-001 | Proposto |

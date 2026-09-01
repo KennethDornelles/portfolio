@@ -25,6 +25,15 @@ describe('validateEnvironment', () => {
     ).toThrow('JWT_SECRET must be configured with at least 32 characters');
   });
 
+  it('rejects secrets padded with whitespace', () => {
+    expect(() =>
+      validateEnvironment({
+        ...validEnvironment,
+        JWT_SECRET: ` ${String(validEnvironment.JWT_SECRET)}`,
+      }),
+    ).toThrow('JWT_SECRET must be configured with at least 32 characters');
+  });
+
   it('requires independent access and refresh signing secrets', () => {
     expect(() =>
       validateEnvironment({
