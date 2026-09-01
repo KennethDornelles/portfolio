@@ -8,6 +8,7 @@ import {
   UseGuards,
   Delete,
 } from '@nestjs/common';
+import { Throttle } from '@nestjs/throttler';
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import {
@@ -20,6 +21,7 @@ import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { Roles } from '../../common/decorators/roles.decorator';
 import { RolesGuard } from '../../common/guards/roles.guard';
 import { UserRole } from '@prisma/client';
+import { Public } from '../../common/decorators/public.decorator';
 
 @ApiTags('Contacts')
 @Controller('contacts')
@@ -27,13 +29,16 @@ export class ContactsController {
   constructor(private readonly contactsService: ContactsService) {}
 
   @Post()
+  @Public()
+  @Throttle({ default: { limit: 5, ttl: 60000 } })
   @ApiOperation({ summary: 'Submit a contact form' })
   @ApiResponse({
     status: 201,
     description: 'The contact message has been successfully created.',
   })
-  create(@Body() createContactDto: CreateContactDto) {
-    return this.contactsService.create(createContactDto);
+  async create(@Body() createContactDto: CreateContactDto) {
+    await this.contactsService.create(createContactDto);
+    return { success: true };
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

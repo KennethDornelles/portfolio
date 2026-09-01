@@ -13,11 +13,16 @@ export class ContactsService {
   ) {}
 
   async create(createContactDto: CreateContactDto) {
-    const contact = await this.contactsRepository.create(createContactDto);
+    const { subject, ...contactData } = createContactDto;
+    const contact = await this.contactsRepository.create({
+      ...contactData,
+      message: subject
+        ? `[${subject}]\n\n${contactData.message}`
+        : contactData.message,
+    });
 
     try {
-      await this.mailService.sendWelcome(createContactDto.email); // Reusing sendWelcome for now, ideally sendContactAlert
-      // TODO: Implement a specific method in MailService for contact alerts
+      await this.mailService.sendContactAlert(createContactDto);
       this.logger.log(`Contact email sent for ${contact.email}`);
     } catch (error) {
       this.logger.error('Failed to send contact email', error);

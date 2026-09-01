@@ -95,8 +95,8 @@ interface ContactForm {
         <!-- Alternative Contact -->
         <div class="mt-12 text-center text-gray-400">
           <p>{{ 'CONTACT_ALT' | translate }}</p>
-          <a href="mailto:contact@olustack.dev" class="text-tech-blue hover:underline">
-            contact@olustack.dev
+          <a href="mailto:kenneth.jesus@olustack.com.br" class="text-tech-blue hover:underline">
+            kenneth.jesus@olustack.com.br
           </a>
         </div>
       </div>
