@@ -18,6 +18,7 @@ describe('I18nService', () => {
 
   let cache: Cache;
   let repository: jest.Mocked<II18nRepository>;
+  let findAllByLangMock: jest.Mock;
   let redisClient: { keys: jest.Mock; del: jest.Mock };
   let service: I18nService;
 
@@ -36,6 +37,7 @@ describe('I18nService', () => {
       findAllByLang: jest.fn(),
       count: jest.fn(),
     };
+    findAllByLangMock = jest.spyOn(repository, 'findAllByLang');
     service = new I18nService(cache, repository);
   });
 
@@ -68,7 +70,7 @@ describe('I18nService', () => {
     await expect(service.getTranslations(LanguageCode.PT_BR)).resolves.toEqual({
       NAV_HOME: 'Início',
     });
-    expect(repository.findAllByLang).not.toHaveBeenCalled();
+    expect(findAllByLangMock).not.toHaveBeenCalled();
   });
 
   it('queries the database on a cache miss', async () => {
@@ -76,7 +78,7 @@ describe('I18nService', () => {
 
     await service.getTranslations(LanguageCode.PT_BR);
 
-    expect(repository.findAllByLang).toHaveBeenCalledWith(LanguageCode.PT_BR);
+    expect(findAllByLangMock).toHaveBeenCalledWith(LanguageCode.PT_BR);
   });
 
   it('does not cache or return an empty database as success', async () => {
@@ -95,7 +97,7 @@ describe('I18nService', () => {
     await expect(
       service.getTranslations(LanguageCode.PT_BR),
     ).rejects.toBeInstanceOf(ServiceUnavailableException);
-    expect(repository.findAllByLang).toHaveBeenCalledTimes(1);
+    expect(findAllByLangMock).toHaveBeenCalledTimes(1);
   });
 
   it('invalidates only keys in the i18n namespace', async () => {
@@ -114,7 +116,10 @@ describe('I18nService', () => {
 
   it('does not announce a successful warm-up when translations are empty', async () => {
     repository.findAllByLang.mockResolvedValue([]);
-    const log = jest.spyOn((service as any).logger, 'log');
+    const log = jest.spyOn(
+      (service as unknown as { logger: { log: jest.Mock } }).logger,
+      'log',
+    );
 
     await service.onModuleInit();
 

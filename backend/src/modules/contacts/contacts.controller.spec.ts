@@ -9,7 +9,7 @@ import {
 import { APP_GUARD, Reflector } from '@nestjs/core';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { Test } from '@nestjs/testing';
-import request from 'supertest';
+import { httpRequest } from '../../../test/utils/http-test';
 import type { Request } from 'express';
 import { UserRole } from '@prisma/client';
 import { IS_PUBLIC_KEY } from '../../common/decorators/public.decorator';
@@ -86,7 +86,7 @@ describe('API-002 public contact submission', () => {
   });
 
   it('allows an anonymous visitor to submit a valid contact', async () => {
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .post('/api/contacts')
       .send({
         name: 'Visitor',
@@ -105,7 +105,7 @@ describe('API-002 public contact submission', () => {
   });
 
   it('rejects an invalid payload without persisting it', async () => {
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .post('/api/contacts')
       .send({ name: '', email: 'invalid', message: '' })
       .expect(400);
@@ -114,8 +114,8 @@ describe('API-002 public contact submission', () => {
   });
 
   it('keeps contact administration protected', async () => {
-    await request(app.getHttpServer()).get('/api/contacts').expect(401);
-    await request(app.getHttpServer())
+    await httpRequest(app).get('/api/contacts').expect(401);
+    await httpRequest(app)
       .get('/api/contacts')
       .set('Authorization', 'Bearer user')
       .expect(403);
@@ -123,7 +123,7 @@ describe('API-002 public contact submission', () => {
 
   it('applies a specific submission rate limit', async () => {
     for (let index = 0; index < 5; index += 1) {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .post('/api/contacts')
         .send({
           name: 'Visitor',
@@ -133,7 +133,7 @@ describe('API-002 public contact submission', () => {
         .expect(201);
     }
 
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .post('/api/contacts')
       .send({
         name: 'Visitor',

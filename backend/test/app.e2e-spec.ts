@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/modules/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
+import { httpRequest } from './utils/http-test';
 
 interface AuthResponseBody {
   accessToken: string;
@@ -67,9 +67,7 @@ describe('AppController (e2e)', () => {
 
   describe('Health Check', () => {
     it('/api/health (GET) - should return health status', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/api/health')
-        .expect(200);
+      const response = await httpRequest(app).get('/api/health').expect(200);
 
       expect(response.body).toHaveProperty('status');
       const body = response.body as HealthResponseBody;
@@ -83,7 +81,7 @@ describe('AppController (e2e)', () => {
 
   describe('Authentication', () => {
     it('/api/auth/signin (POST) - should authenticate and return JWT token', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .post('/api/auth/signin')
         .send({
           email: 'admin@portfolio.com',
@@ -100,7 +98,7 @@ describe('AppController (e2e)', () => {
     });
 
     it('/api/auth/signin (POST) - should fail with invalid credentials', async () => {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .post('/api/auth/signin')
         .send({
           email: 'admin@portfolio.com',
@@ -112,7 +110,7 @@ describe('AppController (e2e)', () => {
 
   describe('Projects CRUD', () => {
     it('/api/projects (POST) - should fail without authentication', async () => {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .post('/api/projects')
         .send({
           title: 'Unauthorized Project',
@@ -124,7 +122,7 @@ describe('AppController (e2e)', () => {
       // Ensure accessToken is available from previous tests
       expect(accessToken).toBeDefined();
 
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .post('/api/projects')
         .set('Authorization', `Bearer ${accessToken}`)
         .send({
@@ -145,7 +143,7 @@ describe('AppController (e2e)', () => {
     });
 
     it('/api/projects (POST) - should validate required fields', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .post('/api/projects')
         .set('Authorization', `Bearer ${accessToken}`)
         .send({
@@ -159,9 +157,7 @@ describe('AppController (e2e)', () => {
     });
 
     it('/api/projects (GET) - should list all projects', async () => {
-      const response = await request(app.getHttpServer())
-        .get('/api/projects')
-        .expect(200);
+      const response = await httpRequest(app).get('/api/projects').expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
       const project = (response.body as ProjectResponseBody[]).find(
@@ -172,7 +168,7 @@ describe('AppController (e2e)', () => {
     });
 
     it('/api/projects/:id (GET) - should get a specific project', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .get(`/api/projects/${createdProjectId}`)
         .expect(200);
 
@@ -180,7 +176,7 @@ describe('AppController (e2e)', () => {
     });
 
     it('/api/projects/:id (PATCH) - should update a project', async () => {
-      const response = await request(app.getHttpServer())
+      const response = await httpRequest(app)
         .patch(`/api/projects/${createdProjectId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .send({
@@ -194,14 +190,14 @@ describe('AppController (e2e)', () => {
     });
 
     it('/api/projects/:id (DELETE) - should delete a project', async () => {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .delete(`/api/projects/${createdProjectId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(200); // 200 or 204
     });
 
     it('/api/projects/:id (GET) - should return 404 after deletion', async () => {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .get(`/api/projects/${createdProjectId}`)
         .expect(404);
     });
@@ -214,9 +210,7 @@ describe('AppController (e2e)', () => {
       // Assuming UUID for now based on typical NestJS + Prisma
       // If it throws 500 for invalid ID format, make sure ID format is valid mock.
 
-      await request(app.getHttpServer())
-        .get(`/api/projects/${fakeId}`)
-        .expect(404);
+      await httpRequest(app).get(`/api/projects/${fakeId}`).expect(404);
     });
   });
 });

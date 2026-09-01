@@ -9,7 +9,7 @@ import { APP_GUARD, Reflector } from '@nestjs/core';
 import { Test } from '@nestjs/testing';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { UserRole } from '@prisma/client';
-import request from 'supertest';
+import { httpRequest } from '../../../test/utils/http-test';
 import type { Request } from 'express';
 import { IS_PUBLIC_KEY } from '../../common/decorators/public.decorator';
 import { RolesGuard } from '../../common/guards/roles.guard';
@@ -80,20 +80,18 @@ describe('I18nController security', () => {
   });
 
   it('returns 401 to anonymous cache diagnostics', async () => {
-    await request(app.getHttpServer())
-      .get('/api/i18n/health/cache')
-      .expect(401);
+    await httpRequest(app).get('/api/i18n/health/cache').expect(401);
   });
 
   it('returns 403 to an authenticated non-admin user', async () => {
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .get('/api/i18n/health/cache')
       .set('Authorization', 'Bearer user')
       .expect(403);
   });
 
   it('allows an admin and returns a sanitized diagnostic', async () => {
-    const response = await request(app.getHttpServer())
+    const response = await httpRequest(app)
       .get('/api/i18n/health/cache')
       .set('Authorization', 'Bearer admin')
       .expect(200);
@@ -104,13 +102,13 @@ describe('I18nController security', () => {
   });
 
   it('does not accept a query-string secret as authorization', async () => {
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .get('/api/i18n/health/cache?secret=anything')
       .expect(401);
   });
 
   it('allows an admin to clear cache with POST', async () => {
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .post('/api/i18n/cache/clear')
       .set('Authorization', 'Bearer admin')
       .expect(201, { success: true });
@@ -118,7 +116,7 @@ describe('I18nController security', () => {
   });
 
   it('does not execute cache mutation through the old GET method', async () => {
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .get('/api/i18n/cache/clear')
       .set('Authorization', 'Bearer admin')
       .expect(404);
@@ -127,7 +125,7 @@ describe('I18nController security', () => {
 
   it('does not expose stack traces or internal errors', async () => {
     service.clearCache.mockResolvedValueOnce({ success: false });
-    const response = await request(app.getHttpServer())
+    const response = await httpRequest(app)
       .post('/api/i18n/cache/clear')
       .set('Authorization', 'Bearer admin')
       .expect(503);
@@ -138,19 +136,19 @@ describe('I18nController security', () => {
 
   it('applies the endpoint-specific diagnostics rate limit', async () => {
     for (let index = 0; index < 10; index += 1) {
-      await request(app.getHttpServer())
+      await httpRequest(app)
         .get('/api/i18n/health/cache')
         .set('Authorization', 'Bearer admin')
         .expect(200);
     }
-    await request(app.getHttpServer())
+    await httpRequest(app)
       .get('/api/i18n/health/cache')
       .set('Authorization', 'Bearer admin')
       .expect(429);
   });
 
   it('rejects unsupported languages', async () => {
-    await request(app.getHttpServer()).get('/api/i18n/ES_ES').expect(400);
+    await httpRequest(app).get('/api/i18n/ES_ES').expect(400);
     expect(service.getTranslations).not.toHaveBeenCalled();
   });
 });

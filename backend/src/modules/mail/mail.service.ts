@@ -33,11 +33,11 @@ export class ResendMailProvider implements IMailProvider {
   private resend: Resend;
 
   constructor(private configService: ConfigService) {
-    this.resend = new Resend(this.configService.get('RESEND_API_KEY'));
+    this.resend = new Resend(this.configService.get<string>('RESEND_API_KEY'));
   }
 
   async sendEmail(to: string, subject: string, body: string): Promise<void> {
-    const from = this.configService.get(
+    const from = this.configService.get<string>(
       'MAIL_FROM',
       'kenneth.jesus@olustack.com.br',
     );
