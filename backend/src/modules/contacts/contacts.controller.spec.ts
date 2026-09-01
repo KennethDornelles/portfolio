@@ -43,7 +43,9 @@ class TestJwtGuard implements CanActivate {
 
 describe('API-002 public contact submission', () => {
   let app: INestApplication;
-  const contactsService = {
+  const contactsService: jest.Mocked<
+    Pick<ContactsService, 'create' | 'findAll' | 'markAsRead' | 'remove'>
+  > = {
     create: jest.fn(),
     findAll: jest.fn(),
     markAsRead: jest.fn(),
