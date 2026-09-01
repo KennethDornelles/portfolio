@@ -1,9 +1,23 @@
 import { Controller, Get } from '@nestjs/common';
-import { HealthCheck, HealthCheckService, MemoryHealthIndicator, PrismaHealthIndicator, MicroserviceHealthIndicator, HealthCheckError } from '@nestjs/terminus';
+import {
+  HealthCheck,
+  HealthCheckService,
+  MemoryHealthIndicator,
+  PrismaHealthIndicator,
+  MicroserviceHealthIndicator,
+  HealthCheckError,
+} from '@nestjs/terminus';
 import { PrismaService } from '../prisma/prisma.service';
 import { Public } from '../../common/decorators';
 import { Transport } from '@nestjs/microservices';
 import { parseRedisUrl } from '../../common/utils/redis.util';
+
+interface RedisHealthOptions {
+  host: string;
+  port: number;
+  password?: string;
+  tls?: unknown;
+}
 
 @Controller('health')
 export class HealthController {
@@ -21,8 +35,8 @@ export class HealthController {
   check() {
     const url = process.env.REDIS_URL;
     const parsedUrl = parseRedisUrl(url || '');
-    
-    let redisOptions: any = {
+
+    let redisOptions: RedisHealthOptions = {
       host: process.env.REDIS_HOST || 'localhost',
       port: parseInt(process.env.REDIS_PORT || '6379', 10),
     };
@@ -38,30 +52,42 @@ export class HealthController {
 
     return this.health.check([
       () => this.memory.checkHeap('memory_heap', 150 * 1024 * 1024),
-      () => this.db.pingCheck('database', this.prisma, { timeout: 5000 }).catch(error => {
-          if (process.env.NODE_ENV === 'production' && error instanceof HealthCheckError) {
-             const causes = error.causes;
-             if (causes && causes.database) {
-                 causes.database.message = 'Database connection failed';
-                 throw new HealthCheckError('Health check failed', causes);
-             }
-          }
-          throw error;
-      }),
-      () => this.microservice.pingCheck('redis', {
-        transport: Transport.REDIS,
-        timeout: 3000,
-        options: redisOptions,
-      }).catch(error => {
-         if (process.env.NODE_ENV === 'production' && error instanceof HealthCheckError) {
-             const causes = error.causes;
-             if (causes && causes.redis) {
-                 causes.redis.message = 'Redis connection failed';
-                 throw new HealthCheckError('Health check failed', causes);
-             }
-          }
-          throw error;
-      })
+      () =>
+        this.db
+          .pingCheck('database', this.prisma, { timeout: 5000 })
+          .catch((error) => {
+            if (
+              process.env.NODE_ENV === 'production' &&
+              error instanceof HealthCheckError
+            ) {
+              const causes = error.causes;
+              if (causes && causes.database) {
+                causes.database.message = 'Database connection failed';
+                throw new HealthCheckError('Health check failed', causes);
+              }
+            }
+            throw error;
+          }),
+      () =>
+        this.microservice
+          .pingCheck('redis', {
+            transport: Transport.REDIS,
+            timeout: 3000,
+            options: redisOptions,
+          })
+          .catch((error) => {
+            if (
+              process.env.NODE_ENV === 'production' &&
+              error instanceof HealthCheckError
+            ) {
+              const causes = error.causes;
+              if (causes && causes.redis) {
+                causes.redis.message = 'Redis connection failed';
+                throw new HealthCheckError('Health check failed', causes);
+              }
+            }
+            throw error;
+          }),
     ]);
   }
 }

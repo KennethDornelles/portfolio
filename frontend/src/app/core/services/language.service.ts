@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, timeout } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 export type SupportedLanguage = 'PT_BR' | 'EN_US';
@@ -39,7 +39,7 @@ export class LanguageService {
 
     try {
       const response = await firstValueFrom(
-        this.http.get<unknown>(`${environment.apiUrl}/i18n/${lang}`)
+        this.http.get<unknown>(`${environment.apiUrl}/i18n/${lang}`).pipe(timeout(3000))
       );
       const translations = this.validateTranslations(response);
 

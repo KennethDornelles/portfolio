@@ -182,8 +182,12 @@ describe('AuthService refresh rotation', () => {
     await service.login(user);
     await service.login(user);
 
-    const firstRefreshPayload = jwtService.signAsync.mock.calls[1][0];
-    const secondRefreshPayload = jwtService.signAsync.mock.calls[3][0];
+    const firstRefreshPayload = jwtService.signAsync.mock.calls[1][0] as {
+      jti?: string;
+    };
+    const secondRefreshPayload = jwtService.signAsync.mock.calls[3][0] as {
+      jti?: string;
+    };
     expect(firstRefreshPayload).toEqual(
       expect.objectContaining({ jti: expect.any(String) }),
     );
