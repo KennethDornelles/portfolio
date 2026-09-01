@@ -12,7 +12,11 @@ export function validateEnvironment(
   for (const name of REQUIRED_SECRETS) {
     const value = environment[name];
 
-    if (typeof value !== 'string' || value.length < MINIMUM_SECRET_LENGTH) {
+    if (
+      typeof value !== 'string' ||
+      value.trim().length < MINIMUM_SECRET_LENGTH ||
+      value.trim() !== value
+    ) {
       throw new Error(
         `${name} must be configured with at least ${MINIMUM_SECRET_LENGTH} characters`,
       );
