@@ -4,6 +4,15 @@ import { Resend } from 'resend';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 
+const escapeHtml = (value: string) =>
+  value.replace(
+    /[&<>'"]/g,
+    (character) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[
+        character
+      ] || character,
+  );
+
 export interface IMailProvider {
   sendEmail(to: string, subject: string, body: string): Promise<void>;
 }
@@ -11,7 +20,9 @@ export interface IMailProvider {
 @Injectable()
 export class ConsoleMailProvider implements IMailProvider {
   async sendEmail(to: string, subject: string, body: string): Promise<void> {
-    console.log(`[MailService] Sending email to ${to} with subject "${subject}"`);
+    console.log(
+      `[MailService] Sending email to ${to} with subject "${subject}"`,
+    );
     console.log(body);
   }
 }
@@ -25,8 +36,11 @@ export class ResendMailProvider implements IMailProvider {
   }
 
   async sendEmail(to: string, subject: string, body: string): Promise<void> {
-    const from = this.configService.get('MAIL_FROM', 'onboarding@resend.dev');
-    
+    const from = this.configService.get(
+      'MAIL_FROM',
+      'kenneth.jesus@olustack.com.br',
+    );
+
     await this.resend.emails.send({
       from,
       to,
@@ -45,6 +59,19 @@ export class MailService {
       to: email,
       subject: 'Welcome to Portfolio',
       body: '<h1>Thank you for joining!</h1>',
+    });
+  }
+
+  async sendContactAlert(contact: {
+    name: string;
+    email: string;
+    subject?: string;
+    message: string;
+  }) {
+    await this.mailQueue.add('send-email', {
+      to: 'kenneth.jesus@olustack.com.br',
+      subject: escapeHtml(contact.subject || 'Novo contato pelo portfólio'),
+      body: `<h1>Novo contato</h1><p><strong>Nome:</strong> ${escapeHtml(contact.name)}</p><p><strong>E-mail:</strong> ${escapeHtml(contact.email)}</p><p><strong>Mensagem:</strong></p><p>${escapeHtml(contact.message)}</p>`,
     });
   }
 

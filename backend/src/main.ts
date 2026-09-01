@@ -15,7 +15,7 @@ async function bootstrap() {
     rawBody: true,
   });
   app.useLogger(app.get(Logger));
-  
+
   const configService = app.get(ConfigService);
 
   // Startup Validation Logging
@@ -32,8 +32,8 @@ async function bootstrap() {
 
   // Helmet - HTTP Security Headers
   app.use(helmet({
-  contentSecurityPolicy: false, // Desativa apenas o CSP se necessário, mantendo as outras proteções
-}));
+    contentSecurityPolicy: false, // Desativa apenas o CSP se necessário, mantendo as outras proteções
+  }));
 
   // Global Validation Pipe - OBRIGATÓRIO para class-validator funcionar
   app.useGlobalPipes(
@@ -48,33 +48,34 @@ async function bootstrap() {
   );
 
   // Configurar CORS
-app.enableCors({
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:4200',
-      'https://olustack.com.br',       // Adicionado
-      'https://www.olustack.com.br',   // Adicionado
-    ];
-    
-    if (!origin) return callback(null, true);
-    
-    // Verifica se está na lista, se termina em .vercel.app ou se é o seu novo domínio
-    if (
-      allowedOrigins.includes(origin) || 
-      origin.endsWith('.vercel.app') || 
-      origin.endsWith('olustack.com.br') // Cobre subdomínios também
-    ) {
-      callback(null, true);
-    } else {
-      console.warn(`Blocked CORS for origin: ${origin}`);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-  credentials: true,
-  allowedHeaders: 'Content-Type,Accept,Authorization',
-});
+  app.enableCors({
+    origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+      const allowedOrigins = [
+        'http://localhost:3000',
+        'http://127.0.0.1:4200',
+        'http://localhost:4200',
+        'https://olustack.com.br',       // Adicionado
+        'https://www.olustack.com.br',   // Adicionado
+      ];
+
+      if (!origin) return callback(null, true);
+
+      // Verifica se está na lista, se termina em .vercel.app ou se é o seu novo domínio
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('olustack.com.br') // Cobre subdomínios também
+      ) {
+        callback(null, true);
+      } else {
+        console.warn(`Blocked CORS for origin: ${origin}`);
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+    allowedHeaders: 'Content-Type,Accept,Authorization',
+  });
 
   // Global prefix
   app.setGlobalPrefix('api');
@@ -86,13 +87,13 @@ app.enableCors({
     .setVersion('1.0')
     .addBearerAuth()
     .build();
-  
+
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/docs', app, document);
 
   const port = configService.get<number>('PORT', 3000);
   await app.listen(port);
-  
+
   console.log(`🚀 Application is running on: http://localhost:${port}/api`);
 }
 void bootstrap();
