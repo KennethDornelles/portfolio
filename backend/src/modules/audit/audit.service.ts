@@ -31,8 +31,11 @@ export class AuditService {
         userAgent: payload.userAgent,
         metadata: payload.metadata || {},
       });
-    } catch (error) {
-      this.logger.error('Failed to persist audit log', error);
+    } catch (error: unknown) {
+      this.logger.error(
+        'Failed to persist audit log',
+        error instanceof Error ? error.message : String(error),
+      );
       // In production, send to DLQ (Dead Letter Queue)
     }
   }

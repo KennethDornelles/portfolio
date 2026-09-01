@@ -7,7 +7,7 @@ import { Prisma, AuditLog } from '@prisma/client';
 export class PrismaAuditRepository implements IAuditRepository {
   constructor(private prisma: PrismaService) {}
 
-  async create(data: Prisma.AuditLogUncheckedCreateInput): Promise<AuditLog> {
+  create(data: Prisma.AuditLogUncheckedCreateInput): Promise<AuditLog> {
     return this.prisma.auditLog.create({
       data,
     });

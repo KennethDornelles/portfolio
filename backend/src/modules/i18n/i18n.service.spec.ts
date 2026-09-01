@@ -42,22 +42,25 @@ describe('I18nService', () => {
   it.each([
     [LanguageCode.PT_BR, ptRecords, 'Início', 'Transformamos', 'Ver Cases'],
     [LanguageCode.EN_US, enRecords, 'Home', 'We transform', 'View Cases'],
-  ])('returns required translations for %s', async (lang, records, nav, title, button) => {
-    repository.findAllByLang.mockResolvedValue(records as never);
+  ])(
+    'returns required translations for %s',
+    async (lang, records, nav, title, button) => {
+      repository.findAllByLang.mockResolvedValue(records as never);
 
-    const result = await service.getTranslations(lang);
+      const result = await service.getTranslations(lang);
 
-    expect(result).toMatchObject({
-      NAV_HOME: nav,
-      HOME_TITLE_1: title,
-      BTN_VIEW_PROJECTS: button,
-    });
-    expect(cache.set).toHaveBeenCalledWith(
-      `i18n:v1:all:${lang}`,
-      expect.objectContaining({ NAV_HOME: nav }),
-      86400000,
-    );
-  });
+      expect(result).toMatchObject({
+        NAV_HOME: nav,
+        HOME_TITLE_1: title,
+        BTN_VIEW_PROJECTS: button,
+      });
+      expect(cache.set).toHaveBeenCalledWith(
+        `i18n:v1:all:${lang}`,
+        expect.objectContaining({ NAV_HOME: nav }),
+        86400000,
+      );
+    },
+  );
 
   it('returns a non-empty cache hit without querying the database', async () => {
     (cache.get as jest.Mock).mockResolvedValue({ NAV_HOME: 'Início' });
@@ -79,9 +82,9 @@ describe('I18nService', () => {
   it('does not cache or return an empty database as success', async () => {
     repository.findAllByLang.mockResolvedValue([]);
 
-    await expect(service.getTranslations(LanguageCode.PT_BR)).rejects.toBeInstanceOf(
-      ServiceUnavailableException,
-    );
+    await expect(
+      service.getTranslations(LanguageCode.PT_BR),
+    ).rejects.toBeInstanceOf(ServiceUnavailableException);
     expect(cache.set).not.toHaveBeenCalled();
   });
 
@@ -89,9 +92,9 @@ describe('I18nService', () => {
     (cache.get as jest.Mock).mockResolvedValue({});
     repository.findAllByLang.mockResolvedValue([]);
 
-    await expect(service.getTranslations(LanguageCode.PT_BR)).rejects.toBeInstanceOf(
-      ServiceUnavailableException,
-    );
+    await expect(
+      service.getTranslations(LanguageCode.PT_BR),
+    ).rejects.toBeInstanceOf(ServiceUnavailableException);
     expect(repository.findAllByLang).toHaveBeenCalledTimes(1);
   });
 

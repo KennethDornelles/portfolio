@@ -12,16 +12,11 @@ import { IRefreshTokenRepository } from './repositories/refresh-token.repository
 import { PrismaRefreshTokenRepository } from './repositories/prisma-refresh-token.repository';
 
 @Module({
-  imports: [
-    UsersModule,
-    PassportModule,
-    JwtModule.register({}),
-    PrismaModule,
-  ],
+  imports: [UsersModule, PassportModule, JwtModule.register({}), PrismaModule],
   controllers: [AuthController],
   providers: [
-    AuthService, 
-    JwtStrategy, 
+    AuthService,
+    JwtStrategy,
     RtStrategy,
     {
       provide: IRefreshTokenRepository,

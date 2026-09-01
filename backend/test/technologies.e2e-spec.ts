@@ -19,7 +19,9 @@ describe('TechnologiesController (e2e)', () => {
 
     // Seed Data
     const prisma = app.get<PrismaService>(PrismaService);
-    await prisma.user.deleteMany({ where: { email: 'tech_admin@portfolio.com' } });
+    await prisma.user.deleteMany({
+      where: { email: 'tech_admin@portfolio.com' },
+    });
     const passwordHash = await bcrypt.hash('password123', 10);
     await prisma.user.create({
       data: {
@@ -31,9 +33,11 @@ describe('TechnologiesController (e2e)', () => {
     });
 
     app.setGlobalPrefix('api');
-    app.useGlobalPipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true }),
+    );
     await app.init();
-    
+
     // Login
     const loginRes = await request(app.getHttpServer())
       .post('/api/auth/signin')
@@ -104,8 +108,8 @@ describe('TechnologiesController (e2e)', () => {
         .get(`/api/technologies`)
         .expect(200)
         .then((res) => {
-            const found = res.body.find((t: any) => t.id === createdTechId);
-            expect(found).toBeUndefined();
+          const found = res.body.find((t: any) => t.id === createdTechId);
+          expect(found).toBeUndefined();
         });
     });
   });

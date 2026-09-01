@@ -1,5 +1,9 @@
 import { Module, Global } from '@nestjs/common';
-import { MailService, ConsoleMailProvider, ResendMailProvider } from './mail.service';
+import {
+  MailService,
+  ConsoleMailProvider,
+  ResendMailProvider,
+} from './mail.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { BullModule } from '@nestjs/bullmq';
 import { MailProcessor } from './mail.processor';

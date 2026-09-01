@@ -1,4 +1,9 @@
-import { Injectable, Inject, ConflictException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  Inject,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { ITechnologiesRepository } from './repositories/technologies.repository.interface';
 import { CreateTechnologyDto } from './dto/create-technology.dto';
 import { UpdateTechnologyDto } from './dto/update-technology.dto';
@@ -11,7 +16,9 @@ export class TechnologiesService {
   ) {}
 
   async create(createTechnologyDto: CreateTechnologyDto) {
-    const existing = await this.technologiesRepository.findByName(createTechnologyDto.name);
+    const existing = await this.technologiesRepository.findByName(
+      createTechnologyDto.name,
+    );
     if (existing) {
       throw new ConflictException('Technology with this name already exists');
     }

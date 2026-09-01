@@ -1,8 +1,23 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { CreateProjectDto } from './dto/create-project.dto';
 import { UpdateProjectDto } from './dto/update-project.dto';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { Roles } from '../../common/decorators/roles.decorator';
@@ -21,7 +36,10 @@ export class ProjectsController {
   @ApiBearerAuth()
   @Post()
   @ApiOperation({ summary: 'Create a new project (Admin only)' })
-  @ApiResponse({ status: 201, description: 'The project has been successfully created.' })
+  @ApiResponse({
+    status: 201,
+    description: 'The project has been successfully created.',
+  })
   create(@Body() createProjectDto: CreateProjectDto) {
     return this.projectsService.create(createProjectDto);
   }
@@ -57,7 +75,10 @@ export class ProjectsController {
   @ApiBearerAuth()
   @Patch(':id')
   @ApiOperation({ summary: 'Update a project (Admin only)' })
-  @ApiResponse({ status: 200, description: 'The project has been successfully updated.' })
+  @ApiResponse({
+    status: 200,
+    description: 'The project has been successfully updated.',
+  })
   update(@Param('id') id: string, @Body() updateProjectDto: UpdateProjectDto) {
     return this.projectsService.update(id, updateProjectDto);
   }
@@ -67,7 +88,10 @@ export class ProjectsController {
   @ApiBearerAuth()
   @Delete(':id')
   @ApiOperation({ summary: 'Delete a project (Admin only)' })
-  @ApiResponse({ status: 200, description: 'The project has been successfully deleted.' })
+  @ApiResponse({
+    status: 200,
+    description: 'The project has been successfully deleted.',
+  })
   remove(@Param('id') id: string) {
     return this.projectsService.remove(id);
   }
