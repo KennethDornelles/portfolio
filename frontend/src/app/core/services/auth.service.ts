@@ -9,34 +9,41 @@ import { PLATFORM_ID } from '@angular/core';
 
 interface AuthResponse {
   accessToken: string;
-  user: any;
+  user: AuthUser;
+}
+
+interface AuthUser {
+  id?: string;
+  email: string;
+  role: string;
+  name?: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
-  
+
   // Signal to track auth state
-  currentUser = signal<any>(null);
+  currentUser = signal<AuthUser | null>(null);
   isAuthenticated = signal<boolean>(false);
 
   constructor() {
     // Check if we have a token on startup
     const token = this.isBrowser ? localStorage.getItem('access_token') : null;
     if (token) {
-        this.isAuthenticated.set(true);
-        // Ideally we decode the token or fetch /me
+      this.isAuthenticated.set(true);
+      // Ideally we decode the token or fetch /me
     }
   }
 
   loginAsGuest() {
     return this.http.post<AuthResponse>(`${environment.apiUrl}/auth/guest`, {}).pipe(
       timeout(3000), // 3 second timeout
-      tap(response => {
+      tap((response) => {
         if (this.isBrowser) localStorage.setItem('access_token', response.accessToken);
         this.currentUser.set(response.user);
         this.isAuthenticated.set(true);
@@ -45,13 +52,13 @@ export class AuthService {
         // Fallback to local mock if backend is down
         const mockResponse: AuthResponse = {
           accessToken: 'demo-guest-token',
-          user: { email: 'guest@demo.com', role: 'GUEST', name: 'Visitante Demo' }
+          user: { email: 'guest@demo.com', role: 'GUEST', name: 'Visitante Demo' },
         };
         if (this.isBrowser) localStorage.setItem('access_token', mockResponse.accessToken);
         this.currentUser.set(mockResponse.user);
         this.isAuthenticated.set(true);
         return of(mockResponse);
-      })
+      }),
     );
   }
 

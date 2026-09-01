@@ -26,9 +26,11 @@ import { AdminAuthService } from '../../core/services/admin-auth.service';
         <!-- Login Card -->
         <div class="bg-white/5 rounded-2xl border border-white/10 p-8">
           <h1 class="text-2xl font-bold text-white mb-6">Login</h1>
-          
+
           @if (error()) {
-            <div class="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm">
+            <div
+              class="mb-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm"
+            >
               {{ error() }}
             </div>
           }
@@ -36,22 +38,37 @@ import { AdminAuthService } from '../../core/services/admin-auth.service';
           <form (submit)="handleLogin($event)" class="space-y-4">
             <div>
               <label class="block text-gray-400 text-sm mb-2">Email</label>
-              <input type="email" [(ngModel)]="email" name="email" required
-                     placeholder="admin@olustack.com"
-                     class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 transition-colors">
-            </div>
-            
-            <div>
-              <label class="block text-gray-400 text-sm mb-2">Senha</label>
-              <input type="password" [(ngModel)]="password" name="password" required
-                     placeholder="••••••••"
-                     class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 transition-colors">
+              <input
+                type="email"
+                [(ngModel)]="email"
+                name="email"
+                required
+                placeholder="admin@olustack.com"
+                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 transition-colors"
+              />
             </div>
 
-            <button type="submit" [disabled]="loading()"
-                    class="w-full py-3 bg-tech-blue text-black font-bold rounded-xl hover:bg-tech-blue/80 transition-all disabled:opacity-50 flex items-center justify-center gap-2">
+            <div>
+              <label class="block text-gray-400 text-sm mb-2">Senha</label>
+              <input
+                type="password"
+                [(ngModel)]="password"
+                name="password"
+                required
+                placeholder="••••••••"
+                class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-tech-blue/50 transition-colors"
+              />
+            </div>
+
+            <button
+              type="submit"
+              [disabled]="loading()"
+              class="w-full py-3 bg-tech-blue text-black font-bold rounded-xl hover:bg-tech-blue/80 transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+            >
               @if (loading()) {
-                <span class="animate-spin h-4 w-4 border-2 border-black/30 border-t-black rounded-full"></span>
+                <span
+                  class="animate-spin h-4 w-4 border-2 border-black/30 border-t-black rounded-full"
+                ></span>
                 Entrando...
               } @else {
                 Entrar
@@ -61,8 +78,11 @@ import { AdminAuthService } from '../../core/services/admin-auth.service';
 
           <div class="mt-6 pt-6 border-t border-white/10 text-center">
             <p class="text-gray-400 text-sm">
-              Não tem conta? 
-              <a routerLink="/register" class="text-tech-blue hover:text-tech-blue/80 transition-colors">
+              Não tem conta?
+              <a
+                routerLink="/register"
+                class="text-tech-blue hover:text-tech-blue/80 transition-colors"
+              >
                 Criar conta
               </a>
             </p>
@@ -76,13 +96,13 @@ import { AdminAuthService } from '../../core/services/admin-auth.service';
         </div>
       </div>
     </div>
-  `
+  `,
 })
 export class LoginComponent {
   private http = inject(HttpClient);
   private router = inject(Router);
   private adminAuth = inject(AdminAuthService);
-  
+
   email = '';
   password = '';
   loading = signal(false);
@@ -94,19 +114,28 @@ export class LoginComponent {
     this.error.set('');
 
     // Authenticate via backend API
-    this.http.post<{ accessToken: string; user: any }>(`${environment.apiUrl}/auth/login`, {
-      email: this.email,
-      password: this.password
-    }).subscribe({
-      next: (res) => {
-        this.adminAuth.login(res.accessToken, res.user);
-        this.loading.set(false);
-        this.router.navigate(['/admin']);
-      },
-      error: (err) => {
-        this.loading.set(false);
-        this.error.set(err.error?.message || 'Email ou senha inválidos');
-      }
-    });
+    this.http
+      .post<{ accessToken: string; user: { email: string; role: 'ADMIN' | 'GUEST'; name?: string } }>(
+        `${environment.apiUrl}/auth/login`,
+        {
+          email: this.email,
+          password: this.password,
+        },
+      )
+      .subscribe({
+        next: (res) => {
+          this.adminAuth.login(res.accessToken, {
+            email: res.user.email,
+            name: res.user.name || res.user.email.split('@')[0],
+            role: res.user.role,
+          });
+          this.loading.set(false);
+          this.router.navigate(['/admin']);
+        },
+        error: (err) => {
+          this.loading.set(false);
+          this.error.set(err.error?.message || 'Email ou senha inválidos');
+        },
+      });
   }
 }
