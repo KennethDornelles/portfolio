@@ -29,11 +29,11 @@ export class AllExceptionsFilter implements ExceptionFilter {
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
       message:
         exception instanceof HttpException
-          ? exception.getResponse()
+          ? (exception.getResponse() as unknown)
           : 'Internal server error',
     };
 
-    if (httpStatus === HttpStatus.INTERNAL_SERVER_ERROR) {
+    if (httpStatus === Number(HttpStatus.INTERNAL_SERVER_ERROR)) {
       this.logger.error(
         `Exception: ${JSON.stringify(responseBody)}`,
         exception instanceof Error ? exception.stack : '',

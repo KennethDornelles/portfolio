@@ -60,8 +60,11 @@ export class HealthController {
               process.env.NODE_ENV === 'production' &&
               error instanceof HealthCheckError
             ) {
-              const causes = error.causes;
-              if (causes && causes.database) {
+              const causes = error.causes as Record<
+                string,
+                { message: string }
+              >;
+              if (causes.database) {
                 causes.database.message = 'Database connection failed';
                 throw new HealthCheckError('Health check failed', causes);
               }
@@ -80,8 +83,11 @@ export class HealthController {
               process.env.NODE_ENV === 'production' &&
               error instanceof HealthCheckError
             ) {
-              const causes = error.causes;
-              if (causes && causes.redis) {
+              const causes = error.causes as Record<
+                string,
+                { message: string }
+              >;
+              if (causes.redis) {
                 causes.redis.message = 'Redis connection failed';
                 throw new HealthCheckError('Health check failed', causes);
               }

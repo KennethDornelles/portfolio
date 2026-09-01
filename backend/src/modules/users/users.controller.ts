@@ -1,11 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-  UseGuards,
-  HttpStatus,
-  HttpCode,
-} from '@nestjs/common';
+import { Controller, Get, Param, UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import {
   ApiBearerAuth,

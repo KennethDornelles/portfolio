@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
 import { InjectQueue } from '@nestjs/bullmq';
@@ -19,11 +19,12 @@ export interface IMailProvider {
 
 @Injectable()
 export class ConsoleMailProvider implements IMailProvider {
-  async sendEmail(to: string, subject: string, body: string): Promise<void> {
+  sendEmail(to: string, subject: string, body: string): Promise<void> {
     console.log(
       `[MailService] Sending email to ${to} with subject "${subject}"`,
     );
     console.log(body);
+    return Promise.resolve();
   }
 }
 

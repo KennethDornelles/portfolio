@@ -5,6 +5,14 @@ import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/modules/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 
+interface AuthResponseBody {
+  accessToken: string;
+}
+interface TechnologyResponseBody {
+  id: string;
+  name: string;
+}
+
 describe('TechnologiesController (e2e)', () => {
   let app: INestApplication;
   let accessToken: string;
@@ -44,7 +52,7 @@ describe('TechnologiesController (e2e)', () => {
       .send({ email: 'tech_admin@portfolio.com', password: 'password123' })
       .expect(200);
 
-    accessToken = loginRes.body.accessToken;
+    accessToken = (loginRes.body as AuthResponseBody).accessToken;
   });
 
   afterAll(async () => {
@@ -82,8 +90,9 @@ describe('TechnologiesController (e2e)', () => {
         .expect(201);
 
       expect(response.body).toHaveProperty('id');
-      expect(response.body.name).toBe(newTech.name);
-      createdTechId = response.body.id;
+      const body = response.body as TechnologyResponseBody;
+      expect(body.name).toBe(newTech.name);
+      createdTechId = body.id;
     });
 
     it('/api/technologies/:id (PATCH) - should update technology', async () => {
@@ -94,7 +103,9 @@ describe('TechnologiesController (e2e)', () => {
         .send(updateData)
         .expect(200);
 
-      expect(response.body.name).toBe(updateData.name);
+      expect((response.body as TechnologyResponseBody).name).toBe(
+        updateData.name,
+      );
     });
 
     it('/api/technologies/:id (DELETE) - should delete technology', async () => {
@@ -108,7 +119,9 @@ describe('TechnologiesController (e2e)', () => {
         .get(`/api/technologies`)
         .expect(200)
         .then((res) => {
-          const found = res.body.find((t: any) => t.id === createdTechId);
+          const found = (res.body as TechnologyResponseBody[]).find(
+            (technology) => technology.id === createdTechId,
+          );
           expect(found).toBeUndefined();
         });
     });

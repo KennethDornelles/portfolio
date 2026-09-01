@@ -5,6 +5,21 @@ import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/modules/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 
+interface AuthResponseBody {
+  accessToken: string;
+}
+interface ProjectResponseBody {
+  id: string;
+  title: string;
+}
+interface HealthResponseBody {
+  status: string;
+  info?: { database?: { status: string } };
+}
+interface ValidationErrorBody {
+  message: string | string[];
+}
+
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
@@ -57,10 +72,11 @@ describe('AppController (e2e)', () => {
         .expect(200);
 
       expect(response.body).toHaveProperty('status');
-      expect(response.body.status).toBe('ok');
+      const body = response.body as HealthResponseBody;
+      expect(body.status).toBe('ok');
       // Adjust based on actual health check response structure if needed
-      if (response.body.info) {
-        expect(response.body.info.database.status).toBe('up');
+      if (body.info?.database) {
+        expect(body.info.database.status).toBe('up');
       }
     });
   });
@@ -76,10 +92,11 @@ describe('AppController (e2e)', () => {
         .expect(200);
 
       expect(response.body).toHaveProperty('accessToken');
-      expect(typeof response.body.accessToken).toBe('string');
-      expect(response.body.accessToken.length).toBeGreaterThan(0);
+      const body = response.body as AuthResponseBody;
+      expect(typeof body.accessToken).toBe('string');
+      expect(body.accessToken.length).toBeGreaterThan(0);
 
-      accessToken = response.body.accessToken;
+      accessToken = body.accessToken;
     });
 
     it('/api/auth/signin (POST) - should fail with invalid credentials', async () => {
@@ -122,8 +139,9 @@ describe('AppController (e2e)', () => {
         .expect(201);
 
       expect(response.body).toHaveProperty('id');
-      expect(response.body.title).toBe('E2E Test Project');
-      createdProjectId = response.body.id;
+      const body = response.body as ProjectResponseBody;
+      expect(body.title).toBe('E2E Test Project');
+      createdProjectId = body.id;
     });
 
     it('/api/projects (POST) - should validate required fields', async () => {
@@ -137,7 +155,7 @@ describe('AppController (e2e)', () => {
         .expect(400);
 
       // ValidationPipe usually returns message array
-      expect(response.body).toHaveProperty('message');
+      expect(response.body as ValidationErrorBody).toHaveProperty('message');
     });
 
     it('/api/projects (GET) - should list all projects', async () => {
@@ -146,11 +164,11 @@ describe('AppController (e2e)', () => {
         .expect(200);
 
       expect(Array.isArray(response.body)).toBe(true);
-      const project = response.body.find(
-        (p: { id: string }) => p.id === createdProjectId,
+      const project = (response.body as ProjectResponseBody[]).find(
+        (item) => item.id === createdProjectId,
       );
       expect(project).toBeDefined();
-      expect(project.title).toBe('E2E Test Project');
+      expect(project?.title).toBe('E2E Test Project');
     });
 
     it('/api/projects/:id (GET) - should get a specific project', async () => {
@@ -158,7 +176,7 @@ describe('AppController (e2e)', () => {
         .get(`/api/projects/${createdProjectId}`)
         .expect(200);
 
-      expect(response.body.id).toBe(createdProjectId);
+      expect((response.body as ProjectResponseBody).id).toBe(createdProjectId);
     });
 
     it('/api/projects/:id (PATCH) - should update a project', async () => {
@@ -170,7 +188,9 @@ describe('AppController (e2e)', () => {
         })
         .expect(200);
 
-      expect(response.body.title).toBe('Updated Project Title');
+      expect((response.body as ProjectResponseBody).title).toBe(
+        'Updated Project Title',
+      );
     });
 
     it('/api/projects/:id (DELETE) - should delete a project', async () => {
