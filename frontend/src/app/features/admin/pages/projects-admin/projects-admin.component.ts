@@ -7,6 +7,7 @@ import { AdminAuthService } from '../../../../core/services/admin-auth.service';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { LanguageService } from '../../../../core/services/language.service';
 import { getHttpErrorMessage } from '../../../../core/utils/http-error.util';
+import type { components } from '../../../../core/api/generated';
 
 interface Project {
   id: string;
@@ -360,7 +361,7 @@ export class ProjectsAdminComponent implements OnInit {
       })
       .filter((t) => t) as string[];
 
-    const payload = {
+    const payload: components['schemas']['CreateProjectDto'] = {
       title: this.form.title,
       slug: this.form.title
         .toLowerCase()

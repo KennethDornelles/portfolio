@@ -5,6 +5,7 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { AdminAuthService } from '../../core/services/admin-auth.service';
+import type { components } from '../../core/api/generated';
 
 @Component({
   selector: 'app-login',
@@ -114,21 +115,27 @@ export class LoginComponent {
     this.error.set('');
 
     // Authenticate via backend API
+    const credentials: components['schemas']['AuthDto'] = {
+      email: this.email,
+      password: this.password,
+    };
     this.http
-      .post<{ accessToken: string; refreshToken: string; user: { email: string; role: 'ADMIN' | 'GUEST'; name?: string } }>(
-        `${environment.apiUrl}/auth/login`,
-        {
-          email: this.email,
-          password: this.password,
-        },
-      )
+      .post<{
+        accessToken: string;
+        refreshToken: string;
+        user: { email: string; role: 'ADMIN' | 'GUEST'; name?: string };
+      }>(`${environment.apiUrl}/auth/login`, credentials)
       .subscribe({
         next: (res) => {
-          this.adminAuth.login(res.accessToken, {
-            email: res.user.email,
-            name: res.user.name || res.user.email.split('@')[0],
-            role: res.user.role,
-          }, res.refreshToken);
+          this.adminAuth.login(
+            res.accessToken,
+            {
+              email: res.user.email,
+              name: res.user.name || res.user.email.split('@')[0],
+              role: res.user.role,
+            },
+            res.refreshToken,
+          );
           this.loading.set(false);
           this.router.navigate(['/admin']);
         },
