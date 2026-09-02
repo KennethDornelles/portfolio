@@ -1,9 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { LanguageService, SupportedLanguage } from '../../services/language.service';
-import { AuthService } from '../../services/auth.service';
 import { AdminAuthService } from '../../services/admin-auth.service';
 
 @Component({
@@ -58,12 +57,12 @@ import { AdminAuthService } from '../../services/admin-auth.service';
 
             <!-- Demo Mode Button -->
             <button (click)="loginAsGuest()" 
-                    [class]="authService.isAuthenticated() ? 'bg-tech-blue/20 text-tech-blue border-tech-blue/30' : 'bg-white/5 text-white border-white/10 hover:border-tech-blue/50'"
+                    [class]="adminAuthService.isAuthenticated() ? 'bg-tech-blue/20 text-tech-blue border-tech-blue/30' : 'bg-white/5 text-white border-white/10 hover:border-tech-blue/50'"
                     class="border px-4 py-1.5 rounded-full text-sm font-medium transition-all flex items-center gap-2">
               @if (isLoading) {
                 <span class="animate-spin h-3 w-3 border-2 border-white/30 border-t-white rounded-full"></span>
               }
-              @if (authService.isAuthenticated()) {
+              @if (adminAuthService.isAuthenticated()) {
                 ✓ {{ 'NAV_DEMO' | translate }}
               } @else {
                 {{ 'NAV_DEMO' | translate }}
@@ -136,7 +135,7 @@ import { AdminAuthService } from '../../services/admin-auth.service';
             <div class="mt-3 px-2 space-y-1">
                <button (click)="loginAsGuest(); closeMobileMenu()" 
                        class="w-full text-left block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">
-                 {{ authService.isAuthenticated() ? ('NAV_DEMO' | translate) + ' (Active)' : ('NAV_DEMO' | translate) }}
+                 {{ adminAuthService.isAuthenticated() ? ('NAV_DEMO' | translate) + ' (Active)' : ('NAV_DEMO' | translate) }}
                </button>
                <a routerLink="/login" (click)="closeMobileMenu()"
                   class="block px-3 py-2 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-white/5">
@@ -150,8 +149,8 @@ import { AdminAuthService } from '../../services/admin-auth.service';
   `
 })
 export class NavbarComponent {
+  private readonly router = inject(Router);
   langService = inject(LanguageService);
-  authService = inject(AuthService);
   adminAuthService = inject(AdminAuthService);
   
   isLoading = false;
@@ -170,16 +169,12 @@ export class NavbarComponent {
   }
 
   loginAsGuest() {
-    // NO API CALL - instant demo mode for recruiters
-    this.adminAuthService.loginAsGuest();
-    this.authService.isAuthenticated.set(true);
-    this.authService.currentUser.set({ email: 'guest@demo.com', role: 'GUEST', name: 'Visitante Demo' });
-    // Redirect to admin
-    window.location.href = '/admin';
+    this.adminAuthService.loginAsGuest().subscribe({
+      next: () => void this.router.navigate(['/admin']),
+    });
   }
 
   logout() {
-    this.authService.logout();
     this.adminAuthService.logout();
   }
 }

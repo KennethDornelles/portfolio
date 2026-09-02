@@ -1,14 +1,12 @@
-import { PLATFORM_ID, inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
 import { Router, CanActivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { AdminAuthService } from '../services/admin-auth.service';
 
 export const adminGuard: CanActivateFn = () => {
   const router = inject(Router);
-  const platformId = inject(PLATFORM_ID);
-  
-  const token = isPlatformBrowser(platformId) ? localStorage.getItem('admin_token') : null;
-  
-  if (token) {
+  const auth = inject(AdminAuthService);
+
+  if (auth.isAuthenticated()) {
     return true;
   }
   

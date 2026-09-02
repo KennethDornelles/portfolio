@@ -115,7 +115,7 @@ export class LoginComponent {
 
     // Authenticate via backend API
     this.http
-      .post<{ accessToken: string; user: { email: string; role: 'ADMIN' | 'GUEST'; name?: string } }>(
+      .post<{ accessToken: string; refreshToken: string; user: { email: string; role: 'ADMIN' | 'GUEST'; name?: string } }>(
         `${environment.apiUrl}/auth/login`,
         {
           email: this.email,
@@ -128,7 +128,7 @@ export class LoginComponent {
             email: res.user.email,
             name: res.user.name || res.user.email.split('@')[0],
             role: res.user.role,
-          });
+          }, res.refreshToken);
           this.loading.set(false);
           this.router.navigate(['/admin']);
         },

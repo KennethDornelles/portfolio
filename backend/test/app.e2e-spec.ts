@@ -4,6 +4,7 @@ import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/modules/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { httpRequest } from './utils/http-test';
+import { closeE2eInfrastructure } from './e2e-teardown';
 
 interface AuthResponseBody {
   accessToken: string;
@@ -27,6 +28,10 @@ describe('AppController (e2e)', () => {
   let accessToken: string;
   let refreshToken: string;
   let createdProjectId: string;
+  let projectsListEtag: string;
+  let seededAdminId: string;
+  const e2eAdminEmail = `e2e-admin-${Date.now()}@example.test`;
+  const e2eAdminPassword = `E2ePassword-${Date.now()}-safe`;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -37,16 +42,16 @@ describe('AppController (e2e)', () => {
     prisma = app.get<PrismaService>(PrismaService);
 
     // Seed Admin User
-    await prisma.user.deleteMany({ where: { email: 'admin@portfolio.com' } });
-    const passwordHash = await bcrypt.hash('password123', 10);
-    await prisma.user.create({
+    const passwordHash = await bcrypt.hash(e2eAdminPassword, 10);
+    const seededAdmin = await prisma.user.create({
       data: {
-        email: 'admin@portfolio.com',
+        email: e2eAdminEmail,
         passwordHash,
         role: 'ADMIN', // Assuming UserRole enum or string "ADMIN"
         isActive: true,
       },
     });
+    seededAdminId = seededAdmin.id;
 
     app.setGlobalPrefix('api');
     app.useGlobalPipes(
@@ -64,8 +69,15 @@ describe('AppController (e2e)', () => {
   });
 
   afterAll(async () => {
-    if (app) {
-      await app.close();
+    try {
+      if (createdProjectId) {
+        await prisma.project.deleteMany({ where: { id: createdProjectId } });
+      }
+      if (seededAdminId) {
+        await prisma.user.delete({ where: { id: seededAdminId } });
+      }
+    } finally {
+      await closeE2eInfrastructure(app, prisma);
     }
   });
 
@@ -88,8 +100,8 @@ describe('AppController (e2e)', () => {
       const response = await httpRequest(app)
         .post('/api/auth/signin')
         .send({
-          email: 'admin@portfolio.com',
-          password: 'password123',
+          email: e2eAdminEmail,
+          password: e2eAdminPassword,
         })
         .expect(200);
 
@@ -106,7 +118,7 @@ describe('AppController (e2e)', () => {
       await httpRequest(app)
         .post('/api/auth/signin')
         .send({
-          email: 'admin@portfolio.com',
+          email: e2eAdminEmail,
           password: 'wrongpassword',
         })
         .expect(401); // Or 400 depending on implementation, usually 401 for bad creds
@@ -129,7 +141,7 @@ describe('AppController (e2e)', () => {
         .post('/api/contacts')
         .send({
           name: 'TEST-001 Visitor',
-          email: 'test-001@example.com',
+          email: `e2e-contact-${Date.now()}@example.test`,
           subject: 'Test',
           message: 'Test',
         })
@@ -145,6 +157,11 @@ describe('AppController (e2e)', () => {
       const body = response.body as AuthResponseBody;
       expect(body.refreshToken).toEqual(expect.any(String));
       expect(body.refreshToken).not.toBe(refreshToken);
+      await httpRequest(app)
+        .post('/api/auth/refresh')
+        .set('Authorization', `Bearer ${refreshToken}`)
+        .expect(403);
+      refreshToken = body.refreshToken as string;
     });
   });
 
@@ -205,6 +222,8 @@ describe('AppController (e2e)', () => {
       );
       expect(project).toBeDefined();
       expect(project?.title).toBe('E2E Test Project');
+      projectsListEtag = response.headers.etag;
+      expect(projectsListEtag).toBeTruthy();
     });
 
     it('/api/projects/:id (GET) - should get a specific project', async () => {
@@ -227,6 +246,18 @@ describe('AppController (e2e)', () => {
       expect((response.body as ProjectResponseBody).title).toBe(
         'Updated Project Title',
       );
+
+      const refreshed = await httpRequest(app)
+        .get('/api/projects')
+        .set('If-None-Match', projectsListEtag)
+        .expect(200);
+      expect(
+        (refreshed.body as ProjectResponseBody[]).find(
+          (item) => item.id === createdProjectId,
+        )?.title,
+      ).toBe('Updated Project Title');
+      expect(refreshed.headers.etag).not.toBe(projectsListEtag);
+      projectsListEtag = refreshed.headers.etag;
     });
 
     it('/api/projects/:id (DELETE) - should delete a project', async () => {
@@ -234,11 +265,28 @@ describe('AppController (e2e)', () => {
         .delete(`/api/projects/${createdProjectId}`)
         .set('Authorization', `Bearer ${accessToken}`)
         .expect(200); // 200 or 204
+
+      const refreshed = await httpRequest(app)
+        .get('/api/projects')
+        .set('If-None-Match', projectsListEtag)
+        .expect(200);
+      expect(
+        (refreshed.body as ProjectResponseBody[]).some(
+          (item) => item.id === createdProjectId,
+        ),
+      ).toBe(false);
     });
 
     it('/api/projects/:id (GET) - should return 404 after deletion', async () => {
       await httpRequest(app)
         .get(`/api/projects/${createdProjectId}`)
+        .expect(404);
+    });
+
+    it('/api/projects/:id (DELETE) - should return 404 when repeated', async () => {
+      await httpRequest(app)
+        .delete(`/api/projects/${createdProjectId}`)
+        .set('Authorization', `Bearer ${accessToken}`)
         .expect(404);
     });
   });

@@ -11,7 +11,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-portfolio_db}"]
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-portfolio_db}",
+        ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -20,7 +24,7 @@ services:
     image: redis:alpine
     container_name: olustack_redis
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - "127.0.0.1:${REDIS_PORT:-6379}:6379"
     volumes:
       - redis_data:/data
 
@@ -43,6 +47,8 @@ services:
       JWT_REFRESH_SECRET: ${JWT_REFRESH_SECRET:?JWT_REFRESH_SECRET must be set}
       JWT_EXPIRATION: "15m"
       JWT_REFRESH_EXPIRATION: "7d"
+      ADMIN_SEED_EMAIL: ${ADMIN_SEED_EMAIL:-${ADMIN_EMAIL:-}}
+      ADMIN_SEED_PASSWORD: ${ADMIN_SEED_PASSWORD:-${ADMIN_PASSWORD:-}}
       NODE_ENV: "development"
     ports:
       - "${PORT:-3000}:3000"
@@ -55,7 +61,6 @@ services:
       - ./backend:/app
       - /app/node_modules
     command: npm run start:dev
-
 
 volumes:
   postgres_data:

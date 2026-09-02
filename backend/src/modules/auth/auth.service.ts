@@ -32,8 +32,15 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<AuthenticatedUser | null> {
-    const user = await this.usersService.findByEmail(email);
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+    const user = await this.usersService.findByEmail(
+      email.trim().toLowerCase(),
+    );
+    if (
+      !user ||
+      !user.isActive ||
+      user.deletedAt ||
+      !(await bcrypt.compare(password, user.passwordHash))
+    ) {
       return null;
     }
 

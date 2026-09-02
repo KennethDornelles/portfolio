@@ -129,6 +129,7 @@ interface Technology {
                       </button>
                       <button
                         (click)="deleteProject(project.id)"
+                        [disabled]="deletingId() === project.id"
                         class="p-2 text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors"
                       >
                         🗑️
@@ -280,6 +281,7 @@ export class ProjectsAdminComponent implements OnInit {
   availableTechnologies = signal<Technology[]>([]);
   loading = signal(false);
   errorMessage = signal<string | null>(null);
+  deletingId = signal<string | null>(null);
   showModal = false;
   editingProject: Project | null = null;
 
@@ -391,12 +393,37 @@ export class ProjectsAdminComponent implements OnInit {
 
   deleteProject(id: string) {
     if (!this.adminAuth.canEdit()) return;
+    if (this.deletingId()) return;
     if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_PROJECT'))) {
+      this.deletingId.set(id);
       this.http.delete(`${environment.apiUrl}/projects/${id}`).subscribe({
-        next: () => this.loadProjects(),
-        error: (err: unknown) =>
-          this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC'))),
+        next: () => {
+          this.projects.update((projects) => projects.filter((project) => project.id !== id));
+          this.loadProjects();
+          this.deletingId.set(null);
+        },
+        error: (err: unknown) => {
+          if (isHttpNotFound(err)) {
+            this.projects.update((projects) => projects.filter((project) => project.id !== id));
+            this.errorMessage.set('Project not found; the list was refreshed.');
+            this.loadProjects();
+          } else {
+            this.errorMessage.set(
+              getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')),
+            );
+          }
+          this.deletingId.set(null);
+        },
       });
     }
   }
+}
+
+function isHttpNotFound(error: unknown): boolean {
+  return (
+    typeof error === 'object' &&
+    error !== null &&
+    'status' in error &&
+    (error as { status?: unknown }).status === 404
+  );
 }
