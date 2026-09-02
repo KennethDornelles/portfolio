@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ConflictException, Injectable } from '@nestjs/common';
 import { IUsersRepository } from './repositories/users.repository.interface';
 import { User, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
@@ -23,10 +23,21 @@ export class UsersService {
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(data.passwordHash, salt);
 
-    return this.usersRepository.create({
-      ...data,
-      passwordHash,
-    });
+    try {
+      return await this.usersRepository.create({
+        ...data,
+        email: data.email.trim().toLowerCase(),
+        passwordHash,
+      });
+    } catch (error) {
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === 'P2002'
+      ) {
+        throw new ConflictException('Email already registered');
+      }
+      throw error;
+    }
   }
 
   async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {

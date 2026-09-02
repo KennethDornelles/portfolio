@@ -1,52 +1,44 @@
-
 import * as dotenv from 'dotenv';
 dotenv.config();
 
 import { PrismaClient, UserRole } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { seedTranslations } from './seed-translations';
 
 const prisma = new PrismaClient({
   datasources: {
-    db: {
-      url: process.env.DIRECT_URL || process.env.DATABASE_URL,
-    },
+    db: { url: process.env.DIRECT_URL || process.env.DATABASE_URL },
   },
 });
-import { seedTranslations } from './seed-translations';
 
 async function main() {
-  console.log('🌱 Starting database seeding...');
-  
-  // 0. Seed Translations first (References constants, but good to have early)
+  console.log('Starting database seeding...');
   await seedTranslations(prisma);
 
-  // 1. Create Admin User from environment variables (DO NOT hardcode credentials!)
-  const adminEmail = process.env.ADMIN_EMAIL;
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  const adminName = process.env.ADMIN_NAME || 'Admin';
+  const adminEmail = (process.env.ADMIN_SEED_EMAIL || process.env.ADMIN_EMAIL)
+    ?.trim()
+    .toLowerCase();
+  const adminPassword =
+    process.env.ADMIN_SEED_PASSWORD || process.env.ADMIN_PASSWORD;
 
   if (!adminEmail || !adminPassword) {
-    console.warn('⚠️ ADMIN_EMAIL and ADMIN_PASSWORD environment variables not set. Skipping admin user creation.');
+    console.warn(
+      'ADMIN_SEED_EMAIL and ADMIN_SEED_PASSWORD are not configured; admin seed skipped.',
+    );
   } else {
-    const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
-
-    if (!existingAdmin) {
-      const passwordHash = await bcrypt.hash(adminPassword, 10);
-      await prisma.user.create({
-        data: {
-          email: adminEmail,
-          passwordHash,
-          role: UserRole.ADMIN,
-          isActive: true,
-        },
-      });
-      console.log(`✅ Admin user created: ${adminEmail}`);
-    } else {
-      console.log(`ℹ️ Admin user already exists.`);
-    }
+    const passwordHash = await bcrypt.hash(adminPassword, 10);
+    const update = { passwordHash, role: UserRole.ADMIN, isActive: true };
+    await prisma.user.upsert({
+      where: { email: adminEmail },
+      create: { email: adminEmail, ...update },
+      update:
+        process.env.NODE_ENV === 'production'
+          ? { role: UserRole.ADMIN, isActive: true }
+          : update,
+    });
+    console.log(`Admin user ready: ${adminEmail}`);
   }
 
-  // 2. Create Initial Technologies
   const technologies = [
     { name: 'React', icon: 'react-icon-url' },
     { name: 'Node.js', icon: 'nodejs-icon-url' },
@@ -57,23 +49,20 @@ async function main() {
   ];
 
   for (const tech of technologies) {
-    const existingTech = await prisma.technology.findUnique({ where: { name: tech.name } });
-    if (!existingTech) {
-      await prisma.technology.create({ data: tech });
-      console.log(`✅ Technology created: ${tech.name}`);
-    } else {
-      console.log(`ℹ️ Technology already exists: ${tech.name}`);
-    }
+    const existingTech = await prisma.technology.findUnique({
+      where: { name: tech.name },
+    });
+    if (!existingTech) await prisma.technology.create({ data: tech });
   }
-
-  console.log('✅ Seeding completed!');
+  console.log('Seeding completed.');
 }
 
 main()
-  .catch((e) => {
-    console.error(e);
+  .catch((error: unknown) => {
+    console.error(
+      'Database seed failed',
+      error instanceof Error ? error.message : 'unknown error',
+    );
     process.exit(1);
   })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+  .finally(async () => prisma.$disconnect());

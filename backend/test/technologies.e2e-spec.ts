@@ -4,6 +4,7 @@ import { AppModule } from './../src/app.module';
 import { PrismaService } from './../src/modules/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { httpRequest } from './utils/http-test';
+import { closeE2eInfrastructure } from './e2e-teardown';
 
 interface AuthResponseBody {
   accessToken: string;
@@ -15,8 +16,12 @@ interface TechnologyResponseBody {
 
 describe('TechnologiesController (e2e)', () => {
   let app: INestApplication;
+  let prisma: PrismaService;
   let accessToken: string;
   let createdTechId: string;
+  let seededAdminId: string;
+  const e2eAdminEmail = `e2e-tech-admin-${Date.now()}@example.test`;
+  const e2eAdminPassword = `E2eTechPassword-${Date.now()}-safe`;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -26,19 +31,17 @@ describe('TechnologiesController (e2e)', () => {
     app = moduleFixture.createNestApplication();
 
     // Seed Data
-    const prisma = app.get<PrismaService>(PrismaService);
-    await prisma.user.deleteMany({
-      where: { email: 'tech_admin@portfolio.com' },
-    });
-    const passwordHash = await bcrypt.hash('password123', 10);
-    await prisma.user.create({
+    prisma = app.get<PrismaService>(PrismaService);
+    const passwordHash = await bcrypt.hash(e2eAdminPassword, 10);
+    const seededAdmin = await prisma.user.create({
       data: {
-        email: 'tech_admin@portfolio.com',
+        email: e2eAdminEmail,
         passwordHash,
         role: 'ADMIN',
         isActive: true,
       },
     });
+    seededAdminId = seededAdmin.id;
 
     app.setGlobalPrefix('api');
     app.useGlobalPipes(
@@ -49,15 +52,22 @@ describe('TechnologiesController (e2e)', () => {
     // Login
     const loginRes = await httpRequest(app)
       .post('/api/auth/signin')
-      .send({ email: 'tech_admin@portfolio.com', password: 'password123' })
+      .send({ email: e2eAdminEmail, password: e2eAdminPassword })
       .expect(200);
 
     accessToken = (loginRes.body as AuthResponseBody).accessToken;
   });
 
   afterAll(async () => {
-    if (app) {
-      await app.close();
+    try {
+      if (createdTechId) {
+        await prisma.technology.deleteMany({ where: { id: createdTechId } });
+      }
+      if (seededAdminId) {
+        await prisma.user.delete({ where: { id: seededAdminId } });
+      }
+    } finally {
+      await closeE2eInfrastructure(app, prisma);
     }
   });
 

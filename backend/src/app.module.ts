@@ -57,7 +57,20 @@ import { validateEnvironment } from './config/environment.validation';
     LoggerModule.forRoot({
       pinoHttp: {
         redact: {
-          paths: ['req.headers["x-webhook-signature"]'],
+          paths: [
+            'req.headers.authorization',
+            'req.headers.cookie',
+            'req.headers["x-webhook-signature"]',
+            'res.headers["set-cookie"]',
+            'req.body.password',
+            'req.body.passwordConfirmation',
+            'req.body.refreshToken',
+            'req.body.refresh_token',
+            'res.body.accessToken',
+            'res.body.refreshToken',
+            'res.body.access_token',
+            'res.body.refresh_token',
+          ],
           censor: '[REDACTED]',
         },
         transport:
@@ -124,6 +137,7 @@ import { validateEnvironment } from './config/environment.validation';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
       serveRoot: '/uploads',
+      renderPath: '{*path}',
     }),
     PrismaModule,
     AuthModule,
