@@ -5,7 +5,7 @@ import { inject, PLATFORM_ID } from '@angular/core';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const platformId = inject(PLATFORM_ID);
   const token = isPlatformBrowser(platformId)
-    ? localStorage.getItem('admin_token') || localStorage.getItem('access_token')
+    ? localStorage.getItem('access_token')
     : null;
 
   // Helper para identificar endpoints i18n
