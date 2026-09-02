@@ -65,6 +65,7 @@ const DEVICON_MAP: Record<string, string> = {
   standalone: true,
   imports: [CommonModule, FormsModule, TranslatePipe],
   template: `
+    <link rel="stylesheet" href="/devicon.css" />
     <div class="space-y-6">
       <!-- Header -->
       <div class="flex items-center justify-between">

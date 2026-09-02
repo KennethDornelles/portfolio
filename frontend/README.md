@@ -2,6 +2,18 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
 
+## API client
+
+The OpenAPI contract is exposed by the backend at `/api/docs-json`. With the backend
+running locally, regenerate the typed contract with:
+
+```bash
+npm run api:generate
+```
+
+The generated types are written to `src/app/core/api/generated.ts` and should not be
+edited manually.
+
 ## Development server
 
 To start a local development server, run:

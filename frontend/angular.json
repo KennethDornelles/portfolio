@@ -33,7 +33,11 @@
               "zone.js"
             ],
             "styles": [
-              "node_modules/devicon/devicon.min.css",
+              {
+                "input": "node_modules/devicon/devicon.min.css",
+                "inject": false,
+                "bundleName": "devicon"
+              },
               "src/styles.scss"
             ],
             "tsConfig": "tsconfig.app.json",
