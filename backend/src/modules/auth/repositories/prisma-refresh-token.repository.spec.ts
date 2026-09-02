@@ -1,4 +1,3 @@
-import { RefreshToken } from '@prisma/client';
 import { PrismaService } from '../../prisma/prisma.service';
 import { PrismaRefreshTokenRepository } from './prisma-refresh-token.repository';
 
@@ -14,7 +13,7 @@ describe('PrismaRefreshTokenRepository.rotate', () => {
     const transaction = {
       refreshToken: {
         updateMany: jest.fn().mockResolvedValue({ count: 1 }),
-        create: jest.fn().mockResolvedValue({} as RefreshToken),
+        create: jest.fn().mockResolvedValue({}),
       },
     };
     const prisma = {

@@ -6,6 +6,10 @@ import { IRefreshTokenRepository } from './repositories/refresh-token.repository
 import { UsersService } from '../users/users.service';
 
 const NOW = new Date('2026-08-31T12:00:00.000Z');
+const anyString = {
+  asymmetricMatch: (value: unknown): boolean => typeof value === 'string',
+  toString: (): string => 'String',
+};
 
 const user: User = {
   id: '11111111-1111-4111-8111-111111111111',
@@ -95,8 +99,8 @@ describe('AuthService refresh rotation', () => {
       expect.objectContaining({
         sub: user.id,
         role: UserRole.ADMIN,
-        jti: expect.any(String) as unknown as string,
-      }) as unknown as Record<string, unknown>,
+        jti: anyString,
+      }),
       expect.objectContaining({ expiresIn: '7d' }),
     );
     expect(rotateMock).toHaveBeenCalledWith(
@@ -194,13 +198,13 @@ describe('AuthService refresh rotation', () => {
     };
     expect(firstRefreshPayload).toEqual(
       expect.objectContaining({
-        jti: expect.any(String) as unknown as string,
-      }) as unknown as Record<string, unknown>,
+        jti: anyString,
+      }),
     );
     expect(secondRefreshPayload).toEqual(
       expect.objectContaining({
-        jti: expect.any(String) as unknown as string,
-      }) as unknown as Record<string, unknown>,
+        jti: anyString,
+      }),
     );
     expect(firstRefreshPayload.jti).not.toBe(secondRefreshPayload.jti);
   });
