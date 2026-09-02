@@ -3,23 +3,22 @@ import { Prisma, Project } from '@prisma/client';
 import { ProjectsService } from './projects.service';
 import { IProjectsRepository } from './repositories/projects.repository.interface';
 
-const project = (overrides: Partial<Project> = {}): Project =>
-  ({
-    id: 'project-1',
-    slug: 'project-one',
-    title: 'Project One',
-    description: 'Description',
-    content: null,
-    thumbnail: null,
-    repositoryUrl: null,
-    liveUrl: null,
-    isActive: true,
-    startDate: null,
-    endDate: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    ...overrides,
-  }) as Project;
+const project = (overrides: Partial<Project> = {}): Project => ({
+  id: 'project-1',
+  slug: 'project-one',
+  title: 'Project One',
+  description: 'Description',
+  content: null,
+  thumbnail: null,
+  repositoryUrl: null,
+  liveUrl: null,
+  isActive: true,
+  startDate: null,
+  endDate: null,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  ...overrides,
+});
 
 describe('ProjectsService cache consistency', () => {
   const cache = { del: jest.fn().mockResolvedValue(undefined) };

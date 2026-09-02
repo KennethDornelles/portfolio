@@ -28,7 +28,6 @@ export function getI18nRedisStore(
   cacheManager: Cache,
 ): I18nRedisStore | undefined {
   const keyvStore = cacheManager.stores?.[0]?.store as
-    | Partial<I18nRedisStore>
-    | undefined;
+    Partial<I18nRedisStore> | undefined;
   return keyvStore?.client ? (keyvStore as I18nRedisStore) : undefined;
 }

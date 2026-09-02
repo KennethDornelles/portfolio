@@ -95,7 +95,7 @@ export class I18nService implements OnModuleInit {
       if (
         cached &&
         typeof cached === 'object' &&
-        Object.keys(cached as Record<string, string>).length > 0
+        Object.keys(cached).length > 0
       ) {
         return cached as Record<string, string>;
       }
