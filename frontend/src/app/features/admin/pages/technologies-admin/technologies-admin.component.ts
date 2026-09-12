@@ -1,21 +1,13 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
+import { TechnologiesFacade, type AdminTechnology } from '../../../../core/facades/technologies.facade';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { LanguageService } from '../../../../core/services/language.service';
 import { getHttpErrorMessage } from '../../../../core/utils/http-error.util';
 
-interface Technology {
-  id: string;
-  name: string;
-  category: string;
-  icon?: string;
-  iconClass?: string;
-  proficiencyLevel: number;
-}
+type Technology = AdminTechnology;
 
 // Mapping of technology names to devicon classes
 const DEVICON_MAP: Record<string, string> = {
@@ -213,7 +205,7 @@ const DEVICON_MAP: Record<string, string> = {
   `
 })
 export class TechnologiesAdminComponent implements OnInit {
-  private http = inject(HttpClient);
+  private technologiesFacade = inject(TechnologiesFacade);
   private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
   
@@ -236,7 +228,7 @@ export class TechnologiesAdminComponent implements OnInit {
   }
 
   loadTechnologies() {
-    this.http.get<Technology[]>(`${environment.apiUrl}/technologies`).subscribe({
+    this.technologiesFacade.list().subscribe({
       next: (data) => this.technologies.set(data),
       error: (err: unknown) =>
         this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
@@ -282,13 +274,13 @@ export class TechnologiesAdminComponent implements OnInit {
     const payload = {
       name: this.form.name,
       category: this.form.category,
-      icon: this.form.icon || null,
+      icon: this.form.icon || undefined,
       proficiencyLevel: this.form.proficiencyLevel
     };
 
     const request = this.editingTech
-      ? this.http.patch(`${environment.apiUrl}/technologies/${this.editingTech.id}`, payload)
-      : this.http.post(`${environment.apiUrl}/technologies`, payload);
+      ? this.technologiesFacade.update(this.editingTech.id, payload)
+      : this.technologiesFacade.create(payload);
 
     request.subscribe({
       next: () => {
@@ -307,7 +299,7 @@ export class TechnologiesAdminComponent implements OnInit {
   deleteTech(id: string) {
     if (!this.adminAuth.canEdit()) return;
     if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_TECH'))) {
-      this.http.delete(`${environment.apiUrl}/technologies/${id}`).subscribe({
+      this.technologiesFacade.remove(id).subscribe({
         next: () => this.loadTechnologies(),
         error: (err: unknown) =>
           this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
