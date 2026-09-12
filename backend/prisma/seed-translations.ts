@@ -1,5 +1,11 @@
 import { PrismaClient, LanguageCode } from '@prisma/client';
 
+function normalizeSeedText(value: string): string {
+  return /[ÃÂ]/.test(value)
+    ? Buffer.from(value, 'latin1').toString('utf8')
+    : value;
+}
+
 export async function seedTranslations(prisma: PrismaClient) {
   console.log('Seeding translations...');
 
@@ -518,30 +524,44 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'ACT_TIME_YESTERDAY', lang: 'PT_BR', value: 'Ontem' },
 
     // Refined Home Hero
-    { key: 'HOME_TITLE_1', lang: 'EN_US', value: 'We transform' },
-    { key: 'HOME_TITLE_1', lang: 'PT_BR', value: 'Transformamos' },
-    { key: 'HOME_TITLE_HIGHLIGHT', lang: 'EN_US', value: 'complex ideas' },
-    { key: 'HOME_TITLE_HIGHLIGHT', lang: 'PT_BR', value: 'ideias complexas' },
-    { key: 'HOME_TITLE_2', lang: 'EN_US', value: 'into scale-ready platforms' },
+    { key: 'HOME_TITLE_1', lang: 'EN_US', value: 'We build' },
+    { key: 'HOME_TITLE_1', lang: 'PT_BR', value: 'Construímos' },
+    { key: 'HOME_TITLE_HIGHLIGHT', lang: 'EN_US', value: 'scalable products' },
+    {
+      key: 'HOME_TITLE_HIGHLIGHT',
+      lang: 'PT_BR',
+      value: 'produtos escaláveis',
+    },
+    { key: 'HOME_TITLE_2', lang: 'EN_US', value: 'from backend to interface' },
     {
       key: 'HOME_TITLE_2',
       lang: 'PT_BR',
-      value: 'em plataformas digitais prontas para escalar',
+      value: 'do backend à interface',
     },
     {
       key: 'HOME_HERO_DESC',
       lang: 'EN_US',
       value:
-        'We specialize in High-Performance Web Applications and Scalable Backend Systems. Minimalist design meets robust engineering for startups and enterprise clients.',
+        'Backend architecture and fullstack products built for performance, reliability, and scale.',
     },
     {
       key: 'HOME_HERO_DESC',
       lang: 'PT_BR',
       value:
-        'Somos uma software house focada em Aplicações Web de Alta Performance e Sistemas Backend Escaláveis. Design minimalista encontra engenharia robusta para alavancar seu negócio.',
+        'Arquitetura backend e produtos fullstack construídos para performance, confiabilidade e escala.',
     },
     { key: 'HOME_SUBTITLE_BACKEND', lang: 'EN_US', value: 'Backend' },
     { key: 'HOME_SUBTITLE_BACKEND', lang: 'PT_BR', value: 'Backend' },
+    {
+      key: 'HOME_ROLE',
+      lang: 'EN_US',
+      value: 'Backend & Fullstack Engineering',
+    },
+    {
+      key: 'HOME_ROLE',
+      lang: 'PT_BR',
+      value: 'Engenharia Backend & Fullstack',
+    },
     {
       key: 'HOME_SUBTITLE_PERFORMANCE',
       lang: 'EN_US',
@@ -1731,6 +1751,20 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'PROJECT_PROBLEM_LABEL', lang: 'EN_US', value: 'The Problem' },
     { key: 'PROJECT_PROBLEM_LABEL', lang: 'PT_BR', value: 'O Problema' },
     { key: 'PROJECT_SOLUTION_LABEL', lang: 'EN_US', value: 'The Solution' },
+    { key: 'PROJECT_IMPACT_LABEL', lang: 'EN_US', value: 'The Impact' },
+    { key: 'PROJECT_IMPACT_LABEL', lang: 'PT_BR', value: 'O Impacto' },
+    { key: 'PROJECT_CASE_CTA', lang: 'EN_US', value: 'Explore the case' },
+    { key: 'PROJECT_CASE_CTA', lang: 'PT_BR', value: 'Explorar o case' },
+    {
+      key: 'PROJECT_VIDEO_LABEL',
+      lang: 'EN_US',
+      value: 'ExploraJP product demonstration',
+    },
+    {
+      key: 'PROJECT_VIDEO_LABEL',
+      lang: 'PT_BR',
+      value: 'DemonstraÃ§Ã£o do produto ExploraJP',
+    },
     { key: 'PROJECT_SOLUTION_LABEL', lang: 'PT_BR', value: 'A Solução' },
     {
       key: 'PROJECT_HIGHLIGHTS_LABEL',
@@ -1805,6 +1839,18 @@ export async function seedTranslations(prisma: PrismaClient) {
         'Uma plataforma mobile completa construída com React Native e NestJS, focada em automatizar o fluxo de agendamento e a gestão de horários.',
     },
     {
+      key: 'PROJ_BARBER_IMPACT',
+      lang: 'EN_US',
+      value:
+        'Fewer scheduling conflicts and a smoother recurring customer experience.',
+    },
+    {
+      key: 'PROJ_BARBER_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'Menos conflitos de agenda e uma experiÃªncia recorrente mais fluida para clientes.',
+    },
+    {
       key: 'PROJ_BARBER_HIGHLIGHT_1_TITLE',
       lang: 'EN_US',
       value: 'Smart Scheduling',
@@ -1871,6 +1917,120 @@ export async function seedTranslations(prisma: PrismaClient) {
         'Uso de GitHub Actions para automação de processos e PostgreSQL/Prisma para garantir a integridade dos dados operacionais.',
     },
 
+    // Project: ExploraJP
+    {
+      key: 'PROJ_EXPLORA_TAGLINE',
+      lang: 'EN_US',
+      value: 'Digital tourism and local discovery platform',
+    },
+    {
+      key: 'PROJ_EXPLORA_TAGLINE',
+      lang: 'PT_BR',
+      value: 'Plataforma de turismo digital e descoberta local',
+    },
+    {
+      key: 'PROJ_EXPLORA_PROBLEM',
+      lang: 'EN_US',
+      value:
+        'Travelers need trusted local experiences, while destinations struggle to connect discovery with measurable engagement.',
+    },
+    {
+      key: 'PROJ_EXPLORA_PROBLEM',
+      lang: 'PT_BR',
+      value:
+        'Viajantes precisam de experiÃªncias locais confiÃ¡veis, enquanto destinos tÃªm dificuldade para conectar descoberta e engajamento mensurÃ¡vel.',
+    },
+    {
+      key: 'PROJ_EXPLORA_SOLUTION',
+      lang: 'EN_US',
+      value:
+        'A mobile-first ecosystem combining geolocation, quests, check-ins, rewards, and resilient backend services.',
+    },
+    {
+      key: 'PROJ_EXPLORA_SOLUTION',
+      lang: 'PT_BR',
+      value:
+        'Um ecossistema mobile-first que combina geolocalizaÃ§Ã£o, desafios, check-ins, recompensas e serviÃ§os backend resilientes.',
+    },
+    {
+      key: 'PROJ_EXPLORA_IMPACT',
+      lang: 'EN_US',
+      value:
+        'Turns local exploration into a repeatable product journey with operational visibility and scalable content delivery.',
+    },
+    {
+      key: 'PROJ_EXPLORA_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'Transforma a exploraÃ§Ã£o local em uma jornada recorrente, com visibilidade operacional e entrega de conteÃºdo escalÃ¡vel.',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_1_TITLE',
+      lang: 'EN_US',
+      value: 'Geolocation Experiences',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_1_TITLE',
+      lang: 'PT_BR',
+      value: 'ExperiÃªncias com GeolocalizaÃ§Ã£o',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_1_DESC',
+      lang: 'EN_US',
+      value:
+        'Nearby discovery and spatial flows backed by PostgreSQL and PostGIS.',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_1_DESC',
+      lang: 'PT_BR',
+      value:
+        'Descoberta de pontos prÃ³ximos e fluxos espaciais com PostgreSQL e PostGIS.',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_2_TITLE',
+      lang: 'EN_US',
+      value: 'Gamified Engagement',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_2_TITLE',
+      lang: 'PT_BR',
+      value: 'Engajamento Gamificado',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_2_DESC',
+      lang: 'EN_US',
+      value:
+        'Quests, check-ins, achievements, and rewards encourage continued exploration.',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_2_DESC',
+      lang: 'PT_BR',
+      value:
+        'Desafios, check-ins, conquistas e recompensas estimulam a exploraÃ§Ã£o contÃ­nua.',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_3_TITLE',
+      lang: 'EN_US',
+      value: 'Reliable Platform Operations',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_3_TITLE',
+      lang: 'PT_BR',
+      value: 'OperaÃ§Ã£o de Plataforma ConfiÃ¡vel',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_3_DESC',
+      lang: 'EN_US',
+      value:
+        'NestJS APIs, Redis/BullMQ queues, and object storage support resilient delivery.',
+    },
+    {
+      key: 'PROJ_EXPLORA_HIGHLIGHT_3_DESC',
+      lang: 'PT_BR',
+      value:
+        'APIs NestJS, filas Redis/BullMQ e armazenamento de objetos sustentam uma entrega resiliente.',
+    },
+
     // Project: PetBoss
     {
       key: 'PROJ_PET_TAGLINE',
@@ -1905,6 +2065,18 @@ export async function seedTranslations(prisma: PrismaClient) {
       lang: 'PT_BR',
       value:
         'Uma plataforma robusta e multi-tenant que integra desde a gestão de estoque e agendamentos até a localização de serviços próximos.',
+    },
+    {
+      key: 'PROJ_PET_IMPACT',
+      lang: 'EN_US',
+      value:
+        'A unified operational view that supports multiple stores and localized services.',
+    },
+    {
+      key: 'PROJ_PET_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'VisÃ£o operacional unificada para mÃºltiplas lojas e serviÃ§os localizados.',
     },
     {
       key: 'PROJ_PET_HIGHLIGHT_1_TITLE',
@@ -2096,11 +2268,11 @@ export async function seedTranslations(prisma: PrismaClient) {
           language: t.lang as LanguageCode,
         },
       },
-      update: { value: t.value },
+      update: { value: normalizeSeedText(t.value) },
       create: {
         keyId: keyRecord.id,
         language: t.lang as LanguageCode,
-        value: t.value,
+        value: normalizeSeedText(t.value),
       },
     });
   }

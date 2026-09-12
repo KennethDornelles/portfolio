@@ -104,7 +104,7 @@ function scanArchitecture(findings) {
     .filter((name) => name.endsWith('.ts'))
     .filter((name) => !name.endsWith('.spec.ts'))) {
     const content = fs.readFileSync(file, 'utf8');
-    if (/\bisPlatformBrowser\b/.test(content)) continue;
+    if (/\bisPlatformBrowser\b|\bDOCUMENT\b/.test(content)) continue;
     scanText(findings, file, [{
       name: 'ssr-browser-global',
       pattern: /\blocalStorage\b|\bwindow\b|\bdocument\b/,
