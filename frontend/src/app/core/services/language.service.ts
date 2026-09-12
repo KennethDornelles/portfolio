@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject, signal } from '@angular/core';
 import { firstValueFrom, timeout } from 'rxjs';
+import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 
 export type SupportedLanguage = 'PT_BR' | 'EN_US';
@@ -11,6 +12,7 @@ const REQUIRED_TRANSLATION_KEYS = ['NAV_HOME', 'HOME_TITLE_1', 'BTN_VIEW_PROJECT
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
   private readonly http = inject(HttpClient);
+  private readonly router = inject(Router);
   private requestId = 0;
 
   readonly currentLang = signal<SupportedLanguage>('PT_BR');
@@ -19,12 +21,21 @@ export class LanguageService {
   readonly errorMessage = signal<string | null>(null);
 
   async initialize(): Promise<void> {
+    const urlLanguage = this.getLanguageFromUrl();
+    if (urlLanguage) this.currentLang.set(urlLanguage);
     await this.loadTranslations(this.currentLang(), true);
   }
 
   async setLanguage(lang: SupportedLanguage): Promise<void> {
     if (lang === this.currentLang() && this.state() === 'ready') return;
     await this.loadTranslations(lang, false);
+    if (this.currentLang() === lang && this.state() === 'ready') {
+      await this.router.navigate([], {
+        queryParams: { lang },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    }
   }
 
   translate(key: string): string {
@@ -76,5 +87,10 @@ export class LanguageService {
     }
 
     return map;
+  }
+
+  private getLanguageFromUrl(): SupportedLanguage | null {
+    const value = new URLSearchParams(this.router.url.split('?')[1] ?? '').get('lang');
+    return value === 'PT_BR' || value === 'EN_US' ? value : null;
   }
 }

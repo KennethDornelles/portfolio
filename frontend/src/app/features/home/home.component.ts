@@ -17,6 +17,13 @@ import { LanguageService } from '../../core/services/language.service';
         <span class="text-xs text-gray-300 tracking-wide uppercase">{{ 'HOME_BADGE' | translate }}</span>
       </div>
 
+      <!-- Positioning -->
+      @if (langService.translate('HOME_ROLE') !== 'HOME_ROLE') {
+        <p class="text-sm sm:text-base font-semibold tracking-[0.2em] uppercase text-tech-blue mb-4">
+          {{ 'HOME_ROLE' | translate }}
+        </p>
+      }
+
       <!-- Hero Title -->
       <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 leading-tight">
         <span class="text-gray-100">{{ 'HOME_TITLE_1' | translate }}</span>
