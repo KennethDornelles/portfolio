@@ -79,4 +79,21 @@ describe('ProjectsService cache consistency', () => {
       NotFoundException,
     );
   });
+
+  it('returns pagination metadata for a project page', async () => {
+    const findPage = jest.fn().mockResolvedValue({
+      items: [project()],
+      total: 21,
+    });
+    repository.findPage = findPage;
+
+    await expect(service.findPage(2, 20)).resolves.toEqual({
+      items: [expect.objectContaining({ id: 'project-1' })],
+      total: 21,
+      page: 2,
+      limit: 20,
+      totalPages: 2,
+    });
+    expect(findPage).toHaveBeenCalledWith(2, 20);
+  });
 });

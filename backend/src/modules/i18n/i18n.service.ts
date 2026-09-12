@@ -11,31 +11,42 @@ import { II18nRepository } from './repositories/i18n.repository.interface';
 import { getI18nRedisStore } from './i18n-redis-store';
 import { LanguageCode } from '@prisma/client';
 
+function isStringRecord(value: unknown): value is Record<string, string> {
+  return (
+    !!value &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    Object.values(value).every((entry) => typeof entry === 'string')
+  );
+}
+
+const I18N_CACHE_VERSION = 1;
+const I18N_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
+const I18N_CACHE_PREFIX = `i18n:v${I18N_CACHE_VERSION}`;
+const I18N_LEGACY_CACHE_PATTERNS = ['i18n:vv1:*'];
+
 @Injectable()
 export class I18nService implements OnModuleInit {
   private readonly logger = new Logger(I18nService.name);
-  private cacheVersion: string;
 
   constructor(
     @Inject(CACHE_MANAGER) private cacheManager: Cache,
     private i18nRepository: II18nRepository,
-  ) {
-    this.cacheVersion = '1'; // Static version to avoid cache stampede on deploy
-  }
+  ) {}
 
   async onModuleInit() {
     this.logger.log(
-      `Starting i18n cache warm-up (Version: ${this.cacheVersion})`,
+      `Starting i18n cache warm-up (Version: ${I18N_CACHE_VERSION})`,
     );
     await this.warmupCache();
   }
 
   private getCacheKey(key: string, lang: LanguageCode): string {
-    return `i18n:v${this.cacheVersion}:${lang}:${key}`;
+    return `${I18N_CACHE_PREFIX}:${lang}:${key}`;
   }
 
   private getAllCacheKey(lang: LanguageCode): string {
-    return `i18n:v${this.cacheVersion}:all:${lang}`;
+    return `${I18N_CACHE_PREFIX}:all:${lang}`;
   }
 
   private async warmupCache() {
@@ -66,7 +77,7 @@ export class I18nService implements OnModuleInit {
     const cacheKey = this.getCacheKey(key, lang);
     try {
       const cached = await this.cacheManager.get(cacheKey);
-      if (cached) return cached as string;
+      if (typeof cached === 'string' && cached.length > 0) return cached;
     } catch {
       this.logger.warn('I18n cache read failed');
     }
@@ -77,7 +88,7 @@ export class I18nService implements OnModuleInit {
 
     // Cache for 24 hours (86400000 ms)
     try {
-      await this.cacheManager.set(cacheKey, value, 86400000);
+      await this.cacheManager.set(cacheKey, value, I18N_CACHE_TTL_MS);
     } catch {
       this.logger.warn('I18n cache write failed');
     }
@@ -92,12 +103,8 @@ export class I18nService implements OnModuleInit {
 
     try {
       const cached = await this.cacheManager.get(cacheKey);
-      if (
-        cached &&
-        typeof cached === 'object' &&
-        Object.keys(cached).length > 0
-      ) {
-        return cached as Record<string, string>;
+      if (isStringRecord(cached) && Object.keys(cached).length > 0) {
+        return cached;
       }
     } catch {
       this.logger.warn('I18n cache read failed');
@@ -135,7 +142,7 @@ export class I18nService implements OnModuleInit {
 
     try {
       // Cache for 24 hours (86400000 ms)
-      await this.cacheManager.set(cacheKey, map, 86400000);
+      await this.cacheManager.set(cacheKey, map, I18N_CACHE_TTL_MS);
     } catch {
       this.logger.warn('I18n cache write failed');
     }
@@ -159,7 +166,14 @@ export class I18nService implements OnModuleInit {
         throw new Error('Redis store unavailable');
       }
 
-      const keys = await store.client.keys('i18n:*');
+      const patterns = [
+        `${I18N_CACHE_PREFIX}:*`,
+        ...I18N_LEGACY_CACHE_PATTERNS,
+      ];
+      const keyGroups = await Promise.all(
+        patterns.map((pattern) => store.client.keys(pattern)),
+      );
+      const keys = [...new Set(keyGroups.flat())];
       if (keys.length > 0) {
         await store.client.del(keys);
       }

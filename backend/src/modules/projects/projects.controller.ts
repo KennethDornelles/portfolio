@@ -3,6 +3,7 @@ import {
   Get,
   Post,
   Body,
+  Query,
   Patch,
   Param,
   Delete,
@@ -17,6 +18,7 @@ import {
   ApiOperation,
   ApiResponse,
   ApiBearerAuth,
+  ApiQuery,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
@@ -25,6 +27,7 @@ import { RolesGuard } from '../../common/guards/roles.guard';
 import { UserRole } from '@prisma/client';
 
 import { Public } from '../../common/decorators/public.decorator';
+import { ProjectPaginationDto } from './dto/project-pagination.dto';
 
 @ApiTags('Projects')
 @Controller('projects')
@@ -52,6 +55,16 @@ export class ProjectsController {
   @ApiResponse({ status: 200, description: 'Return all projects.' })
   findAll() {
     return this.projectsService.findAll();
+  }
+
+  @Public()
+  @Get('page')
+  @ApiOperation({ summary: 'List projects with pagination' })
+  @ApiQuery({ name: 'page', required: false, type: Number, example: 1 })
+  @ApiQuery({ name: 'limit', required: false, type: Number, example: 20 })
+  @ApiResponse({ status: 200, description: 'Return a paginated project list.' })
+  findPage(@Query() pagination: ProjectPaginationDto) {
+    return this.projectsService.findPage(pagination.page, pagination.limit);
   }
 
   @Public()
