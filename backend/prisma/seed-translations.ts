@@ -1,7 +1,5 @@
 import { PrismaClient, LanguageCode } from '@prisma/client';
 
-
-
 export async function seedTranslations(prisma: PrismaClient) {
   console.log('Seeding translations...');
 
@@ -22,73 +20,226 @@ export async function seedTranslations(prisma: PrismaClient) {
 
     // Home
     { key: 'HOME_BADGE', lang: 'EN_US', value: 'Available for new projects' },
-    { key: 'HOME_BADGE', lang: 'PT_BR', value: 'Disponível para novos projetos' },
+    {
+      key: 'HOME_BADGE',
+      lang: 'PT_BR',
+      value: 'Disponível para novos projetos',
+    },
     { key: 'HOME_HERO_TITLE_PREFIX', lang: 'EN_US', value: 'Building the' },
     { key: 'HOME_HERO_TITLE_PREFIX', lang: 'PT_BR', value: 'Construindo o' },
     { key: 'HOME_HERO_TITLE_HIGHLIGHT', lang: 'EN_US', value: 'Future' },
     { key: 'HOME_HERO_TITLE_HIGHLIGHT', lang: 'PT_BR', value: 'Futuro' },
-    { key: 'HOME_HERO_TITLE_SUFFIX', lang: 'EN_US', value: 'of Digital Experience' },
-    { key: 'HOME_HERO_TITLE_SUFFIX', lang: 'PT_BR', value: 'da Experiência Digital' },
-    { key: 'HOME_HERO_DESC', lang: 'EN_US', value: 'Specialized in High-Performance Web Applications and Scalable Backend Systems. Minimalist design meets robust engineering.' },
-    { key: 'HOME_HERO_DESC', lang: 'PT_BR', value: 'Especializado em Aplicações Web de Alta Performance e Sistemas Backend Escaláveis. Design minimalista encontra engenharia robusta.' },
+    {
+      key: 'HOME_HERO_TITLE_SUFFIX',
+      lang: 'EN_US',
+      value: 'of Digital Experience',
+    },
+    {
+      key: 'HOME_HERO_TITLE_SUFFIX',
+      lang: 'PT_BR',
+      value: 'da Experiência Digital',
+    },
+    {
+      key: 'HOME_HERO_DESC',
+      lang: 'EN_US',
+      value:
+        'Specialized in High-Performance Web Applications and Scalable Backend Systems. Minimalist design meets robust engineering.',
+    },
+    {
+      key: 'HOME_HERO_DESC',
+      lang: 'PT_BR',
+      value:
+        'Especializado em Aplicações Web de Alta Performance e Sistemas Backend Escaláveis. Design minimalista encontra engenharia robusta.',
+    },
     { key: 'BTN_VIEW_PROJECTS', lang: 'EN_US', value: 'View Cases' },
     { key: 'BTN_VIEW_PROJECTS', lang: 'PT_BR', value: 'Ver Cases' },
     { key: 'BTN_CONTACT', lang: 'EN_US', value: 'Book Free Consultation' },
-    { key: 'BTN_CONTACT', lang: 'PT_BR', value: 'Agendar Consultoria Gratuita' },
+    {
+      key: 'BTN_CONTACT',
+      lang: 'PT_BR',
+      value: 'Agendar Consultoria Gratuita',
+    },
     { key: 'BTN_SEND', lang: 'EN_US', value: 'Send Message' },
     { key: 'BTN_SEND', lang: 'PT_BR', value: 'Enviar Mensagem' },
 
     // Projects Page
     { key: 'PROJECTS_TITLE', lang: 'EN_US', value: 'Success Cases' },
     { key: 'PROJECTS_TITLE', lang: 'PT_BR', value: 'Nossos Projetos' },
-    { key: 'PROJECTS_SUBTITLE', lang: 'EN_US', value: 'Strategic products powered by OluStack engineering.' },
-    { key: 'PROJECTS_SUBTITLE', lang: 'PT_BR', value: 'Produtos estratégicos impulsionados pela engenharia OluStack.' },
-    { key: 'PROJECTS_EMPTY_TITLE', lang: 'EN_US', value: 'Projects Coming Soon' },
+    {
+      key: 'PROJECTS_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Strategic products powered by OluStack engineering.',
+    },
+    {
+      key: 'PROJECTS_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Produtos estratégicos impulsionados pela engenharia OluStack.',
+    },
+    {
+      key: 'PROJECTS_EMPTY_TITLE',
+      lang: 'EN_US',
+      value: 'Projects Coming Soon',
+    },
     { key: 'PROJECTS_EMPTY_TITLE', lang: 'PT_BR', value: 'Projetos em Breve' },
-    { key: 'PROJECTS_EMPTY_DESC', lang: 'EN_US', value: 'New projects are being added. Check back soon!' },
-    { key: 'PROJECTS_EMPTY_DESC', lang: 'PT_BR', value: 'Novos projetos estão sendo adicionados. Volte em breve!' },
+    {
+      key: 'PROJECTS_EMPTY_DESC',
+      lang: 'EN_US',
+      value: 'New projects are being added. Check back soon!',
+    },
+    {
+      key: 'PROJECTS_EMPTY_DESC',
+      lang: 'PT_BR',
+      value: 'Novos projetos estão sendo adicionados. Volte em breve!',
+    },
 
     // Services Page
     { key: 'SERVICES_TITLE', lang: 'EN_US', value: 'Services' },
     { key: 'SERVICES_TITLE', lang: 'PT_BR', value: 'Serviços' },
-    { key: 'SERVICES_SUBTITLE', lang: 'EN_US', value: 'End-to-end solutions for your digital needs.' },
-    { key: 'SERVICES_SUBTITLE', lang: 'PT_BR', value: 'Soluções completas para suas necessidades digitais.' },
+    {
+      key: 'SERVICES_SUBTITLE',
+      lang: 'EN_US',
+      value: 'End-to-end solutions for your digital needs.',
+    },
+    {
+      key: 'SERVICES_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Soluções completas para suas necessidades digitais.',
+    },
     { key: 'SERVICE_WEB_TITLE', lang: 'EN_US', value: 'Web Development' },
     { key: 'SERVICE_WEB_TITLE', lang: 'PT_BR', value: 'Desenvolvimento Web' },
-    { key: 'SERVICE_WEB_DESC', lang: 'EN_US', value: 'Modern, responsive web applications using Angular, React, and cutting-edge technologies.' },
-    { key: 'SERVICE_WEB_DESC', lang: 'PT_BR', value: 'Aplicações web modernas e responsivas usando Angular, React e tecnologias de ponta.' },
+    {
+      key: 'SERVICE_WEB_DESC',
+      lang: 'EN_US',
+      value:
+        'Modern, responsive web applications using Angular, React, and cutting-edge technologies.',
+    },
+    {
+      key: 'SERVICE_WEB_DESC',
+      lang: 'PT_BR',
+      value:
+        'Aplicações web modernas e responsivas usando Angular, React e tecnologias de ponta.',
+    },
     { key: 'SERVICE_API_TITLE', lang: 'EN_US', value: 'API Development' },
-    { key: 'SERVICE_API_TITLE', lang: 'PT_BR', value: 'Desenvolvimento de APIs' },
-    { key: 'SERVICE_API_DESC', lang: 'EN_US', value: 'RESTful and GraphQL APIs with NestJS, Node.js, and robust authentication.' },
-    { key: 'SERVICE_API_DESC', lang: 'PT_BR', value: 'APIs RESTful e GraphQL com NestJS, Node.js e autenticação robusta.' },
+    {
+      key: 'SERVICE_API_TITLE',
+      lang: 'PT_BR',
+      value: 'Desenvolvimento de APIs',
+    },
+    {
+      key: 'SERVICE_API_DESC',
+      lang: 'EN_US',
+      value:
+        'RESTful and GraphQL APIs with NestJS, Node.js, and robust authentication.',
+    },
+    {
+      key: 'SERVICE_API_DESC',
+      lang: 'PT_BR',
+      value:
+        'APIs RESTful e GraphQL com NestJS, Node.js e autenticação robusta.',
+    },
     { key: 'SERVICE_MOBILE_TITLE', lang: 'EN_US', value: 'Mobile Apps' },
     { key: 'SERVICE_MOBILE_TITLE', lang: 'PT_BR', value: 'Apps Mobile' },
-    { key: 'SERVICE_MOBILE_DESC', lang: 'EN_US', value: 'Cross-platform mobile applications with React Native and Flutter.' },
-    { key: 'SERVICE_MOBILE_DESC', lang: 'PT_BR', value: 'Aplicativos mobile multiplataforma com React Native e Flutter.' },
+    {
+      key: 'SERVICE_MOBILE_DESC',
+      lang: 'EN_US',
+      value:
+        'Cross-platform mobile applications with React Native and Flutter.',
+    },
+    {
+      key: 'SERVICE_MOBILE_DESC',
+      lang: 'PT_BR',
+      value: 'Aplicativos mobile multiplataforma com React Native e Flutter.',
+    },
     { key: 'SERVICE_DB_TITLE', lang: 'EN_US', value: 'Database Design' },
-    { key: 'SERVICE_DB_TITLE', lang: 'PT_BR', value: 'Design de Banco de Dados' },
-    { key: 'SERVICE_DB_DESC', lang: 'EN_US', value: 'Efficient database architecture with PostgreSQL, MongoDB, and Redis.' },
-    { key: 'SERVICE_DB_DESC', lang: 'PT_BR', value: 'Arquitetura de banco de dados eficiente com PostgreSQL, MongoDB e Redis.' },
+    {
+      key: 'SERVICE_DB_TITLE',
+      lang: 'PT_BR',
+      value: 'Design de Banco de Dados',
+    },
+    {
+      key: 'SERVICE_DB_DESC',
+      lang: 'EN_US',
+      value:
+        'Efficient database architecture with PostgreSQL, MongoDB, and Redis.',
+    },
+    {
+      key: 'SERVICE_DB_DESC',
+      lang: 'PT_BR',
+      value:
+        'Arquitetura de banco de dados eficiente com PostgreSQL, MongoDB e Redis.',
+    },
     { key: 'SERVICE_CLOUD_TITLE', lang: 'EN_US', value: 'Cloud & DevOps' },
     { key: 'SERVICE_CLOUD_TITLE', lang: 'PT_BR', value: 'Cloud & DevOps' },
-    { key: 'SERVICE_CLOUD_DESC', lang: 'EN_US', value: 'AWS, Docker, CI/CD pipelines, and infrastructure automation.' },
-    { key: 'SERVICE_CLOUD_DESC', lang: 'PT_BR', value: 'AWS, Docker, pipelines CI/CD e automação de infraestrutura.' },
+    {
+      key: 'SERVICE_CLOUD_DESC',
+      lang: 'EN_US',
+      value: 'AWS, Docker, CI/CD pipelines, and infrastructure automation.',
+    },
+    {
+      key: 'SERVICE_CLOUD_DESC',
+      lang: 'PT_BR',
+      value: 'AWS, Docker, pipelines CI/CD e automação de infraestrutura.',
+    },
     { key: 'SERVICE_SECURITY_TITLE', lang: 'EN_US', value: 'Security' },
     { key: 'SERVICE_SECURITY_TITLE', lang: 'PT_BR', value: 'Segurança' },
-    { key: 'SERVICE_SECURITY_DESC', lang: 'EN_US', value: 'Secure authentication, encryption, and vulnerability assessments.' },
-    { key: 'SERVICE_SECURITY_DESC', lang: 'PT_BR', value: 'Autenticação segura, criptografia e avaliação de vulnerabilidades.' },
+    {
+      key: 'SERVICE_SECURITY_DESC',
+      lang: 'EN_US',
+      value:
+        'Secure authentication, encryption, and vulnerability assessments.',
+    },
+    {
+      key: 'SERVICE_SECURITY_DESC',
+      lang: 'PT_BR',
+      value:
+        'Autenticação segura, criptografia e avaliação de vulnerabilidades.',
+    },
     { key: 'SERVICES_CTA_TITLE', lang: 'EN_US', value: 'Ready to Start?' },
     { key: 'SERVICES_CTA_TITLE', lang: 'PT_BR', value: 'Pronto para Começar?' },
-    { key: 'SERVICES_CTA_DESC', lang: 'EN_US', value: 'Let\'s discuss your project and find the best solution together.' },
-    { key: 'SERVICES_CTA_DESC', lang: 'PT_BR', value: 'Vamos discutir seu projeto e encontrar a melhor solução juntos.' },
+    {
+      key: 'SERVICES_CTA_DESC',
+      lang: 'EN_US',
+      value: "Let's discuss your project and find the best solution together.",
+    },
+    {
+      key: 'SERVICES_CTA_DESC',
+      lang: 'PT_BR',
+      value: 'Vamos discutir seu projeto e encontrar a melhor solução juntos.',
+    },
 
     // About Page
-    { key: 'ABOUT_ROLE', lang: 'EN_US', value: 'Fullstack Developer & Consultant' },
-    { key: 'ABOUT_ROLE', lang: 'PT_BR', value: 'Desenvolvedor Fullstack & Consultor' },
-    { key: 'ABOUT_BIO', lang: 'EN_US', value: 'Passionate about building scalable software solutions that make a difference. With 5+ years of experience in web development, I specialize in creating high-performance applications using modern technologies.' },
-    { key: 'ABOUT_BIO', lang: 'PT_BR', value: 'Apaixonado por construir soluções de software escaláveis que fazem a diferença. Com mais de 5 anos de experiência em desenvolvimento web, me especializo em criar aplicações de alta performance usando tecnologias modernas.' },
-    { key: 'ABOUT_SKILLS_TITLE', lang: 'EN_US', value: 'Skills & Technologies' },
-    { key: 'ABOUT_SKILLS_TITLE', lang: 'PT_BR', value: 'Habilidades & Tecnologias' },
+    {
+      key: 'ABOUT_ROLE',
+      lang: 'EN_US',
+      value: 'Fullstack Developer & Consultant',
+    },
+    {
+      key: 'ABOUT_ROLE',
+      lang: 'PT_BR',
+      value: 'Desenvolvedor Fullstack & Consultor',
+    },
+    {
+      key: 'ABOUT_BIO',
+      lang: 'EN_US',
+      value:
+        'Passionate about building scalable software solutions that make a difference. With 5+ years of experience in web development, I specialize in creating high-performance applications using modern technologies.',
+    },
+    {
+      key: 'ABOUT_BIO',
+      lang: 'PT_BR',
+      value:
+        'Apaixonado por construir soluções de software escaláveis que fazem a diferença. Com mais de 5 anos de experiência em desenvolvimento web, me especializo em criar aplicações de alta performance usando tecnologias modernas.',
+    },
+    {
+      key: 'ABOUT_SKILLS_TITLE',
+      lang: 'EN_US',
+      value: 'Skills & Technologies',
+    },
+    {
+      key: 'ABOUT_SKILLS_TITLE',
+      lang: 'PT_BR',
+      value: 'Habilidades & Tecnologias',
+    },
     { key: 'ABOUT_STAT_YEARS', lang: 'EN_US', value: 'Years Experience' },
     { key: 'ABOUT_STAT_YEARS', lang: 'PT_BR', value: 'Anos de Experiência' },
     { key: 'ABOUT_STAT_PROJECTS', lang: 'EN_US', value: 'Projects Delivered' },
@@ -101,8 +252,16 @@ export async function seedTranslations(prisma: PrismaClient) {
     // Contact Page
     { key: 'CONTACT_TITLE', lang: 'EN_US', value: 'Get in Touch' },
     { key: 'CONTACT_TITLE', lang: 'PT_BR', value: 'Entre em Contato' },
-    { key: 'CONTACT_SUBTITLE', lang: 'EN_US', value: 'Have a project in mind? Let\'s talk!' },
-    { key: 'CONTACT_SUBTITLE', lang: 'PT_BR', value: 'Tem um projeto em mente? Vamos conversar!' },
+    {
+      key: 'CONTACT_SUBTITLE',
+      lang: 'EN_US',
+      value: "Have a project in mind? Let's talk!",
+    },
+    {
+      key: 'CONTACT_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Tem um projeto em mente? Vamos conversar!',
+    },
     { key: 'CONTACT_NAME', lang: 'EN_US', value: 'Your Name' },
     { key: 'CONTACT_NAME', lang: 'PT_BR', value: 'Seu Nome' },
     { key: 'CONTACT_NAME_PLACEHOLDER', lang: 'EN_US', value: 'John Doe' },
@@ -111,23 +270,55 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'CONTACT_EMAIL', lang: 'PT_BR', value: 'Email' },
     { key: 'CONTACT_SUBJECT', lang: 'EN_US', value: 'Subject' },
     { key: 'CONTACT_SUBJECT', lang: 'PT_BR', value: 'Assunto' },
-    { key: 'CONTACT_SUBJECT_PLACEHOLDER', lang: 'EN_US', value: 'Project inquiry' },
-    { key: 'CONTACT_SUBJECT_PLACEHOLDER', lang: 'PT_BR', value: 'Consulta sobre projeto' },
+    {
+      key: 'CONTACT_SUBJECT_PLACEHOLDER',
+      lang: 'EN_US',
+      value: 'Project inquiry',
+    },
+    {
+      key: 'CONTACT_SUBJECT_PLACEHOLDER',
+      lang: 'PT_BR',
+      value: 'Consulta sobre projeto',
+    },
     { key: 'CONTACT_MESSAGE', lang: 'EN_US', value: 'Message' },
     { key: 'CONTACT_MESSAGE', lang: 'PT_BR', value: 'Mensagem' },
-    { key: 'CONTACT_MESSAGE_PLACEHOLDER', lang: 'EN_US', value: 'Tell me about your project...' },
-    { key: 'CONTACT_MESSAGE_PLACEHOLDER', lang: 'PT_BR', value: 'Conte-me sobre seu projeto...' },
+    {
+      key: 'CONTACT_MESSAGE_PLACEHOLDER',
+      lang: 'EN_US',
+      value: 'Tell me about your project...',
+    },
+    {
+      key: 'CONTACT_MESSAGE_PLACEHOLDER',
+      lang: 'PT_BR',
+      value: 'Conte-me sobre seu projeto...',
+    },
     { key: 'CONTACT_SUCCESS_TITLE', lang: 'EN_US', value: 'Message Sent!' },
     { key: 'CONTACT_SUCCESS_TITLE', lang: 'PT_BR', value: 'Mensagem Enviada!' },
-    { key: 'CONTACT_SUCCESS_DESC', lang: 'EN_US', value: 'Thank you! I will get back to you soon.' },
-    { key: 'CONTACT_SUCCESS_DESC', lang: 'PT_BR', value: 'Obrigado! Retornarei em breve.' },
+    {
+      key: 'CONTACT_SUCCESS_DESC',
+      lang: 'EN_US',
+      value: 'Thank you! I will get back to you soon.',
+    },
+    {
+      key: 'CONTACT_SUCCESS_DESC',
+      lang: 'PT_BR',
+      value: 'Obrigado! Retornarei em breve.',
+    },
     { key: 'CONTACT_ALT', lang: 'EN_US', value: 'Or email me directly at:' },
-    { key: 'CONTACT_ALT', lang: 'PT_BR', value: 'Ou envie um email diretamente para:' },
+    {
+      key: 'CONTACT_ALT',
+      lang: 'PT_BR',
+      value: 'Ou envie um email diretamente para:',
+    },
 
     // Authentication - Login
     { key: 'AUTH_LOGIN_TITLE', lang: 'EN_US', value: 'Welcome Back' },
     { key: 'AUTH_LOGIN_TITLE', lang: 'PT_BR', value: 'Bem-vindo de Volta' },
-    { key: 'AUTH_LOGIN_SUBTITLE', lang: 'EN_US', value: 'Sign in to your account' },
+    {
+      key: 'AUTH_LOGIN_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Sign in to your account',
+    },
     { key: 'AUTH_LOGIN_SUBTITLE', lang: 'PT_BR', value: 'Entre na sua conta' },
     { key: 'AUTH_EMAIL_LABEL', lang: 'EN_US', value: 'Email Address' },
     { key: 'AUTH_EMAIL_LABEL', lang: 'PT_BR', value: 'Endereço de Email' },
@@ -137,7 +328,7 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'AUTH_FORGOT_PASSWORD', lang: 'PT_BR', value: 'Esqueceu a senha?' },
     { key: 'AUTH_SUBMIT_LOGIN', lang: 'EN_US', value: 'Sign In' },
     { key: 'AUTH_SUBMIT_LOGIN', lang: 'PT_BR', value: 'Entrar' },
-    { key: 'AUTH_NO_ACCOUNT', lang: 'EN_US', value: 'Don\'t have an account?' },
+    { key: 'AUTH_NO_ACCOUNT', lang: 'EN_US', value: "Don't have an account?" },
     { key: 'AUTH_NO_ACCOUNT', lang: 'PT_BR', value: 'Não tem uma conta?' },
     { key: 'AUTH_REGISTER_LINK', lang: 'EN_US', value: 'Sign up' },
     { key: 'AUTH_REGISTER_LINK', lang: 'PT_BR', value: 'Cadastre-se' },
@@ -145,13 +336,25 @@ export async function seedTranslations(prisma: PrismaClient) {
     // Authentication - Register
     { key: 'AUTH_REGISTER_TITLE', lang: 'EN_US', value: 'Create Account' },
     { key: 'AUTH_REGISTER_TITLE', lang: 'PT_BR', value: 'Criar Conta' },
-    { key: 'AUTH_REGISTER_SUBTITLE', lang: 'EN_US', value: 'Start your journey with us' },
-    { key: 'AUTH_REGISTER_SUBTITLE', lang: 'PT_BR', value: 'Comece sua jornada conosco' },
+    {
+      key: 'AUTH_REGISTER_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Start your journey with us',
+    },
+    {
+      key: 'AUTH_REGISTER_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Comece sua jornada conosco',
+    },
     { key: 'AUTH_NAME_LABEL', lang: 'EN_US', value: 'Full Name' },
     { key: 'AUTH_NAME_LABEL', lang: 'PT_BR', value: 'Nome Completo' },
     { key: 'AUTH_SUBMIT_REGISTER', lang: 'EN_US', value: 'Create Account' },
     { key: 'AUTH_SUBMIT_REGISTER', lang: 'PT_BR', value: 'Criar Conta' },
-    { key: 'AUTH_HAS_ACCOUNT', lang: 'EN_US', value: 'Already have an account?' },
+    {
+      key: 'AUTH_HAS_ACCOUNT',
+      lang: 'EN_US',
+      value: 'Already have an account?',
+    },
     { key: 'AUTH_HAS_ACCOUNT', lang: 'PT_BR', value: 'Já tem uma conta?' },
     { key: 'AUTH_LOGIN_LINK', lang: 'EN_US', value: 'Log in' },
     { key: 'AUTH_LOGIN_LINK', lang: 'PT_BR', value: 'Entrar' },
@@ -159,41 +362,125 @@ export async function seedTranslations(prisma: PrismaClient) {
     // Validation & Errors
     { key: 'VAL_REQUIRED', lang: 'EN_US', value: 'This field is required' },
     { key: 'VAL_REQUIRED', lang: 'PT_BR', value: 'Este campo é obrigatório' },
-    { key: 'VAL_EMAIL_INVALID', lang: 'EN_US', value: 'Please enter a valid email' },
-    { key: 'VAL_EMAIL_INVALID', lang: 'PT_BR', value: 'Por favor, insira um email válido' },
-    { key: 'VAL_PASSWORD_MIN', lang: 'EN_US', value: 'Password must be at least 8 characters' },
-    { key: 'VAL_PASSWORD_MIN', lang: 'PT_BR', value: 'A senha deve ter pelo menos 8 caracteres' },
-    { key: 'VAL_PASSWORD_MATCH', lang: 'EN_US', value: 'Passwords do not match' },
-    { key: 'VAL_PASSWORD_MATCH', lang: 'PT_BR', value: 'As senhas não coincidem' },
-    
-    { key: 'ERR_GENERIC', lang: 'EN_US', value: 'Something went wrong. Please try again.' },
-    { key: 'ERR_GENERIC', lang: 'PT_BR', value: 'Algo deu errado. Por favor, tente novamente.' },
+    {
+      key: 'VAL_EMAIL_INVALID',
+      lang: 'EN_US',
+      value: 'Please enter a valid email',
+    },
+    {
+      key: 'VAL_EMAIL_INVALID',
+      lang: 'PT_BR',
+      value: 'Por favor, insira um email válido',
+    },
+    {
+      key: 'VAL_PASSWORD_MIN',
+      lang: 'EN_US',
+      value: 'Password must be at least 8 characters',
+    },
+    {
+      key: 'VAL_PASSWORD_MIN',
+      lang: 'PT_BR',
+      value: 'A senha deve ter pelo menos 8 caracteres',
+    },
+    {
+      key: 'VAL_PASSWORD_MATCH',
+      lang: 'EN_US',
+      value: 'Passwords do not match',
+    },
+    {
+      key: 'VAL_PASSWORD_MATCH',
+      lang: 'PT_BR',
+      value: 'As senhas não coincidem',
+    },
+
+    {
+      key: 'ERR_GENERIC',
+      lang: 'EN_US',
+      value: 'Something went wrong. Please try again.',
+    },
+    {
+      key: 'ERR_GENERIC',
+      lang: 'PT_BR',
+      value: 'Algo deu errado. Por favor, tente novamente.',
+    },
     { key: 'ERR_UNAUTHORIZED', lang: 'EN_US', value: 'Invalid credentials' },
     { key: 'ERR_UNAUTHORIZED', lang: 'PT_BR', value: 'Credenciais inválidas' },
-    { key: 'ERR_NETWORK', lang: 'EN_US', value: 'Network error. Check your connection.' },
-    { key: 'ERR_NETWORK', lang: 'PT_BR', value: 'Erro de rede. Verifique sua conexão.' },
+    {
+      key: 'ERR_NETWORK',
+      lang: 'EN_US',
+      value: 'Network error. Check your connection.',
+    },
+    {
+      key: 'ERR_NETWORK',
+      lang: 'PT_BR',
+      value: 'Erro de rede. Verifique sua conexão.',
+    },
 
     // Timeline Page
     { key: 'TIMELINE_TITLE', lang: 'EN_US', value: 'Professional Career' },
     { key: 'TIMELINE_TITLE', lang: 'PT_BR', value: 'Trajetória Profissional' },
-    { key: 'TIMELINE_HERO_TITLE_PREFIX', lang: 'EN_US', value: 'Experience that Creates' },
-    { key: 'TIMELINE_HERO_TITLE_PREFIX', lang: 'PT_BR', value: 'Experiência que Gera' },
+    {
+      key: 'TIMELINE_HERO_TITLE_PREFIX',
+      lang: 'EN_US',
+      value: 'Experience that Creates',
+    },
+    {
+      key: 'TIMELINE_HERO_TITLE_PREFIX',
+      lang: 'PT_BR',
+      value: 'Experiência que Gera',
+    },
     { key: 'TIMELINE_HERO_TITLE_HIGHLIGHT', lang: 'EN_US', value: 'Value' },
     { key: 'TIMELINE_HERO_TITLE_HIGHLIGHT', lang: 'PT_BR', value: 'Valor' },
-    { key: 'TIMELINE_HERO_DESC', lang: 'EN_US', value: 'From complex backend solutions to scalable SaaS product delivery.' },
-    { key: 'TIMELINE_HERO_DESC', lang: 'PT_BR', value: 'De soluções complexas de backend à entrega de produtos SaaS escaláveis.' },
+    {
+      key: 'TIMELINE_HERO_DESC',
+      lang: 'EN_US',
+      value:
+        'From complex backend solutions to scalable SaaS product delivery.',
+    },
+    {
+      key: 'TIMELINE_HERO_DESC',
+      lang: 'PT_BR',
+      value:
+        'De soluções complexas de backend à entrega de produtos SaaS escaláveis.',
+    },
     { key: 'TIMELINE_FOCUS', lang: 'EN_US', value: 'Focus:' },
     { key: 'TIMELINE_FOCUS', lang: 'PT_BR', value: 'Foco:' },
     { key: 'TIMELINE_CASES', lang: 'EN_US', value: 'Cases:' },
     { key: 'TIMELINE_CASES', lang: 'PT_BR', value: 'Cases:' },
     { key: 'TIMELINE_HIGHLIGHTS', lang: 'EN_US', value: 'Highlights:' },
     { key: 'TIMELINE_HIGHLIGHTS', lang: 'PT_BR', value: 'Destaques:' },
-    { key: 'TIMELINE_CTA_TITLE', lang: 'EN_US', value: 'Ready to scale your project?' },
-    { key: 'TIMELINE_CTA_TITLE', lang: 'PT_BR', value: 'Pronto para escalar seu projeto?' },
-    { key: 'TIMELINE_CTA_DESC', lang: 'EN_US', value: 'Let\'s talk about how robust architecture can transform your business.' },
-    { key: 'TIMELINE_CTA_DESC', lang: 'PT_BR', value: 'Vamos conversar sobre como uma arquitetura robusta pode transformar seu negócio.' },
-    { key: 'TIMELINE_CTA_BUTTON', lang: 'EN_US', value: 'Schedule Technical Meeting' },
-    { key: 'TIMELINE_CTA_BUTTON', lang: 'PT_BR', value: 'Agendar Reunião Técnica' },
+    {
+      key: 'TIMELINE_CTA_TITLE',
+      lang: 'EN_US',
+      value: 'Ready to scale your project?',
+    },
+    {
+      key: 'TIMELINE_CTA_TITLE',
+      lang: 'PT_BR',
+      value: 'Pronto para escalar seu projeto?',
+    },
+    {
+      key: 'TIMELINE_CTA_DESC',
+      lang: 'EN_US',
+      value:
+        "Let's talk about how robust architecture can transform your business.",
+    },
+    {
+      key: 'TIMELINE_CTA_DESC',
+      lang: 'PT_BR',
+      value:
+        'Vamos conversar sobre como uma arquitetura robusta pode transformar seu negócio.',
+    },
+    {
+      key: 'TIMELINE_CTA_BUTTON',
+      lang: 'EN_US',
+      value: 'Schedule Technical Meeting',
+    },
+    {
+      key: 'TIMELINE_CTA_BUTTON',
+      lang: 'PT_BR',
+      value: 'Agendar Reunião Técnica',
+    },
 
     // Shared / Common
     { key: 'COMMON_LOADING', lang: 'EN_US', value: 'Loading...' },
@@ -205,8 +492,16 @@ export async function seedTranslations(prisma: PrismaClient) {
     // Dashboard
     { key: 'DASH_TITLE', lang: 'EN_US', value: 'Dashboard' },
     { key: 'DASH_TITLE', lang: 'PT_BR', value: 'Painel de Controle' },
-    { key: 'DASH_SUBTITLE', lang: 'EN_US', value: 'Overview of your portfolio performance' },
-    { key: 'DASH_SUBTITLE', lang: 'PT_BR', value: 'Visão geral da performance do seu portfólio' },
+    {
+      key: 'DASH_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Overview of your portfolio performance',
+    },
+    {
+      key: 'DASH_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Visão geral da performance do seu portfólio',
+    },
     { key: 'DASH_STAT_PROJECTS', lang: 'EN_US', value: 'Total Projects' },
     { key: 'DASH_STAT_PROJECTS', lang: 'PT_BR', value: 'Total de Projetos' },
     { key: 'DASH_ACT_TITLE', lang: 'EN_US', value: 'Recent Activity' },
@@ -228,13 +523,35 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'HOME_TITLE_HIGHLIGHT', lang: 'EN_US', value: 'complex ideas' },
     { key: 'HOME_TITLE_HIGHLIGHT', lang: 'PT_BR', value: 'ideias complexas' },
     { key: 'HOME_TITLE_2', lang: 'EN_US', value: 'into scale-ready platforms' },
-    { key: 'HOME_TITLE_2', lang: 'PT_BR', value: 'em plataformas digitais prontas para escalar' },
-    { key: 'HOME_HERO_DESC', lang: 'EN_US', value: 'We specialize in High-Performance Web Applications and Scalable Backend Systems. Minimalist design meets robust engineering for startups and enterprise clients.' },
-    { key: 'HOME_HERO_DESC', lang: 'PT_BR', value: 'Somos uma software house focada em Aplicações Web de Alta Performance e Sistemas Backend Escaláveis. Design minimalista encontra engenharia robusta para alavancar seu negócio.' },
+    {
+      key: 'HOME_TITLE_2',
+      lang: 'PT_BR',
+      value: 'em plataformas digitais prontas para escalar',
+    },
+    {
+      key: 'HOME_HERO_DESC',
+      lang: 'EN_US',
+      value:
+        'We specialize in High-Performance Web Applications and Scalable Backend Systems. Minimalist design meets robust engineering for startups and enterprise clients.',
+    },
+    {
+      key: 'HOME_HERO_DESC',
+      lang: 'PT_BR',
+      value:
+        'Somos uma software house focada em Aplicações Web de Alta Performance e Sistemas Backend Escaláveis. Design minimalista encontra engenharia robusta para alavancar seu negócio.',
+    },
     { key: 'HOME_SUBTITLE_BACKEND', lang: 'EN_US', value: 'Backend' },
     { key: 'HOME_SUBTITLE_BACKEND', lang: 'PT_BR', value: 'Backend' },
-    { key: 'HOME_SUBTITLE_PERFORMANCE', lang: 'EN_US', value: 'high performance' },
-    { key: 'HOME_SUBTITLE_PERFORMANCE', lang: 'PT_BR', value: 'alto desempenho' },
+    {
+      key: 'HOME_SUBTITLE_PERFORMANCE',
+      lang: 'EN_US',
+      value: 'high performance',
+    },
+    {
+      key: 'HOME_SUBTITLE_PERFORMANCE',
+      lang: 'PT_BR',
+      value: 'alto desempenho',
+    },
     { key: 'HOME_STACK_TITLE', lang: 'EN_US', value: 'Main Stack' },
     { key: 'HOME_STACK_TITLE', lang: 'PT_BR', value: 'Stack Principal' },
     { key: 'TECH_NESTJS', lang: 'EN_US', value: 'NestJS' },
@@ -251,65 +568,262 @@ export async function seedTranslations(prisma: PrismaClient) {
     // Experience Data Content
     // CroSoften
     { key: 'EXP_CROS_ROLE', lang: 'EN_US', value: 'Full Stack Developer' },
-    { key: 'EXP_CROS_ROLE', lang: 'PT_BR', value: 'Desenvolvedor Full Stack Pleno' },
+    {
+      key: 'EXP_CROS_ROLE',
+      lang: 'PT_BR',
+      value: 'Desenvolvedor Full Stack Pleno',
+    },
     { key: 'EXP_CROS_PERIOD', lang: 'EN_US', value: 'April 2025 - Present' },
     { key: 'EXP_CROS_PERIOD', lang: 'PT_BR', value: 'Abril 2025 - Presente' },
-    { key: 'EXP_CROS_FOCUS', lang: 'EN_US', value: 'Development of scalable architectures and modernization of high-demand systems.' },
-    { key: 'EXP_CROS_FOCUS', lang: 'PT_BR', value: 'Desenvolvimento de arquiteturas escaláveis e modernização de sistemas de alta demanda.' },
-    { key: 'EXP_CROS_HIGHLIGHT_1', lang: 'EN_US', value: 'Technical leadership in new features development using Node.js and NestJS.' },
-    { key: 'EXP_CROS_HIGHLIGHT_1', lang: 'PT_BR', value: 'Liderança técnica no desenvolvimento de novas features utilizando Node.js e NestJS.' },
-    { key: 'EXP_CROS_HIGHLIGHT_2', lang: 'EN_US', value: 'Strategic query optimization and database restructuring to ensure performance.' },
-    { key: 'EXP_CROS_HIGHLIGHT_2', lang: 'PT_BR', value: 'Otimização estratégica de queries e reestruturação de bancos de dados para garantir performance.' },
+    {
+      key: 'EXP_CROS_FOCUS',
+      lang: 'EN_US',
+      value:
+        'Development of scalable architectures and modernization of high-demand systems.',
+    },
+    {
+      key: 'EXP_CROS_FOCUS',
+      lang: 'PT_BR',
+      value:
+        'Desenvolvimento de arquiteturas escaláveis e modernização de sistemas de alta demanda.',
+    },
+    {
+      key: 'EXP_CROS_HIGHLIGHT_1',
+      lang: 'EN_US',
+      value:
+        'Technical leadership in new features development using Node.js and NestJS.',
+    },
+    {
+      key: 'EXP_CROS_HIGHLIGHT_1',
+      lang: 'PT_BR',
+      value:
+        'Liderança técnica no desenvolvimento de novas features utilizando Node.js e NestJS.',
+    },
+    {
+      key: 'EXP_CROS_HIGHLIGHT_2',
+      lang: 'EN_US',
+      value:
+        'Strategic query optimization and database restructuring to ensure performance.',
+    },
+    {
+      key: 'EXP_CROS_HIGHLIGHT_2',
+      lang: 'PT_BR',
+      value:
+        'Otimização estratégica de queries e reestruturação de bancos de dados para garantir performance.',
+    },
 
     // OluStack
-    { key: 'EXP_OLU_ROLE', lang: 'EN_US', value: 'Co-Founder & Product Engineer' },
-    { key: 'EXP_OLU_ROLE', lang: 'PT_BR', value: 'Sócio-Fundador & Product Engineer' },
+    {
+      key: 'EXP_OLU_ROLE',
+      lang: 'EN_US',
+      value: 'Co-Founder & Product Engineer',
+    },
+    {
+      key: 'EXP_OLU_ROLE',
+      lang: 'PT_BR',
+      value: 'Sócio-Fundador & Product Engineer',
+    },
     { key: 'EXP_OLU_PERIOD', lang: 'EN_US', value: 'January 2020 - Present' },
     { key: 'EXP_OLU_PERIOD', lang: 'PT_BR', value: 'Janeiro 2020 - Presente' },
-    { key: 'EXP_OLU_FOCUS', lang: 'EN_US', value: 'Conception and development of end-to-end SaaS ecosystems.' },
-    { key: 'EXP_OLU_FOCUS', lang: 'PT_BR', value: 'Concepção e desenvolvimento de ecossistemas SaaS de ponta a ponta.' },
-    { key: 'EXP_OLU_HIGHLIGHT_1', lang: 'EN_US', value: 'BarberBoss: SaaS platform for commercial management focusing on UX and payments.' },
-    { key: 'EXP_OLU_HIGHLIGHT_1', lang: 'PT_BR', value: 'BarberBoss: Plataforma SaaS de gestão comercial com foco em experiência do usuário e pagamentos.' },
-    { key: 'EXP_OLU_HIGHLIGHT_2', lang: 'EN_US', value: 'PetBoss: Logistics and geolocation engine using PostGIS for pet services.' },
-    { key: 'EXP_OLU_HIGHLIGHT_2', lang: 'PT_BR', value: 'PetBoss: Engine de logística e geolocalização utilizando PostGIS para serviços pet.' },
+    {
+      key: 'EXP_OLU_FOCUS',
+      lang: 'EN_US',
+      value: 'Conception and development of end-to-end SaaS ecosystems.',
+    },
+    {
+      key: 'EXP_OLU_FOCUS',
+      lang: 'PT_BR',
+      value:
+        'Concepção e desenvolvimento de ecossistemas SaaS de ponta a ponta.',
+    },
+    {
+      key: 'EXP_OLU_HIGHLIGHT_1',
+      lang: 'EN_US',
+      value:
+        'BarberBoss: SaaS platform for commercial management focusing on UX and payments.',
+    },
+    {
+      key: 'EXP_OLU_HIGHLIGHT_1',
+      lang: 'PT_BR',
+      value:
+        'BarberBoss: Plataforma SaaS de gestão comercial com foco em experiência do usuário e pagamentos.',
+    },
+    {
+      key: 'EXP_OLU_HIGHLIGHT_2',
+      lang: 'EN_US',
+      value:
+        'PetBoss: Logistics and geolocation engine using PostGIS for pet services.',
+    },
+    {
+      key: 'EXP_OLU_HIGHLIGHT_2',
+      lang: 'PT_BR',
+      value:
+        'PetBoss: Engine de logística e geolocalização utilizando PostGIS para serviços pet.',
+    },
 
     // Unimed
     { key: 'EXP_UNIMED_ROLE', lang: 'EN_US', value: 'Backend Developer' },
     { key: 'EXP_UNIMED_ROLE', lang: 'PT_BR', value: 'Backend Developer' },
-    { key: 'EXP_UNIMED_PERIOD', lang: 'EN_US', value: 'February 2025 - October 2025' },
-    { key: 'EXP_UNIMED_PERIOD', lang: 'PT_BR', value: 'Fevereiro 2025 - Outubro 2025' },
-    { key: 'EXP_UNIMED_FOCUS', lang: 'EN_US', value: 'Development in critical health environment focusing on data integration.' },
-    { key: 'EXP_UNIMED_FOCUS', lang: 'PT_BR', value: 'Desenvolvimento em ambiente crítico de saúde com foco em integração de dados.' },
-    { key: 'EXP_UNIMED_HIGHLIGHT_1', lang: 'EN_US', value: 'Creation of integration APIs and complex SQL routines (Oracle/PL-SQL).' },
-    { key: 'EXP_UNIMED_HIGHLIGHT_1', lang: 'PT_BR', value: 'Criação de APIs de integração e rotinas complexas em SQL (Oracle/PL-SQL).' },
-    { key: 'EXP_UNIMED_HIGHLIGHT_2', lang: 'EN_US', value: 'Ensuring integrity and performance in mission-critical hospital systems.' },
-    { key: 'EXP_UNIMED_HIGHLIGHT_2', lang: 'PT_BR', value: 'Garantia de integridade e performance em sistemas de missão crítica hospitalar.' },
+    {
+      key: 'EXP_UNIMED_PERIOD',
+      lang: 'EN_US',
+      value: 'February 2025 - October 2025',
+    },
+    {
+      key: 'EXP_UNIMED_PERIOD',
+      lang: 'PT_BR',
+      value: 'Fevereiro 2025 - Outubro 2025',
+    },
+    {
+      key: 'EXP_UNIMED_FOCUS',
+      lang: 'EN_US',
+      value:
+        'Development in critical health environment focusing on data integration.',
+    },
+    {
+      key: 'EXP_UNIMED_FOCUS',
+      lang: 'PT_BR',
+      value:
+        'Desenvolvimento em ambiente crítico de saúde com foco em integração de dados.',
+    },
+    {
+      key: 'EXP_UNIMED_HIGHLIGHT_1',
+      lang: 'EN_US',
+      value:
+        'Creation of integration APIs and complex SQL routines (Oracle/PL-SQL).',
+    },
+    {
+      key: 'EXP_UNIMED_HIGHLIGHT_1',
+      lang: 'PT_BR',
+      value:
+        'Criação de APIs de integração e rotinas complexas em SQL (Oracle/PL-SQL).',
+    },
+    {
+      key: 'EXP_UNIMED_HIGHLIGHT_2',
+      lang: 'EN_US',
+      value:
+        'Ensuring integrity and performance in mission-critical hospital systems.',
+    },
+    {
+      key: 'EXP_UNIMED_HIGHLIGHT_2',
+      lang: 'PT_BR',
+      value:
+        'Garantia de integridade e performance em sistemas de missão crítica hospitalar.',
+    },
 
     // Renner
     { key: 'EXP_RENNER_ROLE', lang: 'EN_US', value: 'Systems Analyst' },
     { key: 'EXP_RENNER_ROLE', lang: 'PT_BR', value: 'Analista de Sistemas' },
-    { key: 'EXP_RENNER_PERIOD', lang: 'EN_US', value: 'January 2024 - December 2024' },
-    { key: 'EXP_RENNER_PERIOD', lang: 'PT_BR', value: 'Janeiro 2024 - Dezembro 2024' },
-    { key: 'EXP_RENNER_FOCUS', lang: 'EN_US', value: 'Support and monitoring of large-scale transactional systems.' },
-    { key: 'EXP_RENNER_FOCUS', lang: 'PT_BR', value: 'Sustentação e monitoramento de sistemas transacionais de larga escala.' },
-    { key: 'EXP_RENNER_HIGHLIGHT_1', lang: 'EN_US', value: 'Resolution of critical incidents in retail environment with high data volume.' },
-    { key: 'EXP_RENNER_HIGHLIGHT_1', lang: 'PT_BR', value: 'Resolução de incidentes críticos em ambiente de varejo com alta volumetria de dados.' },
-    { key: 'EXP_RENNER_HIGHLIGHT_2', lang: 'EN_US', value: 'Performance analysis and optimization of high-demand systemic flows.' },
-    { key: 'EXP_RENNER_HIGHLIGHT_2', lang: 'PT_BR', value: 'Análise de performance e otimização de fluxos sistêmicos de alta demanda.' },
-    { key: 'EXP_TECH_DISTRIBUTED', lang: 'EN_US', value: 'Distributed Systems' },
-    { key: 'EXP_TECH_DISTRIBUTED', lang: 'PT_BR', value: 'Sistemas Distribuídos' },
+    {
+      key: 'EXP_RENNER_PERIOD',
+      lang: 'EN_US',
+      value: 'January 2024 - December 2024',
+    },
+    {
+      key: 'EXP_RENNER_PERIOD',
+      lang: 'PT_BR',
+      value: 'Janeiro 2024 - Dezembro 2024',
+    },
+    {
+      key: 'EXP_RENNER_FOCUS',
+      lang: 'EN_US',
+      value: 'Support and monitoring of large-scale transactional systems.',
+    },
+    {
+      key: 'EXP_RENNER_FOCUS',
+      lang: 'PT_BR',
+      value:
+        'Sustentação e monitoramento de sistemas transacionais de larga escala.',
+    },
+    {
+      key: 'EXP_RENNER_HIGHLIGHT_1',
+      lang: 'EN_US',
+      value:
+        'Resolution of critical incidents in retail environment with high data volume.',
+    },
+    {
+      key: 'EXP_RENNER_HIGHLIGHT_1',
+      lang: 'PT_BR',
+      value:
+        'Resolução de incidentes críticos em ambiente de varejo com alta volumetria de dados.',
+    },
+    {
+      key: 'EXP_RENNER_HIGHLIGHT_2',
+      lang: 'EN_US',
+      value:
+        'Performance analysis and optimization of high-demand systemic flows.',
+    },
+    {
+      key: 'EXP_RENNER_HIGHLIGHT_2',
+      lang: 'PT_BR',
+      value:
+        'Análise de performance e otimização de fluxos sistêmicos de alta demanda.',
+    },
+    {
+      key: 'EXP_TECH_DISTRIBUTED',
+      lang: 'EN_US',
+      value: 'Distributed Systems',
+    },
+    {
+      key: 'EXP_TECH_DISTRIBUTED',
+      lang: 'PT_BR',
+      value: 'Sistemas Distribuídos',
+    },
 
     // PurpleCats
-    { key: 'EXP_PURPLE_ROLE', lang: 'EN_US', value: 'Backend Developer (Node.js)' },
-    { key: 'EXP_PURPLE_ROLE', lang: 'PT_BR', value: 'Desenvolvedor Backend (Node.js)' },
-    { key: 'EXP_PURPLE_PERIOD', lang: 'EN_US', value: 'March 2022 - December 2023' },
-    { key: 'EXP_PURPLE_PERIOD', lang: 'PT_BR', value: 'Março 2022 - Dezembro 2023' },
-    { key: 'EXP_PURPLE_FOCUS', lang: 'EN_US', value: 'Microservices architecture for the Fintech sector.' },
-    { key: 'EXP_PURPLE_FOCUS', lang: 'PT_BR', value: 'Arquitetura de microsserviços para o setor de Fintech.' },
-    { key: 'EXP_PURPLE_HIGHLIGHT_1', lang: 'EN_US', value: 'Development of APIs serving more than 10,000 daily active users.' },
-    { key: 'EXP_PURPLE_HIGHLIGHT_1', lang: 'PT_BR', value: 'Desenvolvimento de APIs atendendo mais de 10.000 usuários ativos diários.' },
-    { key: 'EXP_PURPLE_HIGHLIGHT_2', lang: 'EN_US', value: 'Implementation of AWS infrastructure, CI/CD pipelines, and automated tests with Jest.' },
-    { key: 'EXP_PURPLE_HIGHLIGHT_2', lang: 'PT_BR', value: 'Implementação de infraestrutura AWS, pipelines CI/CD e testes automatizados com Jest.' },
+    {
+      key: 'EXP_PURPLE_ROLE',
+      lang: 'EN_US',
+      value: 'Backend Developer (Node.js)',
+    },
+    {
+      key: 'EXP_PURPLE_ROLE',
+      lang: 'PT_BR',
+      value: 'Desenvolvedor Backend (Node.js)',
+    },
+    {
+      key: 'EXP_PURPLE_PERIOD',
+      lang: 'EN_US',
+      value: 'March 2022 - December 2023',
+    },
+    {
+      key: 'EXP_PURPLE_PERIOD',
+      lang: 'PT_BR',
+      value: 'Março 2022 - Dezembro 2023',
+    },
+    {
+      key: 'EXP_PURPLE_FOCUS',
+      lang: 'EN_US',
+      value: 'Microservices architecture for the Fintech sector.',
+    },
+    {
+      key: 'EXP_PURPLE_FOCUS',
+      lang: 'PT_BR',
+      value: 'Arquitetura de microsserviços para o setor de Fintech.',
+    },
+    {
+      key: 'EXP_PURPLE_HIGHLIGHT_1',
+      lang: 'EN_US',
+      value: 'Development of APIs serving more than 10,000 daily active users.',
+    },
+    {
+      key: 'EXP_PURPLE_HIGHLIGHT_1',
+      lang: 'PT_BR',
+      value:
+        'Desenvolvimento de APIs atendendo mais de 10.000 usuários ativos diários.',
+    },
+    {
+      key: 'EXP_PURPLE_HIGHLIGHT_2',
+      lang: 'EN_US',
+      value:
+        'Implementation of AWS infrastructure, CI/CD pipelines, and automated tests with Jest.',
+    },
+    {
+      key: 'EXP_PURPLE_HIGHLIGHT_2',
+      lang: 'PT_BR',
+      value:
+        'Implementação de infraestrutura AWS, pipelines CI/CD e testes automatizados com Jest.',
+    },
     { key: 'EXP_TECH_MICROSERVICES', lang: 'EN_US', value: 'Microservices' },
     { key: 'EXP_TECH_MICROSERVICES', lang: 'PT_BR', value: 'Microsserviços' },
     // Dashboard - Admin Layout & Sidebar
@@ -319,7 +833,7 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'ADMIN_SEARCH_PLACEHOLDER', lang: 'PT_BR', value: 'Buscar...' },
     { key: 'ADMIN_BTN_NEW', lang: 'EN_US', value: '+ New' },
     { key: 'ADMIN_BTN_NEW', lang: 'PT_BR', value: '+ Novo' },
-    
+
     { key: 'SIDEBAR_DASHBOARD', lang: 'EN_US', value: 'Dashboard' },
     { key: 'SIDEBAR_DASHBOARD', lang: 'PT_BR', value: 'Dashboard' },
     { key: 'SIDEBAR_PROJECTS', lang: 'EN_US', value: 'Projects' },
@@ -330,12 +844,12 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'SIDEBAR_TRANSLATIONS', lang: 'PT_BR', value: 'Traduções' },
     { key: 'SIDEBAR_TECHNOLOGIES', lang: 'EN_US', value: 'Technologies' },
     { key: 'SIDEBAR_TECHNOLOGIES', lang: 'PT_BR', value: 'Tecnologias' },
-    
+
     { key: 'SIDEBAR_LOGOUT', lang: 'EN_US', value: 'Logout' },
     { key: 'SIDEBAR_LOGOUT', lang: 'PT_BR', value: 'Sair' },
     { key: 'SIDEBAR_DEMO_MODE', lang: 'EN_US', value: 'Demo Mode' },
     { key: 'SIDEBAR_DEMO_MODE', lang: 'PT_BR', value: 'Modo Demonstração' },
-    
+
     { key: 'ROLE_ADMIN', lang: 'EN_US', value: 'Administrator' },
     { key: 'ROLE_ADMIN', lang: 'PT_BR', value: 'Administrador' },
     { key: 'ROLE_GUEST', lang: 'EN_US', value: 'Guest' },
@@ -375,38 +889,104 @@ export async function seedTranslations(prisma: PrismaClient) {
     // Admin - Projects Page
     { key: 'ADMIN_PROJECTS_TITLE', lang: 'EN_US', value: 'Projects' },
     { key: 'ADMIN_PROJECTS_TITLE', lang: 'PT_BR', value: 'Projetos' },
-    { key: 'ADMIN_PROJECTS_SUBTITLE', lang: 'EN_US', value: 'Manage your portfolio projects' },
-    { key: 'ADMIN_PROJECTS_SUBTITLE', lang: 'PT_BR', value: 'Gerencie os projetos do seu portfolio' },
+    {
+      key: 'ADMIN_PROJECTS_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Manage your portfolio projects',
+    },
+    {
+      key: 'ADMIN_PROJECTS_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Gerencie os projetos do seu portfolio',
+    },
     { key: 'ADMIN_BTN_NEW_PROJECT', lang: 'EN_US', value: '+ New Project' },
     { key: 'ADMIN_BTN_NEW_PROJECT', lang: 'PT_BR', value: '+ Novo Projeto' },
     { key: 'ADMIN_TBL_TECHNOLOGIES', lang: 'EN_US', value: 'Technologies' },
     { key: 'ADMIN_TBL_TECHNOLOGIES', lang: 'PT_BR', value: 'Tecnologias' },
-    { key: 'ADMIN_PROJECTS_EMPTY', lang: 'EN_US', value: 'No projects registered' },
-    { key: 'ADMIN_PROJECTS_EMPTY', lang: 'PT_BR', value: 'Nenhum projeto cadastrado' },
+    {
+      key: 'ADMIN_PROJECTS_EMPTY',
+      lang: 'EN_US',
+      value: 'No projects registered',
+    },
+    {
+      key: 'ADMIN_PROJECTS_EMPTY',
+      lang: 'PT_BR',
+      value: 'Nenhum projeto cadastrado',
+    },
     { key: 'ADMIN_PROJECTS_MODAL_EDIT', lang: 'EN_US', value: 'Edit Project' },
-    { key: 'ADMIN_PROJECTS_MODAL_EDIT', lang: 'PT_BR', value: 'Editar Projeto' },
+    {
+      key: 'ADMIN_PROJECTS_MODAL_EDIT',
+      lang: 'PT_BR',
+      value: 'Editar Projeto',
+    },
     { key: 'ADMIN_PROJECTS_MODAL_NEW', lang: 'EN_US', value: 'New Project' },
     { key: 'ADMIN_PROJECTS_MODAL_NEW', lang: 'PT_BR', value: 'Novo Projeto' },
     { key: 'ADMIN_FORM_TITLE', lang: 'EN_US', value: 'Title' },
     { key: 'ADMIN_FORM_TITLE', lang: 'PT_BR', value: 'Título' },
     { key: 'ADMIN_FORM_DESCRIPTION', lang: 'EN_US', value: 'Description' },
     { key: 'ADMIN_FORM_DESCRIPTION', lang: 'PT_BR', value: 'Descrição' },
-    { key: 'ADMIN_FORM_TECH_HINT', lang: 'EN_US', value: 'Technologies (comma separated)' },
-    { key: 'ADMIN_FORM_TECH_HINT', lang: 'PT_BR', value: 'Tecnologias (separadas por vírgula)' },
-    { key: 'ADMIN_FORM_PROJECT_ACTIVE', lang: 'EN_US', value: 'Active project' },
+    {
+      key: 'ADMIN_FORM_TECH_HINT',
+      lang: 'EN_US',
+      value: 'Technologies (comma separated)',
+    },
+    {
+      key: 'ADMIN_FORM_TECH_HINT',
+      lang: 'PT_BR',
+      value: 'Tecnologias (separadas por vírgula)',
+    },
+    {
+      key: 'ADMIN_FORM_PROJECT_ACTIVE',
+      lang: 'EN_US',
+      value: 'Active project',
+    },
     { key: 'ADMIN_FORM_PROJECT_ACTIVE', lang: 'PT_BR', value: 'Projeto ativo' },
-    { key: 'ADMIN_ERR_DUPLICATE', lang: 'EN_US', value: 'A project with this title or slug already exists. Please choose another name.' },
-    { key: 'ADMIN_ERR_DUPLICATE', lang: 'PT_BR', value: 'Um projeto com este título ou slug já existe. Por favor, escolha outro nome.' },
-    { key: 'ADMIN_ERR_GENERIC', lang: 'EN_US', value: 'Error saving project. Please try again later.' },
-    { key: 'ADMIN_ERR_GENERIC', lang: 'PT_BR', value: 'Erro ao salvar projeto. Tente novamente mais tarde.' },
-    { key: 'ADMIN_CONFIRM_DELETE_PROJECT', lang: 'EN_US', value: 'Are you sure you want to delete this project?' },
-    { key: 'ADMIN_CONFIRM_DELETE_PROJECT', lang: 'PT_BR', value: 'Tem certeza que deseja excluir este projeto?' },
+    {
+      key: 'ADMIN_ERR_DUPLICATE',
+      lang: 'EN_US',
+      value:
+        'A project with this title or slug already exists. Please choose another name.',
+    },
+    {
+      key: 'ADMIN_ERR_DUPLICATE',
+      lang: 'PT_BR',
+      value:
+        'Um projeto com este título ou slug já existe. Por favor, escolha outro nome.',
+    },
+    {
+      key: 'ADMIN_ERR_GENERIC',
+      lang: 'EN_US',
+      value: 'Error saving project. Please try again later.',
+    },
+    {
+      key: 'ADMIN_ERR_GENERIC',
+      lang: 'PT_BR',
+      value: 'Erro ao salvar projeto. Tente novamente mais tarde.',
+    },
+    {
+      key: 'ADMIN_CONFIRM_DELETE_PROJECT',
+      lang: 'EN_US',
+      value: 'Are you sure you want to delete this project?',
+    },
+    {
+      key: 'ADMIN_CONFIRM_DELETE_PROJECT',
+      lang: 'PT_BR',
+      value: 'Tem certeza que deseja excluir este projeto?',
+    },
 
     // Admin - Contacts Page
     { key: 'ADMIN_CONTACTS_TITLE', lang: 'EN_US', value: 'Contacts' },
     { key: 'ADMIN_CONTACTS_TITLE', lang: 'PT_BR', value: 'Contatos' },
-    { key: 'ADMIN_CONTACTS_SUBTITLE', lang: 'EN_US', value: 'Messages received from contact form' },
-    { key: 'ADMIN_CONTACTS_SUBTITLE', lang: 'PT_BR', value: 'Mensagens recebidas pelo formulário de contato' },
+    {
+      key: 'ADMIN_CONTACTS_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Messages received from contact form',
+    },
+    {
+      key: 'ADMIN_CONTACTS_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Mensagens recebidas pelo formulário de contato',
+    },
     { key: 'ADMIN_CONTACTS_ALL', lang: 'EN_US', value: 'All' },
     { key: 'ADMIN_CONTACTS_ALL', lang: 'PT_BR', value: 'Todos' },
     { key: 'ADMIN_CONTACTS_UNREAD', lang: 'EN_US', value: 'Unread' },
@@ -417,54 +997,142 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'ADMIN_CONTACTS_REPLY', lang: 'PT_BR', value: 'Responder' },
     { key: 'ADMIN_CONTACTS_COPY', lang: 'EN_US', value: 'Copy Email' },
     { key: 'ADMIN_CONTACTS_COPY', lang: 'PT_BR', value: 'Copiar Email' },
-    { key: 'ADMIN_CONTACTS_EMPTY', lang: 'EN_US', value: 'No contacts received' },
-    { key: 'ADMIN_CONTACTS_EMPTY', lang: 'PT_BR', value: 'Nenhum contato recebido' },
-    { key: 'ADMIN_CONTACTS_EMPTY_UNREAD', lang: 'EN_US', value: 'No unread messages' },
-    { key: 'ADMIN_CONTACTS_EMPTY_UNREAD', lang: 'PT_BR', value: 'Nenhuma mensagem não lida' },
+    {
+      key: 'ADMIN_CONTACTS_EMPTY',
+      lang: 'EN_US',
+      value: 'No contacts received',
+    },
+    {
+      key: 'ADMIN_CONTACTS_EMPTY',
+      lang: 'PT_BR',
+      value: 'Nenhum contato recebido',
+    },
+    {
+      key: 'ADMIN_CONTACTS_EMPTY_UNREAD',
+      lang: 'EN_US',
+      value: 'No unread messages',
+    },
+    {
+      key: 'ADMIN_CONTACTS_EMPTY_UNREAD',
+      lang: 'PT_BR',
+      value: 'Nenhuma mensagem não lida',
+    },
     { key: 'ADMIN_CONTACTS_MARK_READ', lang: 'EN_US', value: 'Mark as read' },
-    { key: 'ADMIN_CONTACTS_MARK_READ', lang: 'PT_BR', value: 'Marcar como lido' },
-    { key: 'ADMIN_CONTACTS_MARK_UNREAD', lang: 'EN_US', value: 'Mark as unread' },
-    { key: 'ADMIN_CONTACTS_MARK_UNREAD', lang: 'PT_BR', value: 'Marcar como não lido' },
+    {
+      key: 'ADMIN_CONTACTS_MARK_READ',
+      lang: 'PT_BR',
+      value: 'Marcar como lido',
+    },
+    {
+      key: 'ADMIN_CONTACTS_MARK_UNREAD',
+      lang: 'EN_US',
+      value: 'Mark as unread',
+    },
+    {
+      key: 'ADMIN_CONTACTS_MARK_UNREAD',
+      lang: 'PT_BR',
+      value: 'Marcar como não lido',
+    },
     { key: 'ADMIN_CONTACTS_DELETE', lang: 'EN_US', value: 'Delete' },
     { key: 'ADMIN_CONTACTS_DELETE', lang: 'PT_BR', value: 'Excluir' },
-    { key: 'ADMIN_CONFIRM_DELETE_CONTACT', lang: 'EN_US', value: 'Are you sure you want to delete this contact?' },
-    { key: 'ADMIN_CONFIRM_DELETE_CONTACT', lang: 'PT_BR', value: 'Tem certeza que deseja excluir este contato?' },
+    {
+      key: 'ADMIN_CONFIRM_DELETE_CONTACT',
+      lang: 'EN_US',
+      value: 'Are you sure you want to delete this contact?',
+    },
+    {
+      key: 'ADMIN_CONFIRM_DELETE_CONTACT',
+      lang: 'PT_BR',
+      value: 'Tem certeza que deseja excluir este contato?',
+    },
 
     // Admin - Translations Page
     { key: 'ADMIN_TRANS_TITLE', lang: 'EN_US', value: 'Translations' },
     { key: 'ADMIN_TRANS_TITLE', lang: 'PT_BR', value: 'Traduções' },
-    { key: 'ADMIN_TRANS_SUBTITLE', lang: 'EN_US', value: 'Manage internationalization (i18n) keys' },
-    { key: 'ADMIN_TRANS_SUBTITLE', lang: 'PT_BR', value: 'Gerencie as chaves de internacionalização (i18n)' },
+    {
+      key: 'ADMIN_TRANS_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Manage internationalization (i18n) keys',
+    },
+    {
+      key: 'ADMIN_TRANS_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Gerencie as chaves de internacionalização (i18n)',
+    },
     { key: 'ADMIN_BTN_NEW_KEY', lang: 'EN_US', value: '+ New Key' },
     { key: 'ADMIN_BTN_NEW_KEY', lang: 'PT_BR', value: '+ Nova Chave' },
-    { key: 'ADMIN_TRANS_SEARCH', lang: 'EN_US', value: 'Search translations...' },
+    {
+      key: 'ADMIN_TRANS_SEARCH',
+      lang: 'EN_US',
+      value: 'Search translations...',
+    },
     { key: 'ADMIN_TRANS_SEARCH', lang: 'PT_BR', value: 'Buscar traduções...' },
     { key: 'ADMIN_TRANS_TOTAL', lang: 'EN_US', value: 'Total Keys' },
     { key: 'ADMIN_TRANS_TOTAL', lang: 'PT_BR', value: 'Total de Chaves' },
     { key: 'ADMIN_TRANS_TBL_KEY', lang: 'EN_US', value: 'Key' },
     { key: 'ADMIN_TRANS_TBL_KEY', lang: 'PT_BR', value: 'Chave' },
-    { key: 'ADMIN_TRANS_EMPTY', lang: 'EN_US', value: 'No translations registered' },
-    { key: 'ADMIN_TRANS_EMPTY', lang: 'PT_BR', value: 'Nenhuma tradução cadastrada' },
-    { key: 'ADMIN_TRANS_NOT_FOUND', lang: 'EN_US', value: 'No translations found' },
-    { key: 'ADMIN_TRANS_NOT_FOUND', lang: 'PT_BR', value: 'Nenhuma tradução encontrada' },
+    {
+      key: 'ADMIN_TRANS_EMPTY',
+      lang: 'EN_US',
+      value: 'No translations registered',
+    },
+    {
+      key: 'ADMIN_TRANS_EMPTY',
+      lang: 'PT_BR',
+      value: 'Nenhuma tradução cadastrada',
+    },
+    {
+      key: 'ADMIN_TRANS_NOT_FOUND',
+      lang: 'EN_US',
+      value: 'No translations found',
+    },
+    {
+      key: 'ADMIN_TRANS_NOT_FOUND',
+      lang: 'PT_BR',
+      value: 'Nenhuma tradução encontrada',
+    },
     { key: 'ADMIN_TRANS_MODAL_NEW', lang: 'EN_US', value: 'New Translation' },
     { key: 'ADMIN_TRANS_MODAL_NEW', lang: 'PT_BR', value: 'Nova Tradução' },
-    { key: 'ADMIN_CONFIRM_DELETE_KEY', lang: 'EN_US', value: 'Are you sure you want to delete the key' },
-    { key: 'ADMIN_CONFIRM_DELETE_KEY', lang: 'PT_BR', value: 'Tem certeza que deseja excluir a chave' },
+    {
+      key: 'ADMIN_CONFIRM_DELETE_KEY',
+      lang: 'EN_US',
+      value: 'Are you sure you want to delete the key',
+    },
+    {
+      key: 'ADMIN_CONFIRM_DELETE_KEY',
+      lang: 'PT_BR',
+      value: 'Tem certeza que deseja excluir a chave',
+    },
 
     // Admin - Technologies Page
     { key: 'ADMIN_TECH_TITLE', lang: 'EN_US', value: 'Technologies' },
     { key: 'ADMIN_TECH_TITLE', lang: 'PT_BR', value: 'Tecnologias' },
-    { key: 'ADMIN_TECH_SUBTITLE', lang: 'EN_US', value: 'Manage your tech stack' },
-    { key: 'ADMIN_TECH_SUBTITLE', lang: 'PT_BR', value: 'Gerencie sua stack tecnológica' },
+    {
+      key: 'ADMIN_TECH_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Manage your tech stack',
+    },
+    {
+      key: 'ADMIN_TECH_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Gerencie sua stack tecnológica',
+    },
     { key: 'ADMIN_BTN_NEW_TECH', lang: 'EN_US', value: '+ New Technology' },
     { key: 'ADMIN_BTN_NEW_TECH', lang: 'PT_BR', value: '+ Nova Tecnologia' },
     { key: 'ADMIN_TECH_ALL', lang: 'EN_US', value: 'All' },
     { key: 'ADMIN_TECH_ALL', lang: 'PT_BR', value: 'Todas' },
     { key: 'ADMIN_TECH_PROFICIENCY', lang: 'EN_US', value: 'Proficiency' },
     { key: 'ADMIN_TECH_PROFICIENCY', lang: 'PT_BR', value: 'Proficiência' },
-    { key: 'ADMIN_TECH_EMPTY', lang: 'EN_US', value: 'No technologies registered' },
-    { key: 'ADMIN_TECH_EMPTY', lang: 'PT_BR', value: 'Nenhuma tecnologia cadastrada' },
+    {
+      key: 'ADMIN_TECH_EMPTY',
+      lang: 'EN_US',
+      value: 'No technologies registered',
+    },
+    {
+      key: 'ADMIN_TECH_EMPTY',
+      lang: 'PT_BR',
+      value: 'Nenhuma tecnologia cadastrada',
+    },
     { key: 'ADMIN_TECH_MODAL_EDIT', lang: 'EN_US', value: 'Edit Technology' },
     { key: 'ADMIN_TECH_MODAL_EDIT', lang: 'PT_BR', value: 'Editar Tecnologia' },
     { key: 'ADMIN_TECH_MODAL_NEW', lang: 'EN_US', value: 'New Technology' },
@@ -479,63 +1147,237 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'ADMIN_FORM_SELECT', lang: 'PT_BR', value: 'Selecione...' },
     { key: 'ADMIN_FORM_OTHER', lang: 'EN_US', value: 'Other' },
     { key: 'ADMIN_FORM_OTHER', lang: 'PT_BR', value: 'Outros' },
-    { key: 'ADMIN_CONFIRM_DELETE_TECH', lang: 'EN_US', value: 'Are you sure you want to delete this technology?' },
-    { key: 'ADMIN_CONFIRM_DELETE_TECH', lang: 'PT_BR', value: 'Tem certeza que deseja excluir esta tecnologia?' },
+    {
+      key: 'ADMIN_CONFIRM_DELETE_TECH',
+      lang: 'EN_US',
+      value: 'Are you sure you want to delete this technology?',
+    },
+    {
+      key: 'ADMIN_CONFIRM_DELETE_TECH',
+      lang: 'PT_BR',
+      value: 'Tem certeza que deseja excluir esta tecnologia?',
+    },
 
     // About Section
     { key: 'ABOUT_TITLE_PREFIX', lang: 'EN_US', value: 'We are' },
     { key: 'ABOUT_TITLE_PREFIX', lang: 'PT_BR', value: 'Nós somos a' },
     { key: 'ABOUT_TITLE_SUFFIX', lang: 'EN_US', value: 'OluStack.' },
     { key: 'ABOUT_TITLE_SUFFIX', lang: 'PT_BR', value: 'OluStack.' },
-    { key: 'ABOUT_ROLE', lang: 'EN_US', value: 'Elite Software House & Engineering Consultancy' },
-    { key: 'ABOUT_ROLE', lang: 'PT_BR', value: 'Software House de Elite & Consultoria em Engenharia' },
-    { key: 'ABOUT_BIO_1', lang: 'EN_US', value: 'We are a specialized engineering team focused on creating scale-ready digital platforms for startups and enterprise clients. Our expertise is centered on high-performance ecosystems using Node.js (NestJS) and Angular, delivering robust architectures with profound mastery of relational databases.' },
-    { key: 'ABOUT_BIO_1', lang: 'PT_BR', value: 'Somos uma equipe de engenharia especializada na criação de plataformas digitais prontas para escalar focada em startups e clientes enterprise. Nossa expertise é centrada no ecossistema de alta performance Node.js (NestJS) e Angular, entregando arquiteturas robustas com domínio profundo em bancos de dados.' },
-    { key: 'ABOUT_BIO_2', lang: 'EN_US', value: 'Our operation acts as an innovation partner. Besides accelerating B2B businesses, we build our own ecosystem of SaaS products, like BarberBoss and PetBoss. We deliver not just code, but intelligent engineering integrating modern tech like Signals in Angular 19, PostGIS geolocation, and mission-critical enterprise security.' },
-    { key: 'ABOUT_BIO_2', lang: 'PT_BR', value: 'Nossa operação atua como um parceiro de inovação. Além de acelerar negócios B2B, construímos nosso próprio ecossistema de produtos SaaS, como BarberBoss e PetBoss. Entregamos não apenas código, mas engenharia inteligente integrando tecnologias modernas como Signals no Angular 19, geolocalização com PostGIS e segurança corporativa de missão crítica.' },
+    {
+      key: 'ABOUT_ROLE',
+      lang: 'EN_US',
+      value: 'Elite Software House & Engineering Consultancy',
+    },
+    {
+      key: 'ABOUT_ROLE',
+      lang: 'PT_BR',
+      value: 'Software House de Elite & Consultoria em Engenharia',
+    },
+    {
+      key: 'ABOUT_BIO_1',
+      lang: 'EN_US',
+      value:
+        'We are a specialized engineering team focused on creating scale-ready digital platforms for startups and enterprise clients. Our expertise is centered on high-performance ecosystems using Node.js (NestJS) and Angular, delivering robust architectures with profound mastery of relational databases.',
+    },
+    {
+      key: 'ABOUT_BIO_1',
+      lang: 'PT_BR',
+      value:
+        'Somos uma equipe de engenharia especializada na criação de plataformas digitais prontas para escalar focada em startups e clientes enterprise. Nossa expertise é centrada no ecossistema de alta performance Node.js (NestJS) e Angular, entregando arquiteturas robustas com domínio profundo em bancos de dados.',
+    },
+    {
+      key: 'ABOUT_BIO_2',
+      lang: 'EN_US',
+      value:
+        'Our operation acts as an innovation partner. Besides accelerating B2B businesses, we build our own ecosystem of SaaS products, like BarberBoss and PetBoss. We deliver not just code, but intelligent engineering integrating modern tech like Signals in Angular 19, PostGIS geolocation, and mission-critical enterprise security.',
+    },
+    {
+      key: 'ABOUT_BIO_2',
+      lang: 'PT_BR',
+      value:
+        'Nossa operação atua como um parceiro de inovação. Além de acelerar negócios B2B, construímos nosso próprio ecossistema de produtos SaaS, como BarberBoss e PetBoss. Entregamos não apenas código, mas engenharia inteligente integrando tecnologias modernas como Signals no Angular 19, geolocalização com PostGIS e segurança corporativa de missão crítica.',
+    },
 
     // About - Leadership
-    { key: 'ABOUT_LEADERSHIP_TITLE', lang: 'EN_US', value: 'Engineering & Leadership' },
-    { key: 'ABOUT_LEADERSHIP_TITLE', lang: 'PT_BR', value: 'Engenharia e Liderança' },
-    { key: 'ABOUT_LEADERSHIP_ROLE', lang: 'EN_US', value: 'Kenneth Olusegun — Founder & Tech Lead' },
-    { key: 'ABOUT_LEADERSHIP_ROLE', lang: 'PT_BR', value: 'Kenneth Olusegun — Fundador & Tech Lead' },
-    { key: 'ABOUT_LEADERSHIP_DESC', lang: 'EN_US', value: 'With experience in critical healthcare environments and mass e-commerce like <span class="text-white font-medium">Unimed</span> and <span class="text-white font-medium">Renner</span>, our leadership reflects modern and secure architectures. This background qualifies us to design systems running with thousands of active users ensuring stability and financial scalability.' },
-    { key: 'ABOUT_LEADERSHIP_DESC', lang: 'PT_BR', value: 'Com passagens por ambientes críticos de saúde e de e-commerce de massa como <span class="text-white font-medium">Unimed</span> e <span class="text-white font-medium">Renner</span>, nossa liderança reflete arquiteturas modernas e seguras. Essa vivência nos credencia a desenhar sistemas que rodam com milhares de usuários ativos garantindo estabilidade e escalabilidade financeira.' },
-    
+    {
+      key: 'ABOUT_LEADERSHIP_TITLE',
+      lang: 'EN_US',
+      value: 'Engineering & Leadership',
+    },
+    {
+      key: 'ABOUT_LEADERSHIP_TITLE',
+      lang: 'PT_BR',
+      value: 'Engenharia e Liderança',
+    },
+    {
+      key: 'ABOUT_LEADERSHIP_ROLE',
+      lang: 'EN_US',
+      value: 'Kenneth Olusegun — Founder & Tech Lead',
+    },
+    {
+      key: 'ABOUT_LEADERSHIP_ROLE',
+      lang: 'PT_BR',
+      value: 'Kenneth Olusegun — Fundador & Tech Lead',
+    },
+    {
+      key: 'ABOUT_LEADERSHIP_DESC',
+      lang: 'EN_US',
+      value:
+        'With experience in critical healthcare environments and mass e-commerce like <span class="text-white font-medium">Unimed</span> and <span class="text-white font-medium">Renner</span>, our leadership reflects modern and secure architectures. This background qualifies us to design systems running with thousands of active users ensuring stability and financial scalability.',
+    },
+    {
+      key: 'ABOUT_LEADERSHIP_DESC',
+      lang: 'PT_BR',
+      value:
+        'Com passagens por ambientes críticos de saúde e de e-commerce de massa como <span class="text-white font-medium">Unimed</span> e <span class="text-white font-medium">Renner</span>, nossa liderança reflete arquiteturas modernas e seguras. Essa vivência nos credencia a desenhar sistemas que rodam com milhares de usuários ativos garantindo estabilidade e escalabilidade financeira.',
+    },
+
     // About - Reach (Regional/Global)
     { key: 'ABOUT_REACH_TITLE', lang: 'EN_US', value: 'Reach and Proximity' },
     { key: 'ABOUT_REACH_TITLE', lang: 'PT_BR', value: 'Alcance e Proximidade' },
-    { key: 'ABOUT_REACH_SUBTITLE', lang: 'EN_US', value: 'Close support and distributed team' },
-    { key: 'ABOUT_REACH_SUBTITLE', lang: 'PT_BR', value: 'Atendimento próximo e equipe distribuída' },
-    { key: 'ABOUT_REACH_LOCAL_TITLE', lang: 'EN_US', value: 'Based in João Pessoa' },
-    { key: 'ABOUT_REACH_LOCAL_TITLE', lang: 'PT_BR', value: 'Base em João Pessoa' },
-    { key: 'ABOUT_REACH_LOCAL_DESC', lang: 'EN_US', value: 'Connected to the vibrant tech community, we facilitate strategic immersions and meetings with startups in the region.' },
-    { key: 'ABOUT_REACH_LOCAL_DESC', lang: 'PT_BR', value: 'Conectados à vibrante comunidade de tecnologia, facilitamos imersões estratégicas e encontros com startups da região.' },
-    { key: 'ABOUT_REACH_GLOBAL_TITLE', lang: 'EN_US', value: 'Global Remote Operation' },
-    { key: 'ABOUT_REACH_GLOBAL_TITLE', lang: 'PT_BR', value: 'Operação Remota Global' },
-    { key: 'ABOUT_REACH_GLOBAL_DESC', lang: 'EN_US', value: 'Our remote-first culture and cloud infrastructure keep us ready to serve any timezone or distributed demand worldwide.' },
-    { key: 'ABOUT_REACH_GLOBAL_DESC', lang: 'PT_BR', value: 'Nossa cultura remote-first e infra cloud nos deixam prontos para atender a qualquer fuso horário ou demanda distribuída no mundo todo.' },
+    {
+      key: 'ABOUT_REACH_SUBTITLE',
+      lang: 'EN_US',
+      value: 'Close support and distributed team',
+    },
+    {
+      key: 'ABOUT_REACH_SUBTITLE',
+      lang: 'PT_BR',
+      value: 'Atendimento próximo e equipe distribuída',
+    },
+    {
+      key: 'ABOUT_REACH_LOCAL_TITLE',
+      lang: 'EN_US',
+      value: 'Based in João Pessoa',
+    },
+    {
+      key: 'ABOUT_REACH_LOCAL_TITLE',
+      lang: 'PT_BR',
+      value: 'Base em João Pessoa',
+    },
+    {
+      key: 'ABOUT_REACH_LOCAL_DESC',
+      lang: 'EN_US',
+      value:
+        'Connected to the vibrant tech community, we facilitate strategic immersions and meetings with startups in the region.',
+    },
+    {
+      key: 'ABOUT_REACH_LOCAL_DESC',
+      lang: 'PT_BR',
+      value:
+        'Conectados à vibrante comunidade de tecnologia, facilitamos imersões estratégicas e encontros com startups da região.',
+    },
+    {
+      key: 'ABOUT_REACH_GLOBAL_TITLE',
+      lang: 'EN_US',
+      value: 'Global Remote Operation',
+    },
+    {
+      key: 'ABOUT_REACH_GLOBAL_TITLE',
+      lang: 'PT_BR',
+      value: 'Operação Remota Global',
+    },
+    {
+      key: 'ABOUT_REACH_GLOBAL_DESC',
+      lang: 'EN_US',
+      value:
+        'Our remote-first culture and cloud infrastructure keep us ready to serve any timezone or distributed demand worldwide.',
+    },
+    {
+      key: 'ABOUT_REACH_GLOBAL_DESC',
+      lang: 'PT_BR',
+      value:
+        'Nossa cultura remote-first e infra cloud nos deixam prontos para atender a qualquer fuso horário ou demanda distribuída no mundo todo.',
+    },
 
     { key: 'ABOUT_EDGE_LABEL', lang: 'EN_US', value: 'The Edge' },
     { key: 'ABOUT_EDGE_LABEL', lang: 'PT_BR', value: 'The Edge' },
-    { key: 'ABOUT_EDGE_TITLE', lang: 'EN_US', value: 'Why work with our team?' },
-    { key: 'ABOUT_EDGE_TITLE', lang: 'PT_BR', value: 'Por que inovar com nossa equipe?' },
-    { key: 'ABOUT_CARD_1_TITLE', lang: 'EN_US', value: 'Enterprise Architecture' },
-    { key: 'ABOUT_CARD_1_TITLE', lang: 'PT_BR', value: 'Arquitetura Enterprise' },
-    { key: 'ABOUT_CARD_1_DESC', lang: 'EN_US', value: 'Real experience in large-scale systems (Renner, Unimed), ensuring your project doesn\'t stall as it grows.' },
-    { key: 'ABOUT_CARD_1_DESC', lang: 'PT_BR', value: 'Experiência real em sistemas de grande escala (Renner, Unimed), garantindo que seu projeto não trave ao crescer.' },
+    {
+      key: 'ABOUT_EDGE_TITLE',
+      lang: 'EN_US',
+      value: 'Why work with our team?',
+    },
+    {
+      key: 'ABOUT_EDGE_TITLE',
+      lang: 'PT_BR',
+      value: 'Por que inovar com nossa equipe?',
+    },
+    {
+      key: 'ABOUT_CARD_1_TITLE',
+      lang: 'EN_US',
+      value: 'Enterprise Architecture',
+    },
+    {
+      key: 'ABOUT_CARD_1_TITLE',
+      lang: 'PT_BR',
+      value: 'Arquitetura Enterprise',
+    },
+    {
+      key: 'ABOUT_CARD_1_DESC',
+      lang: 'EN_US',
+      value:
+        "Real experience in large-scale systems (Renner, Unimed), ensuring your project doesn't stall as it grows.",
+    },
+    {
+      key: 'ABOUT_CARD_1_DESC',
+      lang: 'PT_BR',
+      value:
+        'Experiência real em sistemas de grande escala (Renner, Unimed), garantindo que seu projeto não trave ao crescer.',
+    },
     { key: 'ABOUT_CARD_2_TITLE', lang: 'EN_US', value: 'Product Vision' },
     { key: 'ABOUT_CARD_2_TITLE', lang: 'PT_BR', value: 'Visão de Produto' },
-    { key: 'ABOUT_CARD_2_DESC', lang: 'EN_US', value: 'As founders of our own SaaS products, we understand the pains of launching from scratch and focus on MVPs that actually work.' },
-    { key: 'ABOUT_CARD_2_DESC', lang: 'PT_BR', value: 'Como fundadores de produtos SaaS próprios, entendemos as dores de lançar do zero e focamos em MVPs que realmente funcionam.' },
+    {
+      key: 'ABOUT_CARD_2_DESC',
+      lang: 'EN_US',
+      value:
+        'As founders of our own SaaS products, we understand the pains of launching from scratch and focus on MVPs that actually work.',
+    },
+    {
+      key: 'ABOUT_CARD_2_DESC',
+      lang: 'PT_BR',
+      value:
+        'Como fundadores de produtos SaaS próprios, entendemos as dores de lançar do zero e focamos em MVPs que realmente funcionam.',
+    },
     { key: 'ABOUT_CARD_3_TITLE', lang: 'EN_US', value: 'Cutting-Edge Stack' },
-    { key: 'ABOUT_CARD_3_TITLE', lang: 'PT_BR', value: 'Stack de Última Geração' },
-    { key: 'ABOUT_CARD_3_DESC', lang: 'EN_US', value: 'We use the absolute latest technologies (Angular 19 and NestJS) to deliver fast, secure, and maintainable applications.' },
-    { key: 'ABOUT_CARD_3_DESC', lang: 'PT_BR', value: 'Utilizamos o que há de mais moderno (Angular 19 e NestJS) para entregar aplicações rápidas, seguras e fáceis de manter.' },
-    { key: 'ABOUT_CARD_4_TITLE', lang: 'EN_US', value: 'Data-Driven Decisions' },
-    { key: 'ABOUT_CARD_4_TITLE', lang: 'PT_BR', value: 'Decisões Baseadas em Dados' },
-    { key: 'ABOUT_CARD_4_DESC', lang: 'EN_US', value: 'Specialists in SQL and relational databases, ensuring integrity and performance for your company\'s most sensitive data.' },
-    { key: 'ABOUT_CARD_4_DESC', lang: 'PT_BR', value: 'Especialistas em SQL e bancos relacionais, garantindo integridade e performance para os dados mais sensíveis da sua empresa.' },
+    {
+      key: 'ABOUT_CARD_3_TITLE',
+      lang: 'PT_BR',
+      value: 'Stack de Última Geração',
+    },
+    {
+      key: 'ABOUT_CARD_3_DESC',
+      lang: 'EN_US',
+      value:
+        'We use the absolute latest technologies (Angular 19 and NestJS) to deliver fast, secure, and maintainable applications.',
+    },
+    {
+      key: 'ABOUT_CARD_3_DESC',
+      lang: 'PT_BR',
+      value:
+        'Utilizamos o que há de mais moderno (Angular 19 e NestJS) para entregar aplicações rápidas, seguras e fáceis de manter.',
+    },
+    {
+      key: 'ABOUT_CARD_4_TITLE',
+      lang: 'EN_US',
+      value: 'Data-Driven Decisions',
+    },
+    {
+      key: 'ABOUT_CARD_4_TITLE',
+      lang: 'PT_BR',
+      value: 'Decisões Baseadas em Dados',
+    },
+    {
+      key: 'ABOUT_CARD_4_DESC',
+      lang: 'EN_US',
+      value:
+        "Specialists in SQL and relational databases, ensuring integrity and performance for your company's most sensitive data.",
+    },
+    {
+      key: 'ABOUT_CARD_4_DESC',
+      lang: 'PT_BR',
+      value:
+        'Especialistas em SQL e bancos relacionais, garantindo integridade e performance para os dados mais sensíveis da sua empresa.',
+    },
     { key: 'ABOUT_STATS_EXP', lang: 'EN_US', value: 'Years of Experience' },
     { key: 'ABOUT_STATS_EXP', lang: 'PT_BR', value: 'Anos de Experiência' },
     { key: 'ABOUT_STATS_PROJECTS', lang: 'EN_US', value: 'Projects Delivered' },
@@ -544,11 +1386,33 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'ABOUT_STATS_PRODUCTS', lang: 'PT_BR', value: 'Produtos Próprios' },
     { key: 'ABOUT_STATS_COFFEE', lang: 'EN_US', value: 'Coffee Consumed' },
     { key: 'ABOUT_STATS_COFFEE', lang: 'PT_BR', value: 'Café Consumido' },
-    { key: 'ABOUT_CTA_TITLE', lang: 'EN_US', value: 'Let\'s build something amazing together?' },
-    { key: 'ABOUT_CTA_TITLE', lang: 'PT_BR', value: 'Vamos construir algo incrível juntos?' },
-    { key: 'ABOUT_CTA_DESC', lang: 'EN_US', value: 'Our team is ready to accelerate your tech roadmap, providing premium architecture and scalable full-stack development.' },
-    { key: 'ABOUT_CTA_DESC', lang: 'PT_BR', value: 'Nossa equipe está pronta para acelerar seu roadmap técnico, provendo expertise em arquitetura e desenvolvimento full-stack escalável.' },
-    { key: 'BTN_START_CONVERSATION', lang: 'EN_US', value: 'Start Conversation' },
+    {
+      key: 'ABOUT_CTA_TITLE',
+      lang: 'EN_US',
+      value: "Let's build something amazing together?",
+    },
+    {
+      key: 'ABOUT_CTA_TITLE',
+      lang: 'PT_BR',
+      value: 'Vamos construir algo incrível juntos?',
+    },
+    {
+      key: 'ABOUT_CTA_DESC',
+      lang: 'EN_US',
+      value:
+        'Our team is ready to accelerate your tech roadmap, providing premium architecture and scalable full-stack development.',
+    },
+    {
+      key: 'ABOUT_CTA_DESC',
+      lang: 'PT_BR',
+      value:
+        'Nossa equipe está pronta para acelerar seu roadmap técnico, provendo expertise em arquitetura e desenvolvimento full-stack escalável.',
+    },
+    {
+      key: 'BTN_START_CONVERSATION',
+      lang: 'EN_US',
+      value: 'Start Conversation',
+    },
     { key: 'BTN_START_CONVERSATION', lang: 'PT_BR', value: 'Iniciar Conversa' },
 
     // Services Section
@@ -558,68 +1422,290 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'SERVICES_TITLE_PREFIX', lang: 'PT_BR', value: 'Soluções' },
     { key: 'SERVICES_TITLE_SUFFIX', lang: 'EN_US', value: 'Solutions' },
     { key: 'SERVICES_TITLE_SUFFIX', lang: 'PT_BR', value: 'sob medida' },
-    { key: 'SERVICES_DESC', lang: 'EN_US', value: 'From planning to delivery, I offer consultancy and development focused on quality, performance, and scalability.' },
-    { key: 'SERVICES_DESC', lang: 'PT_BR', value: 'Do planejamento à entrega, ofereço consultoria e desenvolvimento com foco em qualidade, performance e escalabilidade.' },
-    { key: 'SVC_WEB_TITLE', lang: 'EN_US', value: 'High-Performance Web/Mobile Dev' },
-    { key: 'SVC_WEB_TITLE', lang: 'PT_BR', value: 'Desenvolvimento Web/Mobile de Alta Performance' },
-    { key: 'SVC_WEB_SUB', lang: 'EN_US', value: 'Robustness with Angular 19 and NestJS' },
-    { key: 'SVC_WEB_SUB', lang: 'PT_BR', value: 'Robustez com Angular 19 e NestJS' },
-    { key: 'SVC_WEB_ITEM_1_TITLE', lang: 'EN_US', value: 'Full Stack Applications' },
-    { key: 'SVC_WEB_ITEM_1_TITLE', lang: 'PT_BR', value: 'Aplicações Full Stack' },
-    { key: 'SVC_WEB_ITEM_1_DESC', lang: 'EN_US', value: 'End-to-end development, from database to UI, using the latest versions of Angular and NestJS.' },
-    { key: 'SVC_WEB_ITEM_1_DESC', lang: 'PT_BR', value: 'Desenvolvimento de ponta a ponta, do banco de dados à interface do usuário, utilizando as versões mais recentes do Angular e NestJS.' },
-    { key: 'SVC_WEB_ITEM_2_TITLE', lang: 'EN_US', value: 'Dashboards & Admin Panels' },
-    { key: 'SVC_WEB_ITEM_2_TITLE', lang: 'PT_BR', value: 'Dashboards e Painéis Administrativos' },
-    { key: 'SVC_WEB_ITEM_2_DESC', lang: 'EN_US', value: 'Creation of complex interfaces with Signal-based state management and high performance.' },
-    { key: 'SVC_WEB_ITEM_2_DESC', lang: 'PT_BR', value: 'Criação de interfaces complexas com gerenciamento de estado via Signals e alta performance.' },
+    {
+      key: 'SERVICES_DESC',
+      lang: 'EN_US',
+      value:
+        'From planning to delivery, I offer consultancy and development focused on quality, performance, and scalability.',
+    },
+    {
+      key: 'SERVICES_DESC',
+      lang: 'PT_BR',
+      value:
+        'Do planejamento à entrega, ofereço consultoria e desenvolvimento com foco em qualidade, performance e escalabilidade.',
+    },
+    {
+      key: 'SVC_WEB_TITLE',
+      lang: 'EN_US',
+      value: 'High-Performance Web/Mobile Dev',
+    },
+    {
+      key: 'SVC_WEB_TITLE',
+      lang: 'PT_BR',
+      value: 'Desenvolvimento Web/Mobile de Alta Performance',
+    },
+    {
+      key: 'SVC_WEB_SUB',
+      lang: 'EN_US',
+      value: 'Robustness with Angular 19 and NestJS',
+    },
+    {
+      key: 'SVC_WEB_SUB',
+      lang: 'PT_BR',
+      value: 'Robustez com Angular 19 e NestJS',
+    },
+    {
+      key: 'SVC_WEB_ITEM_1_TITLE',
+      lang: 'EN_US',
+      value: 'Full Stack Applications',
+    },
+    {
+      key: 'SVC_WEB_ITEM_1_TITLE',
+      lang: 'PT_BR',
+      value: 'Aplicações Full Stack',
+    },
+    {
+      key: 'SVC_WEB_ITEM_1_DESC',
+      lang: 'EN_US',
+      value:
+        'End-to-end development, from database to UI, using the latest versions of Angular and NestJS.',
+    },
+    {
+      key: 'SVC_WEB_ITEM_1_DESC',
+      lang: 'PT_BR',
+      value:
+        'Desenvolvimento de ponta a ponta, do banco de dados à interface do usuário, utilizando as versões mais recentes do Angular e NestJS.',
+    },
+    {
+      key: 'SVC_WEB_ITEM_2_TITLE',
+      lang: 'EN_US',
+      value: 'Dashboards & Admin Panels',
+    },
+    {
+      key: 'SVC_WEB_ITEM_2_TITLE',
+      lang: 'PT_BR',
+      value: 'Dashboards e Painéis Administrativos',
+    },
+    {
+      key: 'SVC_WEB_ITEM_2_DESC',
+      lang: 'EN_US',
+      value:
+        'Creation of complex interfaces with Signal-based state management and high performance.',
+    },
+    {
+      key: 'SVC_WEB_ITEM_2_DESC',
+      lang: 'PT_BR',
+      value:
+        'Criação de interfaces complexas com gerenciamento de estado via Signals e alta performance.',
+    },
     { key: 'SVC_WEB_ITEM_3_TITLE', lang: 'EN_US', value: 'Scalable Solutions' },
-    { key: 'SVC_WEB_ITEM_3_TITLE', lang: 'PT_BR', value: 'Soluções Escaláveis' },
-    { key: 'SVC_WEB_ITEM_3_DESC', lang: 'EN_US', value: 'Focus on architectures that support business growth, following Clean Architecture principles.' },
-    { key: 'SVC_WEB_ITEM_3_DESC', lang: 'PT_BR', value: 'Foco em arquiteturas que suportam o crescimento do negócio, seguindo princípios de Clean Architecture.' },
-    
-    { key: 'SVC_CONSULT_TITLE', lang: 'EN_US', value: 'Architecture Consultancy' },
-    { key: 'SVC_CONSULT_TITLE', lang: 'PT_BR', value: 'Consultoria em Arquitetura' },
-    { key: 'SVC_CONSULT_SUB', lang: 'EN_US', value: 'Technical intelligence, not just code' },
-    { key: 'SVC_CONSULT_SUB', lang: 'PT_BR', value: 'Inteligência técnica, não apenas código' },
-    { key: 'SVC_CONSULT_ITEM_1_TITLE', lang: 'EN_US', value: 'Professional Data Modeling' },
-    { key: 'SVC_CONSULT_ITEM_1_TITLE', lang: 'PT_BR', value: 'Modelagem de Dados Profissional' },
-    { key: 'SVC_CONSULT_ITEM_1_DESC', lang: 'EN_US', value: 'Structuring relational databases (PostgreSQL, Oracle, SQL) focusing on performance and integrity.' },
-    { key: 'SVC_CONSULT_ITEM_1_DESC', lang: 'PT_BR', value: 'Estruturação de bancos de dados relacionais (PostgreSQL, Oracle, SQL) com foco em performance e integridade.' },
-    { key: 'SVC_CONSULT_ITEM_2_TITLE', lang: 'EN_US', value: 'API Integration & Microservices' },
-    { key: 'SVC_CONSULT_ITEM_2_TITLE', lang: 'PT_BR', value: 'Integração de APIs e Microserviços' },
-    { key: 'SVC_CONSULT_ITEM_2_DESC', lang: 'EN_US', value: 'Development of connected, secure ecosystems, well-documented with Swagger/OpenAPI.' },
-    { key: 'SVC_CONSULT_ITEM_2_DESC', lang: 'PT_BR', value: 'Desenvolvimento de ecossistemas conectados, seguros e bem documentados com Swagger/OpenAPI.' },
-    { key: 'SVC_CONSULT_ITEM_3_TITLE', lang: 'EN_US', value: 'Security & Audit' },
-    { key: 'SVC_CONSULT_ITEM_3_TITLE', lang: 'PT_BR', value: 'Segurança e Auditoria' },
-    { key: 'SVC_CONSULT_ITEM_3_DESC', lang: 'EN_US', value: 'Implementation of robust auth flows (JWT/Refresh Token) and audit logs for enterprise compliance.' },
-    { key: 'SVC_CONSULT_ITEM_3_DESC', lang: 'PT_BR', value: 'Implementação de fluxos de autenticação robustos (JWT/Refresh Token) e sistemas de log de auditoria para conformidade empresarial.' },
+    {
+      key: 'SVC_WEB_ITEM_3_TITLE',
+      lang: 'PT_BR',
+      value: 'Soluções Escaláveis',
+    },
+    {
+      key: 'SVC_WEB_ITEM_3_DESC',
+      lang: 'EN_US',
+      value:
+        'Focus on architectures that support business growth, following Clean Architecture principles.',
+    },
+    {
+      key: 'SVC_WEB_ITEM_3_DESC',
+      lang: 'PT_BR',
+      value:
+        'Foco em arquiteturas que suportam o crescimento do negócio, seguindo princípios de Clean Architecture.',
+    },
+
+    {
+      key: 'SVC_CONSULT_TITLE',
+      lang: 'EN_US',
+      value: 'Architecture Consultancy',
+    },
+    {
+      key: 'SVC_CONSULT_TITLE',
+      lang: 'PT_BR',
+      value: 'Consultoria em Arquitetura',
+    },
+    {
+      key: 'SVC_CONSULT_SUB',
+      lang: 'EN_US',
+      value: 'Technical intelligence, not just code',
+    },
+    {
+      key: 'SVC_CONSULT_SUB',
+      lang: 'PT_BR',
+      value: 'Inteligência técnica, não apenas código',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_1_TITLE',
+      lang: 'EN_US',
+      value: 'Professional Data Modeling',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_1_TITLE',
+      lang: 'PT_BR',
+      value: 'Modelagem de Dados Profissional',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_1_DESC',
+      lang: 'EN_US',
+      value:
+        'Structuring relational databases (PostgreSQL, Oracle, SQL) focusing on performance and integrity.',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_1_DESC',
+      lang: 'PT_BR',
+      value:
+        'Estruturação de bancos de dados relacionais (PostgreSQL, Oracle, SQL) com foco em performance e integridade.',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_2_TITLE',
+      lang: 'EN_US',
+      value: 'API Integration & Microservices',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_2_TITLE',
+      lang: 'PT_BR',
+      value: 'Integração de APIs e Microserviços',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_2_DESC',
+      lang: 'EN_US',
+      value:
+        'Development of connected, secure ecosystems, well-documented with Swagger/OpenAPI.',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_2_DESC',
+      lang: 'PT_BR',
+      value:
+        'Desenvolvimento de ecossistemas conectados, seguros e bem documentados com Swagger/OpenAPI.',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_3_TITLE',
+      lang: 'EN_US',
+      value: 'Security & Audit',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_3_TITLE',
+      lang: 'PT_BR',
+      value: 'Segurança e Auditoria',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_3_DESC',
+      lang: 'EN_US',
+      value:
+        'Implementation of robust auth flows (JWT/Refresh Token) and audit logs for enterprise compliance.',
+    },
+    {
+      key: 'SVC_CONSULT_ITEM_3_DESC',
+      lang: 'PT_BR',
+      value:
+        'Implementação de fluxos de autenticação robustos (JWT/Refresh Token) e sistemas de log de auditoria para conformidade empresarial.',
+    },
 
     { key: 'SVC_GEO_TITLE', lang: 'EN_US', value: 'Geolocation Solutions' },
-    { key: 'SVC_GEO_TITLE', lang: 'PT_BR', value: 'Soluções de Geolocalização' },
+    {
+      key: 'SVC_GEO_TITLE',
+      lang: 'PT_BR',
+      value: 'Soluções de Geolocalização',
+    },
     { key: 'SVC_GEO_SUB', lang: 'EN_US', value: 'The PetBoss differentiator' },
     { key: 'SVC_GEO_SUB', lang: 'PT_BR', value: 'O diferencial do PetBoss' },
-    { key: 'SVC_GEO_ITEM_1_TITLE', lang: 'EN_US', value: 'Proximity Search Systems' },
-    { key: 'SVC_GEO_ITEM_1_TITLE', lang: 'PT_BR', value: 'Sistemas de Busca por Proximidade' },
-    { key: 'SVC_GEO_ITEM_1_DESC', lang: 'EN_US', value: 'Implementation of advanced geographic searches using PostgreSQL with PostGIS.' },
-    { key: 'SVC_GEO_ITEM_1_DESC', lang: 'PT_BR', value: 'Implementação de buscas geográficas avançadas utilizando PostgreSQL com PostGIS.' },
+    {
+      key: 'SVC_GEO_ITEM_1_TITLE',
+      lang: 'EN_US',
+      value: 'Proximity Search Systems',
+    },
+    {
+      key: 'SVC_GEO_ITEM_1_TITLE',
+      lang: 'PT_BR',
+      value: 'Sistemas de Busca por Proximidade',
+    },
+    {
+      key: 'SVC_GEO_ITEM_1_DESC',
+      lang: 'EN_US',
+      value:
+        'Implementation of advanced geographic searches using PostgreSQL with PostGIS.',
+    },
+    {
+      key: 'SVC_GEO_ITEM_1_DESC',
+      lang: 'PT_BR',
+      value:
+        'Implementação de buscas geográficas avançadas utilizando PostgreSQL com PostGIS.',
+    },
     { key: 'SVC_GEO_ITEM_2_TITLE', lang: 'EN_US', value: 'Interactive Maps' },
     { key: 'SVC_GEO_ITEM_2_TITLE', lang: 'PT_BR', value: 'Mapas Interativos' },
-    { key: 'SVC_GEO_ITEM_2_DESC', lang: 'EN_US', value: 'Integration of dynamic maps in the frontend for real-time spatial data visualization.' },
-    { key: 'SVC_GEO_ITEM_2_DESC', lang: 'PT_BR', value: 'Integração de mapas dinâmicos no frontend para visualização de dados espaciais em tempo real.' },
+    {
+      key: 'SVC_GEO_ITEM_2_DESC',
+      lang: 'EN_US',
+      value:
+        'Integration of dynamic maps in the frontend for real-time spatial data visualization.',
+    },
+    {
+      key: 'SVC_GEO_ITEM_2_DESC',
+      lang: 'PT_BR',
+      value:
+        'Integração de mapas dinâmicos no frontend para visualização de dados espaciais em tempo real.',
+    },
 
-    { key: 'SVC_I18N_TITLE', lang: 'EN_US', value: 'MVP Strategy & Validation' },
+    {
+      key: 'SVC_I18N_TITLE',
+      lang: 'EN_US',
+      value: 'MVP Strategy & Validation',
+    },
     { key: 'SVC_I18N_TITLE', lang: 'PT_BR', value: 'Estratégia para MVPs' },
-    { key: 'SVC_I18N_SUB', lang: 'EN_US', value: 'Products focused on real market validation' },
-    { key: 'SVC_I18N_SUB', lang: 'PT_BR', value: 'Produtos focados em validação real de mercado' },
+    {
+      key: 'SVC_I18N_SUB',
+      lang: 'EN_US',
+      value: 'Products focused on real market validation',
+    },
+    {
+      key: 'SVC_I18N_SUB',
+      lang: 'PT_BR',
+      value: 'Produtos focados em validação real de mercado',
+    },
     { key: 'SVC_I18N_ITEM_1_TITLE', lang: 'EN_US', value: 'Lean Prototyping' },
-    { key: 'SVC_I18N_ITEM_1_TITLE', lang: 'PT_BR', value: 'Prototipação Enxuta' },
-    { key: 'SVC_I18N_ITEM_1_DESC', lang: 'EN_US', value: 'Building core features rapidly to validate your business idea with real users without wasting budget.' },
-    { key: 'SVC_I18N_ITEM_1_DESC', lang: 'PT_BR', value: 'Construção rápida de features críticas para validar sua ideia de negócio com usuários reais sem desperdiçar orçamento.' },
-    
-    { key: 'SERVICES_CTA_TITLE', lang: 'EN_US', value: 'Need one of these services?' },
-    { key: 'SERVICES_CTA_TITLE', lang: 'PT_BR', value: 'Precisa de um desses serviços?' },
-    { key: 'SERVICES_CTA_DESC', lang: 'EN_US', value: 'Let\'s talk about your project and find the best solution for your business.' },
-    { key: 'SERVICES_CTA_DESC', lang: 'PT_BR', value: 'Vamos conversar sobre seu projeto e encontrar a melhor solução para o seu negócio.' },
+    {
+      key: 'SVC_I18N_ITEM_1_TITLE',
+      lang: 'PT_BR',
+      value: 'Prototipação Enxuta',
+    },
+    {
+      key: 'SVC_I18N_ITEM_1_DESC',
+      lang: 'EN_US',
+      value:
+        'Building core features rapidly to validate your business idea with real users without wasting budget.',
+    },
+    {
+      key: 'SVC_I18N_ITEM_1_DESC',
+      lang: 'PT_BR',
+      value:
+        'Construção rápida de features críticas para validar sua ideia de negócio com usuários reais sem desperdiçar orçamento.',
+    },
+
+    {
+      key: 'SERVICES_CTA_TITLE',
+      lang: 'EN_US',
+      value: 'Need one of these services?',
+    },
+    {
+      key: 'SERVICES_CTA_TITLE',
+      lang: 'PT_BR',
+      value: 'Precisa de um desses serviços?',
+    },
+    {
+      key: 'SERVICES_CTA_DESC',
+      lang: 'EN_US',
+      value:
+        "Let's talk about your project and find the best solution for your business.",
+    },
+    {
+      key: 'SERVICES_CTA_DESC',
+      lang: 'PT_BR',
+      value:
+        'Vamos conversar sobre seu projeto e encontrar a melhor solução para o seu negócio.',
+    },
     { key: 'BTN_REQUEST_QUOTE', lang: 'EN_US', value: 'Request Quote' },
     { key: 'BTN_REQUEST_QUOTE', lang: 'PT_BR', value: 'Solicitar Orçamento' },
 
@@ -630,78 +1716,305 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'PROJECTS_TITLE_PREFIX', lang: 'PT_BR', value: 'OluStack' },
     { key: 'PROJECTS_TITLE_SUFFIX', lang: 'EN_US', value: 'Products' },
     { key: 'PROJECTS_TITLE_SUFFIX', lang: 'PT_BR', value: 'Products' },
-    { key: 'PROJECTS_DESC', lang: 'EN_US', value: 'Real solutions developed focusing on scalable architecture, performance, and user experience.' },
-    { key: 'PROJECTS_DESC', lang: 'PT_BR', value: 'Soluções reais desenvolvidas com foco em arquitetura escalável, performance e experiência do usuário.' },
+    {
+      key: 'PROJECTS_DESC',
+      lang: 'EN_US',
+      value:
+        'Real solutions developed focusing on scalable architecture, performance, and user experience.',
+    },
+    {
+      key: 'PROJECTS_DESC',
+      lang: 'PT_BR',
+      value:
+        'Soluções reais desenvolvidas com foco em arquitetura escalável, performance e experiência do usuário.',
+    },
     { key: 'PROJECT_PROBLEM_LABEL', lang: 'EN_US', value: 'The Problem' },
     { key: 'PROJECT_PROBLEM_LABEL', lang: 'PT_BR', value: 'O Problema' },
     { key: 'PROJECT_SOLUTION_LABEL', lang: 'EN_US', value: 'The Solution' },
     { key: 'PROJECT_SOLUTION_LABEL', lang: 'PT_BR', value: 'A Solução' },
-    { key: 'PROJECT_HIGHLIGHTS_LABEL', lang: 'EN_US', value: 'Technical Highlights' },
-    { key: 'PROJECT_HIGHLIGHTS_LABEL', lang: 'PT_BR', value: 'Destaques Técnicos' },
+    {
+      key: 'PROJECT_HIGHLIGHTS_LABEL',
+      lang: 'EN_US',
+      value: 'Technical Highlights',
+    },
+    {
+      key: 'PROJECT_HIGHLIGHTS_LABEL',
+      lang: 'PT_BR',
+      value: 'Destaques Técnicos',
+    },
     { key: 'PROJECT_CODE_TITLE', lang: 'EN_US', value: 'Featured' },
     { key: 'PROJECT_CODE_TITLE', lang: 'PT_BR', value: 'Code' },
     { key: 'PROJECT_CODE_SUFFIX', lang: 'EN_US', value: 'Code' },
     { key: 'PROJECT_CODE_SUFFIX', lang: 'PT_BR', value: 'em Destaque' },
-    { key: 'PROJECT_CODE_DESC', lang: 'EN_US', value: 'Implementation examples from the projects' },
-    { key: 'PROJECT_CODE_DESC', lang: 'PT_BR', value: 'Exemplos de implementação dos projetos' },
-    { key: 'PROJECT_CTA_DESC', lang: 'EN_US', value: 'Want to see more of my work?' },
-    { key: 'PROJECT_CTA_DESC', lang: 'PT_BR', value: 'Quer ver mais do meu trabalho?' },
+    {
+      key: 'PROJECT_CODE_DESC',
+      lang: 'EN_US',
+      value: 'Implementation examples from the projects',
+    },
+    {
+      key: 'PROJECT_CODE_DESC',
+      lang: 'PT_BR',
+      value: 'Exemplos de implementação dos projetos',
+    },
+    {
+      key: 'PROJECT_CTA_DESC',
+      lang: 'EN_US',
+      value: 'Want to see more of my work?',
+    },
+    {
+      key: 'PROJECT_CTA_DESC',
+      lang: 'PT_BR',
+      value: 'Quer ver mais do meu trabalho?',
+    },
     { key: 'BTN_VIEW_GITHUB', lang: 'EN_US', value: 'View Full GitHub' },
     { key: 'BTN_VIEW_GITHUB', lang: 'PT_BR', value: 'Ver GitHub Completo' },
 
     // Project: BarberBoss
-    { key: 'PROJ_BARBER_TAGLINE', lang: 'EN_US', value: 'Real-time Management & Mobile Experience' },
-    { key: 'PROJ_BARBER_TAGLINE', lang: 'PT_BR', value: 'Gestão e Experiência Mobile em Tempo Real' },
-    { key: 'PROJ_BARBER_PROBLEM', lang: 'EN_US', value: 'The difficulty barbershops face in managing schedules and retaining clients in a dynamic environment.' },
-    { key: 'PROJ_BARBER_PROBLEM', lang: 'PT_BR', value: 'A dificuldade de barbearias em gerenciar agendas e fidelizar clientes em um ambiente competitivo e dinâmico.' },
-    { key: 'PROJ_BARBER_SOLUTION', lang: 'EN_US', value: 'A complete mobile platform built with React Native and NestJS, focused on automating scheduling and time management.' },
-    { key: 'PROJ_BARBER_SOLUTION', lang: 'PT_BR', value: 'Uma plataforma mobile completa construída com React Native e NestJS, focada em automatizar o fluxo de agendamento e a gestão de horários.' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_1_TITLE', lang: 'EN_US', value: 'Smart Scheduling' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_1_TITLE', lang: 'PT_BR', value: 'Agendamento Inteligente' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_1_DESC', lang: 'EN_US', value: 'Real-time system integrated with NestJS backend, ensuring zero schedule conflicts.' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_1_DESC', lang: 'PT_BR', value: 'Sistema em tempo real integrado ao backend NestJS, garantindo zero conflitos de agenda.' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_2_TITLE', lang: 'EN_US', value: 'Gamification & Loyalty' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_2_TITLE', lang: 'PT_BR', value: 'Gamificação e Fidelidade' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_2_DESC', lang: 'EN_US', value: 'Implementation of a points and rewards system to increase client retention.' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_2_DESC', lang: 'PT_BR', value: 'Implementação de um sistema de pontos e recompensas para aumentar a retenção de clientes.' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_3_TITLE', lang: 'EN_US', value: 'Automated Infrastructure' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_3_TITLE', lang: 'PT_BR', value: 'Infraestrutura Automatizada' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_3_DESC', lang: 'EN_US', value: 'Use of GitHub Actions for automation and PostgreSQL/Prisma for data integrity.' },
-    { key: 'PROJ_BARBER_HIGHLIGHT_3_DESC', lang: 'PT_BR', value: 'Uso de GitHub Actions para automação de processos e PostgreSQL/Prisma para garantir a integridade dos dados operacionais.' },
+    {
+      key: 'PROJ_BARBER_TAGLINE',
+      lang: 'EN_US',
+      value: 'Real-time Management & Mobile Experience',
+    },
+    {
+      key: 'PROJ_BARBER_TAGLINE',
+      lang: 'PT_BR',
+      value: 'Gestão e Experiência Mobile em Tempo Real',
+    },
+    {
+      key: 'PROJ_BARBER_PROBLEM',
+      lang: 'EN_US',
+      value:
+        'The difficulty barbershops face in managing schedules and retaining clients in a dynamic environment.',
+    },
+    {
+      key: 'PROJ_BARBER_PROBLEM',
+      lang: 'PT_BR',
+      value:
+        'A dificuldade de barbearias em gerenciar agendas e fidelizar clientes em um ambiente competitivo e dinâmico.',
+    },
+    {
+      key: 'PROJ_BARBER_SOLUTION',
+      lang: 'EN_US',
+      value:
+        'A complete mobile platform built with React Native and NestJS, focused on automating scheduling and time management.',
+    },
+    {
+      key: 'PROJ_BARBER_SOLUTION',
+      lang: 'PT_BR',
+      value:
+        'Uma plataforma mobile completa construída com React Native e NestJS, focada em automatizar o fluxo de agendamento e a gestão de horários.',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_1_TITLE',
+      lang: 'EN_US',
+      value: 'Smart Scheduling',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_1_TITLE',
+      lang: 'PT_BR',
+      value: 'Agendamento Inteligente',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_1_DESC',
+      lang: 'EN_US',
+      value:
+        'Real-time system integrated with NestJS backend, ensuring zero schedule conflicts.',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_1_DESC',
+      lang: 'PT_BR',
+      value:
+        'Sistema em tempo real integrado ao backend NestJS, garantindo zero conflitos de agenda.',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_2_TITLE',
+      lang: 'EN_US',
+      value: 'Gamification & Loyalty',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_2_TITLE',
+      lang: 'PT_BR',
+      value: 'Gamificação e Fidelidade',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_2_DESC',
+      lang: 'EN_US',
+      value:
+        'Implementation of a points and rewards system to increase client retention.',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_2_DESC',
+      lang: 'PT_BR',
+      value:
+        'Implementação de um sistema de pontos e recompensas para aumentar a retenção de clientes.',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_3_TITLE',
+      lang: 'EN_US',
+      value: 'Automated Infrastructure',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_3_TITLE',
+      lang: 'PT_BR',
+      value: 'Infraestrutura Automatizada',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_3_DESC',
+      lang: 'EN_US',
+      value:
+        'Use of GitHub Actions for automation and PostgreSQL/Prisma for data integrity.',
+    },
+    {
+      key: 'PROJ_BARBER_HIGHLIGHT_3_DESC',
+      lang: 'PT_BR',
+      value:
+        'Uso de GitHub Actions para automação de processos e PostgreSQL/Prisma para garantir a integridade dos dados operacionais.',
+    },
 
     // Project: PetBoss
-    { key: 'PROJ_PET_TAGLINE', lang: 'EN_US', value: 'Multi-tenant Ecosystem & Geolocation' },
-    { key: 'PROJ_PET_TAGLINE', lang: 'PT_BR', value: 'Ecossistema Multi-tenant e Geolocalização' },
-    { key: 'PROJ_PET_PROBLEM', lang: 'EN_US', value: 'The need for centralized management for pet shops offering premium experiences.' },
-    { key: 'PROJ_PET_PROBLEM', lang: 'PT_BR', value: 'A necessidade de uma gestão centralizada para petshops que desejam oferecer uma experiência premium aos tutores de pets.' },
-    { key: 'PROJ_PET_SOLUTION', lang: 'EN_US', value: 'A robust multi-tenant platform integrating inventory, scheduling, and service location.' },
-    { key: 'PROJ_PET_SOLUTION', lang: 'PT_BR', value: 'Uma plataforma robusta e multi-tenant que integra desde a gestão de estoque e agendamentos até a localização de serviços próximos.' },
-    { key: 'PROJ_PET_HIGHLIGHT_1_TITLE', lang: 'EN_US', value: 'Multi-tenant Architecture' },
-    { key: 'PROJ_PET_HIGHLIGHT_1_TITLE', lang: 'PT_BR', value: 'Arquitetura Multi-tenant' },
-    { key: 'PROJ_PET_HIGHLIGHT_1_DESC', lang: 'EN_US', value: 'Scalable NestJS backend serving multiple business units in a single ecosystem.' },
-    { key: 'PROJ_PET_HIGHLIGHT_1_DESC', lang: 'PT_BR', value: 'Backend escalável em NestJS preparado para servir múltiplas unidades de negócio em um único ecossistema.' },
-    { key: 'PROJ_PET_HIGHLIGHT_2_TITLE', lang: 'EN_US', value: 'Advanced Geolocation' },
-    { key: 'PROJ_PET_HIGHLIGHT_2_TITLE', lang: 'PT_BR', value: 'Geolocalização Avançada' },
-    { key: 'PROJ_PET_HIGHLIGHT_2_DESC', lang: 'EN_US', value: 'Data intelligence for "near me" searches using PostGIS.' },
-    { key: 'PROJ_PET_HIGHLIGHT_2_DESC', lang: 'PT_BR', value: 'Uso de inteligência de dados para localização de lojas e serviços "próximos a mim" (preparado para PostGIS).' },
-    { key: 'PROJ_PET_HIGHLIGHT_3_TITLE', lang: 'EN_US', value: 'Optimized Communication' },
-    { key: 'PROJ_PET_HIGHLIGHT_3_TITLE', lang: 'PT_BR', value: 'Comunicação Otimizada' },
-    { key: 'PROJ_PET_HIGHLIGHT_3_DESC', lang: 'EN_US', value: 'Multichannel notification system (WhatsApp/Push) managed by BullMQ queues.' },
-    { key: 'PROJ_PET_HIGHLIGHT_3_DESC', lang: 'PT_BR', value: 'Sistema de notificações multicanal (WhatsApp/Push) gerenciado por filas (BullMQ) para garantir alta performance.' },
-    { key: 'PROJ_PET_HIGHLIGHT_4_TITLE', lang: 'EN_US', value: 'High-Tech Design' },
-    { key: 'PROJ_PET_HIGHLIGHT_4_TITLE', lang: 'PT_BR', value: 'Design High-Tech' },
-    { key: 'PROJ_PET_HIGHLIGHT_4_DESC', lang: 'EN_US', value: 'Mobile interface built with NativeWind, following modern aesthetics.' },
-    { key: 'PROJ_PET_HIGHLIGHT_4_DESC', lang: 'PT_BR', value: 'Interface mobile desenvolvida com NativeWind, seguindo uma estética moderna e imersiva.' },
+    {
+      key: 'PROJ_PET_TAGLINE',
+      lang: 'EN_US',
+      value: 'Multi-tenant Ecosystem & Geolocation',
+    },
+    {
+      key: 'PROJ_PET_TAGLINE',
+      lang: 'PT_BR',
+      value: 'Ecossistema Multi-tenant e Geolocalização',
+    },
+    {
+      key: 'PROJ_PET_PROBLEM',
+      lang: 'EN_US',
+      value:
+        'The need for centralized management for pet shops offering premium experiences.',
+    },
+    {
+      key: 'PROJ_PET_PROBLEM',
+      lang: 'PT_BR',
+      value:
+        'A necessidade de uma gestão centralizada para petshops que desejam oferecer uma experiência premium aos tutores de pets.',
+    },
+    {
+      key: 'PROJ_PET_SOLUTION',
+      lang: 'EN_US',
+      value:
+        'A robust multi-tenant platform integrating inventory, scheduling, and service location.',
+    },
+    {
+      key: 'PROJ_PET_SOLUTION',
+      lang: 'PT_BR',
+      value:
+        'Uma plataforma robusta e multi-tenant que integra desde a gestão de estoque e agendamentos até a localização de serviços próximos.',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_1_TITLE',
+      lang: 'EN_US',
+      value: 'Multi-tenant Architecture',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_1_TITLE',
+      lang: 'PT_BR',
+      value: 'Arquitetura Multi-tenant',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_1_DESC',
+      lang: 'EN_US',
+      value:
+        'Scalable NestJS backend serving multiple business units in a single ecosystem.',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_1_DESC',
+      lang: 'PT_BR',
+      value:
+        'Backend escalável em NestJS preparado para servir múltiplas unidades de negócio em um único ecossistema.',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_2_TITLE',
+      lang: 'EN_US',
+      value: 'Advanced Geolocation',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_2_TITLE',
+      lang: 'PT_BR',
+      value: 'Geolocalização Avançada',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_2_DESC',
+      lang: 'EN_US',
+      value: 'Data intelligence for "near me" searches using PostGIS.',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_2_DESC',
+      lang: 'PT_BR',
+      value:
+        'Uso de inteligência de dados para localização de lojas e serviços "próximos a mim" (preparado para PostGIS).',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_3_TITLE',
+      lang: 'EN_US',
+      value: 'Optimized Communication',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_3_TITLE',
+      lang: 'PT_BR',
+      value: 'Comunicação Otimizada',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_3_DESC',
+      lang: 'EN_US',
+      value:
+        'Multichannel notification system (WhatsApp/Push) managed by BullMQ queues.',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_3_DESC',
+      lang: 'PT_BR',
+      value:
+        'Sistema de notificações multicanal (WhatsApp/Push) gerenciado por filas (BullMQ) para garantir alta performance.',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_4_TITLE',
+      lang: 'EN_US',
+      value: 'High-Tech Design',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_4_TITLE',
+      lang: 'PT_BR',
+      value: 'Design High-Tech',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_4_DESC',
+      lang: 'EN_US',
+      value:
+        'Mobile interface built with NativeWind, following modern aesthetics.',
+    },
+    {
+      key: 'PROJ_PET_HIGHLIGHT_4_DESC',
+      lang: 'PT_BR',
+      value:
+        'Interface mobile desenvolvida com NativeWind, seguindo uma estética moderna e imersiva.',
+    },
 
     // Dashboard Additional Keys
     { key: 'DASH_QUICK_ACTIONS', lang: 'EN_US', value: 'Quick Actions' },
     { key: 'DASH_QUICK_ACTIONS', lang: 'PT_BR', value: 'Ações Rápidas' },
     { key: 'DASH_ACTION_ADD_PROJECT', lang: 'EN_US', value: 'Add Project' },
-    { key: 'DASH_ACTION_ADD_PROJECT', lang: 'PT_BR', value: 'Adicionar Projeto' },
+    {
+      key: 'DASH_ACTION_ADD_PROJECT',
+      lang: 'PT_BR',
+      value: 'Adicionar Projeto',
+    },
     { key: 'DASH_ACTION_VIEW_CONTACTS', lang: 'EN_US', value: 'View Contacts' },
     { key: 'DASH_ACTION_VIEW_CONTACTS', lang: 'PT_BR', value: 'Ver Contatos' },
-    { key: 'DASH_ACTION_MANAGE_TRANSLATIONS', lang: 'EN_US', value: 'Manage Translations' },
-    { key: 'DASH_ACTION_MANAGE_TRANSLATIONS', lang: 'PT_BR', value: 'Gerenciar Traduções' },
+    {
+      key: 'DASH_ACTION_MANAGE_TRANSLATIONS',
+      lang: 'EN_US',
+      value: 'Manage Translations',
+    },
+    {
+      key: 'DASH_ACTION_MANAGE_TRANSLATIONS',
+      lang: 'PT_BR',
+      value: 'Gerenciar Traduções',
+    },
     { key: 'DASH_CARD_CONTACTS', lang: 'EN_US', value: 'Contacts' },
     { key: 'DASH_CARD_CONTACTS', lang: 'PT_BR', value: 'Contatos' },
     { key: 'DASH_CARD_TRANSLATIONS', lang: 'EN_US', value: 'Translations' },
@@ -717,15 +2030,39 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'DASH_BTN_VIEW_ALL', lang: 'EN_US', value: 'View All' },
     { key: 'DASH_BTN_VIEW_ALL', lang: 'PT_BR', value: 'Ver tudo' },
     { key: 'DASH_NO_ACTIVITY', lang: 'EN_US', value: 'No recent activity' },
-    { key: 'DASH_NO_ACTIVITY', lang: 'PT_BR', value: 'Nenhuma atividade recente' },
+    {
+      key: 'DASH_NO_ACTIVITY',
+      lang: 'PT_BR',
+      value: 'Nenhuma atividade recente',
+    },
     { key: 'DASH_LAST_UPDATE', lang: 'EN_US', value: 'Last update:' },
     { key: 'DASH_LAST_UPDATE', lang: 'PT_BR', value: 'Última atualização:' },
-    { key: 'DASH_ACT_CONTACT_MSG', lang: 'EN_US', value: 'New contact received' },
-    { key: 'DASH_ACT_CONTACT_MSG', lang: 'PT_BR', value: 'Novo contato recebido' },
-    { key: 'DASH_ACT_PROJECT_MSG', lang: 'EN_US', value: 'BarberBoss Project Updated' },
-    { key: 'DASH_ACT_PROJECT_MSG', lang: 'PT_BR', value: 'Projeto BarberBoss atualizado' },
+    {
+      key: 'DASH_ACT_CONTACT_MSG',
+      lang: 'EN_US',
+      value: 'New contact received',
+    },
+    {
+      key: 'DASH_ACT_CONTACT_MSG',
+      lang: 'PT_BR',
+      value: 'Novo contato recebido',
+    },
+    {
+      key: 'DASH_ACT_PROJECT_MSG',
+      lang: 'EN_US',
+      value: 'BarberBoss Project Updated',
+    },
+    {
+      key: 'DASH_ACT_PROJECT_MSG',
+      lang: 'PT_BR',
+      value: 'Projeto BarberBoss atualizado',
+    },
     { key: 'DASH_ACT_TRANS_MSG', lang: 'EN_US', value: '15 new keys added' },
-    { key: 'DASH_ACT_TRANS_MSG', lang: 'PT_BR', value: '15 novas chaves adicionadas' },
+    {
+      key: 'DASH_ACT_TRANS_MSG',
+      lang: 'PT_BR',
+      value: '15 novas chaves adicionadas',
+    },
     { key: 'DASH_CHART_WEEK_DAYS_MON', lang: 'EN_US', value: 'Mon' },
     { key: 'DASH_CHART_WEEK_DAYS_MON', lang: 'PT_BR', value: 'Seg' },
     { key: 'DASH_CHART_WEEK_DAYS_TUE', lang: 'EN_US', value: 'Tue' },
@@ -744,7 +2081,9 @@ export async function seedTranslations(prisma: PrismaClient) {
 
   for (const t of translations) {
     // 1. Ensure Key exists
-    let keyRecord = await prisma.translationKey.findUnique({ where: { key: t.key } });
+    let keyRecord = await prisma.translationKey.findUnique({
+      where: { key: t.key },
+    });
     if (!keyRecord) {
       keyRecord = await prisma.translationKey.create({ data: { key: t.key } });
     }
@@ -754,15 +2093,15 @@ export async function seedTranslations(prisma: PrismaClient) {
       where: {
         keyId_language: {
           keyId: keyRecord.id,
-          language: t.lang as LanguageCode
-        }
+          language: t.lang as LanguageCode,
+        },
       },
       update: { value: t.value },
       create: {
         keyId: keyRecord.id,
         language: t.lang as LanguageCode,
-        value: t.value
-      }
+        value: t.value,
+      },
     });
   }
 

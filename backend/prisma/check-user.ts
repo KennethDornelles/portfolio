@@ -1,16 +1,10 @@
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-import { PrismaClient } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { createPrismaClient } from './client';
 
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: process.env.DIRECT_URL || process.env.DATABASE_URL,
-    },
-  },
-});
+const prisma = createPrismaClient();
 
 async function checkUser() {
   const email = process.env.ADMIN_EMAIL;
