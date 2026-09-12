@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
@@ -90,6 +90,7 @@ interface NavItem {
 })
 export class SidebarComponent {
   adminAuth = inject(AdminAuthService);
+  private readonly router = inject(Router);
   
   navItems: NavItem[] = [
     { icon: '📊', labelKey: 'SIDEBAR_DASHBOARD', route: '/admin/dashboard' },
@@ -100,7 +101,7 @@ export class SidebarComponent {
   ];
 
   logout() {
-    this.adminAuth.logout();
-    window.location.href = '/';
+    this.adminAuth.logout(false);
+    void this.router.navigate(['/']);
   }
 }

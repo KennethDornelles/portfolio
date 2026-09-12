@@ -35,6 +35,23 @@ export class PrismaProjectsRepository implements IProjectsRepository {
     });
   }
 
+  async findPage(
+    page: number,
+    limit: number,
+  ): Promise<{ items: Project[]; total: number }> {
+    const [items, total] = await this.prisma.$transaction([
+      this.prisma.project.findMany({
+        include: { technologies: true },
+        orderBy: { createdAt: 'desc' },
+        skip: (page - 1) * limit,
+        take: limit,
+      }),
+      this.prisma.project.count(),
+    ]);
+
+    return { items, total };
+  }
+
   async findById(id: string): Promise<Project | null> {
     return this.prisma.project.findUnique({
       where: { id },

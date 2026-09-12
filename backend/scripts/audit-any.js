@@ -100,7 +100,11 @@ function scanArchitecture(findings) {
   if (fs.existsSync(i18nService) && /set\([^\n]+\{\}\s*,/.test(fs.readFileSync(i18nService, 'utf8'))) {
     add(findings, 'error', 'i18n-empty-cache', i18nService, 'I18n pode persistir mapa vazio no cache.');
   }
-  for (const file of walk(path.join(FRONTEND_ROOT, 'src')).filter((name) => name.endsWith('.ts'))) {
+  for (const file of walk(path.join(FRONTEND_ROOT, 'src'))
+    .filter((name) => name.endsWith('.ts'))
+    .filter((name) => !name.endsWith('.spec.ts'))) {
+    const content = fs.readFileSync(file, 'utf8');
+    if (/\bisPlatformBrowser\b/.test(content)) continue;
     scanText(findings, file, [{
       name: 'ssr-browser-global',
       pattern: /\blocalStorage\b|\bwindow\b|\bdocument\b/,

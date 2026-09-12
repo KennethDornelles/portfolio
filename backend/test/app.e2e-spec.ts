@@ -14,6 +14,13 @@ interface ProjectResponseBody {
   id: string;
   title: string;
 }
+interface ProjectPageResponseBody {
+  items: ProjectResponseBody[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
 interface HealthResponseBody {
   status: string;
   info?: { database?: { status: string } };
@@ -232,6 +239,19 @@ describe('AppController (e2e)', () => {
         .expect(200);
 
       expect((response.body as ProjectResponseBody).id).toBe(createdProjectId);
+    });
+
+    it('/api/projects/page (GET) - should paginate projects', async () => {
+      const response = await httpRequest(app)
+        .get('/api/projects/page?page=1&limit=1')
+        .expect(200);
+
+      const body = response.body as ProjectPageResponseBody;
+      expect(body.page).toBe(1);
+      expect(body.limit).toBe(1);
+      expect(body.total).toBeGreaterThanOrEqual(1);
+      expect(body.items.length).toBeLessThanOrEqual(1);
+      expect(body.totalPages).toBeGreaterThanOrEqual(1);
     });
 
     it('/api/projects/:id (PATCH) - should update a project', async () => {

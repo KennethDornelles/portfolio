@@ -21,6 +21,14 @@ export interface AdminProject {
   createdAt: string;
 }
 
+export interface ProjectPage {
+  items: AdminProject[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ProjectsFacade {
   private readonly http = inject(HttpClient);
@@ -28,6 +36,12 @@ export class ProjectsFacade {
 
   list(): Observable<AdminProject[]> {
     return this.http.get<AdminProject[]>(this.endpoint);
+  }
+
+  listPage(page = 1, limit = 20): Observable<ProjectPage> {
+    return this.http.get<ProjectPage>(`${this.endpoint}/page`, {
+      params: { page, limit },
+    });
   }
 
   create(payload: components['schemas']['CreateProjectDto']): Observable<AdminProject> {

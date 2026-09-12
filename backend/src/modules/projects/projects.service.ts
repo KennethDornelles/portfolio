@@ -51,6 +51,16 @@ export class ProjectsService {
     return this.projectsRepository.findAll();
   }
 
+  async findPage(page: number, limit: number) {
+    const result = await this.projectsRepository.findPage(page, limit);
+    return {
+      ...result,
+      page,
+      limit,
+      totalPages: Math.ceil(result.total / limit),
+    };
+  }
+
   async findOne(id: string) {
     const project = await this.projectsRepository.findById(id);
     if (!project) throw new NotFoundException('Project not found');

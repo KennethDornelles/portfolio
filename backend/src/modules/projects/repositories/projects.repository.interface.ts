@@ -8,6 +8,10 @@ export abstract class IProjectsRepository {
   ): Promise<Project>;
   abstract delete(id: string): Promise<Project>;
   abstract findAll(): Promise<Project[]>;
+  abstract findPage(
+    page: number,
+    limit: number,
+  ): Promise<{ items: Project[]; total: number }>;
   abstract findById(id: string): Promise<Project | null>;
   abstract findBySlug(slug: string): Promise<Project | null>;
 }
