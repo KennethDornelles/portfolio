@@ -1,5 +1,6 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { PrismaPg } from '@prisma/adapter-pg';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -35,11 +36,7 @@ export class PrismaService
 
     super({
       log: ['info', 'warn', 'error'],
-      datasources: {
-        db: {
-          url: dbUrl,
-        },
-      },
+      adapter: new PrismaPg({ connectionString: dbUrl }),
     });
   }
 
