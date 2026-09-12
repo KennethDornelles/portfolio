@@ -20,6 +20,20 @@ interface AuthResponse {
   user: AdminUser;
 }
 
+function isAdminRole(value: unknown): value is Exclude<AdminRole, null> {
+  return value === 'ADMIN' || value === 'GUEST';
+}
+
+function isAdminUser(value: unknown): value is AdminUser {
+  if (!value || typeof value !== 'object') return false;
+  const candidate = value as Record<string, unknown>;
+  return (
+    typeof candidate['email'] === 'string' &&
+    typeof candidate['name'] === 'string' &&
+    isAdminRole(candidate['role'])
+  );
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -48,7 +62,8 @@ export class AdminAuthService {
     
     if (token && userStr && !this.isExpired(token) && (refreshToken || this.isGuestUser(userStr))) {
       try {
-        const user = JSON.parse(userStr) as AdminUser;
+        const user: unknown = JSON.parse(userStr);
+        if (!isAdminUser(user)) throw new Error('Invalid stored user');
         this._user.set(user);
       } catch {
         this.logout(false, false);
@@ -113,7 +128,8 @@ export class AdminAuthService {
 
   private isGuestUser(serializedUser: string): boolean {
     try {
-      return (JSON.parse(serializedUser) as AdminUser).role === 'GUEST';
+      const user: unknown = JSON.parse(serializedUser);
+      return isAdminUser(user) && user.role === 'GUEST';
     } catch {
       return false;
     }
@@ -121,8 +137,10 @@ export class AdminAuthService {
 
   private isExpired(token: string): boolean {
     try {
-      const payload = JSON.parse(atob(token.split('.')[1])) as { exp?: number };
-      return typeof payload.exp === 'number' && payload.exp * 1000 <= Date.now();
+      const payload: unknown = JSON.parse(atob(token.split('.')[1]));
+      if (!payload || typeof payload !== 'object') return true;
+      const expiration = (payload as Record<string, unknown>)['exp'];
+      return typeof expiration === 'number' && expiration * 1000 <= Date.now();
     } catch {
       return true;
     }

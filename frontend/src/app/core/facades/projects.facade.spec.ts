@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { ProjectsFacade, type AdminProject } from './projects.facade';
+import { ProjectsFacade, type AdminProject, type ProjectPage } from './projects.facade';
 import { environment } from '../../../environments/environment';
 
 describe('ProjectsFacade', () => {
@@ -70,6 +70,26 @@ describe('ProjectsFacade', () => {
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(payload);
     req.flush(mockCreated);
+  });
+
+  it('should request a paginated project page', () => {
+    const page: ProjectPage = {
+      items: [],
+      total: 0,
+      page: 2,
+      limit: 10,
+      totalPages: 0,
+    };
+
+    facade.listPage(2, 10).subscribe((data) => expect(data).toEqual(page));
+
+    const req = httpTesting.expectOne(
+      (request) => request.url === `${environment.apiUrl}/projects/page`,
+    );
+    expect(req.request.method).toBe('GET');
+    expect(req.request.params.get('page')).toBe('2');
+    expect(req.request.params.get('limit')).toBe('10');
+    req.flush(page);
   });
 
   it('should update a project', () => {

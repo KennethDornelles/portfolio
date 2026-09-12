@@ -2,7 +2,11 @@ import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
-import { ProjectsFacade, type AdminProject } from '../../../../core/facades/projects.facade';
+import {
+  ProjectsFacade,
+  type AdminProject,
+  type ProjectPage,
+} from '../../../../core/facades/projects.facade';
 import { TechnologiesFacade, type AdminTechnology } from '../../../../core/facades/technologies.facade';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { LanguageService } from '../../../../core/services/language.service';
@@ -37,6 +41,33 @@ type Technology = AdminTechnology;
           </span>
         }
       </div>
+
+      @if (totalPages() > 1) {
+        <div class="flex items-center justify-between text-sm text-gray-400">
+          <span>{{ total() }} projects</span>
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              (click)="goToPage(currentPage() - 1)"
+              [disabled]="currentPage() === 1 || loading()"
+              aria-label="Previous page"
+              class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-40"
+            >
+              ‹
+            </button>
+            <span>{{ currentPage() }} / {{ totalPages() }}</span>
+            <button
+              type="button"
+              (click)="goToPage(currentPage() + 1)"
+              [disabled]="currentPage() === totalPages() || loading()"
+              aria-label="Next page"
+              class="px-3 py-1 rounded-lg bg-white/5 hover:bg-white/10 disabled:opacity-40"
+            >
+              ›
+            </button>
+          </div>
+        </div>
+      }
 
       <!-- Projects Table -->
       <div class="bg-white/5 rounded-2xl border border-white/10 overflow-hidden">
@@ -270,6 +301,10 @@ export class ProjectsAdminComponent implements OnInit {
   loading = signal(false);
   errorMessage = signal<string | null>(null);
   deletingId = signal<string | null>(null);
+  currentPage = signal(1);
+  total = signal(0);
+  totalPages = signal(1);
+  readonly pageSize = 20;
   showModal = false;
   editingProject: Project | null = null;
 
@@ -288,11 +323,33 @@ export class ProjectsAdminComponent implements OnInit {
   }
 
   loadProjects() {
-    this.projectsFacade.list().subscribe({
-      next: (data) => this.projects.set(data),
-      error: (err: unknown) =>
-        this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC'))),
+    this.loading.set(true);
+    this.projectsFacade.listPage(this.currentPage(), this.pageSize).subscribe({
+      next: (data: ProjectPage) => {
+        const normalizedTotalPages = Math.max(data.totalPages, 1);
+        if (this.currentPage() > normalizedTotalPages) {
+          this.currentPage.set(normalizedTotalPages);
+          this.loadProjects();
+          return;
+        }
+        this.projects.set(data.items);
+        this.total.set(data.total);
+        this.totalPages.set(normalizedTotalPages);
+        this.loading.set(false);
+      },
+      error: (err: unknown) => {
+        this.loading.set(false);
+        this.errorMessage.set(
+          getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')),
+        );
+      },
     });
+  }
+
+  goToPage(page: number) {
+    if (page < 1 || page > this.totalPages() || page === this.currentPage()) return;
+    this.currentPage.set(page);
+    this.loadProjects();
   }
 
   loadTechnologies() {

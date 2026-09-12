@@ -70,7 +70,7 @@ export class LanguageService {
       throw new Error('Invalid translation response');
     }
 
-    const map = value as Record<string, string>;
+    const map = Object.fromEntries(entries);
     if (REQUIRED_TRANSLATION_KEYS.some((key) => !map[key])) {
       throw new Error('Incomplete translation response');
     }
