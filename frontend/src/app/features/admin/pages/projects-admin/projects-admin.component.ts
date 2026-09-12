@@ -1,30 +1,16 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
+import { ProjectsFacade, type AdminProject } from '../../../../core/facades/projects.facade';
+import { TechnologiesFacade, type AdminTechnology } from '../../../../core/facades/technologies.facade';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { LanguageService } from '../../../../core/services/language.service';
 import { getHttpErrorMessage } from '../../../../core/utils/http-error.util';
 import type { components } from '../../../../core/api/generated';
 
-interface Project {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  technologies: Array<{ name: string; icon?: string }>;
-  repositoryUrl?: string;
-  liveUrl?: string;
-  isActive: boolean;
-  createdAt: string;
-}
-
-interface Technology {
-  id: string;
-  name: string;
-}
+type Project = AdminProject;
+type Technology = AdminTechnology;
 
 @Component({
   selector: 'app-projects-admin',
@@ -274,7 +260,8 @@ interface Technology {
   `,
 })
 export class ProjectsAdminComponent implements OnInit {
-  private http = inject(HttpClient);
+  private projectsFacade = inject(ProjectsFacade);
+  private technologiesFacade = inject(TechnologiesFacade);
   private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
 
@@ -301,7 +288,7 @@ export class ProjectsAdminComponent implements OnInit {
   }
 
   loadProjects() {
-    this.http.get<Project[]>(`${environment.apiUrl}/projects`).subscribe({
+    this.projectsFacade.list().subscribe({
       next: (data) => this.projects.set(data),
       error: (err: unknown) =>
         this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC'))),
@@ -309,7 +296,7 @@ export class ProjectsAdminComponent implements OnInit {
   }
 
   loadTechnologies() {
-    this.http.get<Technology[]>(`${environment.apiUrl}/technologies`).subscribe({
+    this.technologiesFacade.list().subscribe({
       next: (data) => this.availableTechnologies.set(data),
       error: (err: unknown) =>
         this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC'))),
@@ -375,8 +362,8 @@ export class ProjectsAdminComponent implements OnInit {
     };
 
     const request = this.editingProject
-      ? this.http.patch(`${environment.apiUrl}/projects/${this.editingProject.id}`, payload)
-      : this.http.post(`${environment.apiUrl}/projects`, payload);
+      ? this.projectsFacade.update(this.editingProject.id, payload)
+      : this.projectsFacade.create(payload);
 
     request.subscribe({
       next: () => {
@@ -397,7 +384,7 @@ export class ProjectsAdminComponent implements OnInit {
     if (this.deletingId()) return;
     if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_PROJECT'))) {
       this.deletingId.set(id);
-      this.http.delete(`${environment.apiUrl}/projects/${id}`).subscribe({
+      this.projectsFacade.remove(id).subscribe({
         next: () => {
           this.projects.update((projects) => projects.filter((project) => project.id !== id));
           this.loadProjects();

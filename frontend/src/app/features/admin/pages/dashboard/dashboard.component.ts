@@ -1,8 +1,9 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
+import { ProjectsFacade } from '../../../../core/facades/projects.facade';
+import { ContactsFacade } from '../../../../core/facades/contacts.facade';
+import { TechnologiesFacade } from '../../../../core/facades/technologies.facade';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
 interface StatsData {
@@ -243,7 +244,9 @@ interface Activity {
   `,
 })
 export class DashboardComponent implements OnInit {
-  private http = inject(HttpClient);
+  private projectsFacade = inject(ProjectsFacade);
+  private contactsFacade = inject(ContactsFacade);
+  private technologiesFacade = inject(TechnologiesFacade);
 
   stats = signal<StatsData>({
     projects: 2,
@@ -296,20 +299,20 @@ export class DashboardComponent implements OnInit {
 
   private loadStats() {
     // Load real stats from API
-    this.http.get<unknown[]>(`${environment.apiUrl}/projects`).subscribe({
+    this.projectsFacade.list().subscribe({
       next: (projects) => {
         this.stats.update((s) => ({ ...s, projects: projects.length }));
       },
     });
 
-    this.http.get<Array<{ read?: boolean }>>(`${environment.apiUrl}/contacts`).subscribe({
+    this.contactsFacade.list().subscribe({
       next: (contacts) => {
         this.stats.update((s) => ({ ...s, contacts: contacts.length }));
-        this.unreadContacts.set(contacts.filter((c) => !c.read).length);
+        this.unreadContacts.set(contacts.filter((c) => !c.readAt).length);
       },
     });
 
-    this.http.get<unknown[]>(`${environment.apiUrl}/technologies`).subscribe({
+    this.technologiesFacade.list().subscribe({
       next: (techs) => {
         this.stats.update((s) => ({ ...s, technologies: techs.length }));
       },

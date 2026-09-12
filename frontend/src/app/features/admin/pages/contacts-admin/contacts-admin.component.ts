@@ -1,20 +1,12 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../../../environments/environment';
 import { AdminAuthService } from '../../../../core/services/admin-auth.service';
+import { ContactsFacade, type AdminContact } from '../../../../core/facades/contacts.facade';
 import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 import { LanguageService } from '../../../../core/services/language.service';
 import { getHttpErrorMessage } from '../../../../core/utils/http-error.util';
 
-interface Contact {
-  id: string;
-  name: string;
-  email: string;
-  message: string;
-  readAt: string | null;
-  createdAt: string;
-}
+type Contact = AdminContact;
 
 @Component({
   selector: 'app-contacts-admin',
@@ -123,7 +115,7 @@ interface Contact {
   `
 })
 export class ContactsAdminComponent implements OnInit {
-  private http = inject(HttpClient);
+  private contactsFacade = inject(ContactsFacade);
   private i18n = inject(LanguageService);
   adminAuth = inject(AdminAuthService);
   
@@ -136,7 +128,7 @@ export class ContactsAdminComponent implements OnInit {
   }
 
   loadContacts() {
-    this.http.get<Contact[]>(`${environment.apiUrl}/contacts`).subscribe({
+    this.contactsFacade.list().subscribe({
       next: (data) => {
         this.contacts.set(data);
         this.errorMessage.set(null);
@@ -159,7 +151,7 @@ export class ContactsAdminComponent implements OnInit {
 
   markAsRead(contact: Contact) {
     if (!this.adminAuth.canEdit()) return;
-    this.http.patch<Contact>(`${environment.apiUrl}/contacts/${contact.id}/read`, {}).subscribe({
+    this.contactsFacade.markAsRead(contact.id).subscribe({
       next: (updatedContact) => {
         this.contacts.update(contacts =>
           contacts.map(c => c.id === contact.id ? updatedContact : c)
@@ -174,7 +166,7 @@ export class ContactsAdminComponent implements OnInit {
   deleteContact(id: string) {
     if (!this.adminAuth.canEdit()) return;
     if (confirm(this.i18n.translate('ADMIN_CONFIRM_DELETE_CONTACT'))) {
-      this.http.delete(`${environment.apiUrl}/contacts/${id}`).subscribe({
+      this.contactsFacade.remove(id).subscribe({
         next: () => this.contacts.update(contacts => contacts.filter(c => c.id !== id)),
         error: (err: unknown) =>
           this.errorMessage.set(getHttpErrorMessage(err, this.i18n.translate('ADMIN_ERR_GENERIC')))
