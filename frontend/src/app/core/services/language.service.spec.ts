@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { Router } from '@angular/router';
+import { vi, type Mock } from 'vitest';
 import { environment } from '../../../environments/environment';
 import { LanguageService } from './language.service';
 
@@ -8,20 +10,28 @@ describe('LanguageService', () => {
   const pt = {
     NAV_HOME: 'Início',
     HOME_TITLE_1: 'Transformamos',
+    HOME_ROLE: 'Engenharia Backend & Fullstack',
     BTN_VIEW_PROJECTS: 'Ver Cases',
   };
   const en = {
     NAV_HOME: 'Home',
     HOME_TITLE_1: 'We transform',
+    HOME_ROLE: 'Backend & Fullstack Engineering',
     BTN_VIEW_PROJECTS: 'View Cases',
   };
 
   let service: LanguageService;
   let http: HttpTestingController;
+  let router: { url: string; navigate: Mock };
 
   beforeEach(() => {
+    router = { url: '/', navigate: vi.fn().mockResolvedValue(true) };
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        { provide: Router, useValue: router },
+      ],
     });
     service = TestBed.inject(LanguageService);
     http = TestBed.inject(HttpTestingController);
@@ -52,6 +62,22 @@ describe('LanguageService', () => {
     expect(service.translate('NAV_HOME')).toBe('Início');
     http.expectOne(`${environment.apiUrl}/i18n/EN_US`).flush(en);
     await switching;
+
+    expect(service.currentLang()).toBe('EN_US');
+    expect(service.translate('NAV_HOME')).toBe('Home');
+    expect(router.navigate).toHaveBeenCalledWith([], {
+      queryParams: { lang: 'EN_US' },
+      queryParamsHandling: 'merge',
+      replaceUrl: true,
+    });
+  });
+
+  it('initializes from a supported language in the URL', async () => {
+    router.url = '/projects?filter=featured&lang=EN_US';
+    const initialization = service.initialize();
+
+    http.expectOne(`${environment.apiUrl}/i18n/EN_US`).flush(en);
+    await initialization;
 
     expect(service.currentLang()).toBe('EN_US');
     expect(service.translate('NAV_HOME')).toBe('Home');

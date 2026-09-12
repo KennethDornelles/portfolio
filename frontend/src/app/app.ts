@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LanguageService } from './core/services/language.service';
+import { SeoService } from './core/services/seo.service';
 
 @Component({
   selector: 'app-root',
@@ -10,4 +11,5 @@ import { LanguageService } from './core/services/language.service';
 })
 export class App {
   protected readonly languageService = inject(LanguageService);
+  private readonly seoService = inject(SeoService);
 }

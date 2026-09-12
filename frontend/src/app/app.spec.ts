@@ -10,6 +10,7 @@ describe('App', () => {
     })
       .overrideProvider(LanguageService, {
         useValue: {
+          currentLang: signal('PT_BR'),
           state: signal('error'),
           errorMessage: signal('Falha controlada'),
           initialize: vi.fn(),

@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import { CaseStudyCardComponent } from './case-study-card.component';
+import { CaseStudyVideoComponent } from './case-study-video.component';
 
 interface ProjectHighlight {
   titleKey: string;
@@ -12,16 +14,19 @@ interface Project {
   taglineKey: string;
   problemKey: string;
   solutionKey: string;
+  impactKey: string;
   highlights: ProjectHighlight[];
   techStack: string[];
   githubUrl: string;
   color: string;
+  demoVideoUrl?: string;
+  demoVideoPoster?: string;
 }
 
 @Component({
   selector: 'app-projects',
   standalone: true,
-  imports: [CommonModule, TranslatePipe],
+  imports: [CommonModule, TranslatePipe, CaseStudyCardComponent, CaseStudyVideoComponent],
   template: `
     <section class="py-20 px-4 sm:px-6 lg:px-8">
       <div class="max-w-6xl mx-auto">
@@ -42,12 +47,13 @@ interface Project {
         <!-- Projects Cards -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-20">
           @for (project of projects; track project.name) {
-            <article class="group relative bg-gradient-to-br from-white/5 to-transparent rounded-3xl border border-white/10 overflow-hidden hover:border-tech-blue/30 transition-all duration-500">
-              <!-- Gradient Overlay -->
-              <div class="absolute inset-0 bg-gradient-to-br opacity-5 group-hover:opacity-10 transition-opacity"
-                   [class]="project.color === 'orange' ? 'from-orange-500 to-red-500' : 'from-purple-500 to-blue-500'"></div>
-              
-              <div class="relative p-8">
+            <app-case-study-card [color]="project.color">
+                <!-- Case study content -->
+                <app-case-study-video
+                  [src]="project.demoVideoUrl ?? null"
+                  [poster]="project.demoVideoPoster ?? null"
+                  [label]="'PROJECT_VIDEO_LABEL' | translate"
+                />
                 <!-- Header -->
                 <div class="flex items-start justify-between mb-6">
                   <div>
@@ -73,6 +79,14 @@ interface Project {
                     <span class="text-green-400 text-xs font-medium uppercase tracking-wider">{{ 'PROJECT_SOLUTION_LABEL' | translate }}</span>
                     <p class="text-gray-300 text-sm mt-1">{{ project.solutionKey | translate }}</p>
                   </div>
+                  @if (project.impactKey | translate; as impact) {
+                    @if (impact !== project.impactKey) {
+                      <div class="p-4 bg-tech-blue/5 rounded-xl border border-tech-blue/10">
+                        <span class="text-tech-blue text-xs font-medium uppercase tracking-wider">{{ 'PROJECT_IMPACT_LABEL' | translate }}</span>
+                        <p class="text-gray-300 text-sm mt-1">{{ impact }}</p>
+                      </div>
+                    }
+                  }
                 </div>
 
                 <!-- Highlights -->
@@ -99,8 +113,17 @@ interface Project {
                     </span>
                   }
                 </div>
-              </div>
-            </article>
+                @if ('PROJECT_CASE_CTA' | translate; as caseCta) {
+                  @if (caseCta !== 'PROJECT_CASE_CTA') {
+                    <div class="mt-6 flex flex-wrap gap-3">
+                      <a [href]="project.githubUrl" target="_blank" rel="noopener noreferrer"
+                         class="inline-flex items-center px-4 py-2 rounded-full bg-tech-blue/10 text-tech-blue border border-tech-blue/20 hover:bg-tech-blue/20 transition-colors text-sm font-medium">
+                        {{ caseCta }}
+                      </a>
+                    </div>
+                  }
+                }
+            </app-case-study-card>
           }
         </div>
 
@@ -233,6 +256,7 @@ export class ProjectsComponent {
       taglineKey: 'PROJ_BARBER_TAGLINE',
       problemKey: 'PROJ_BARBER_PROBLEM',
       solutionKey: 'PROJ_BARBER_SOLUTION',
+      impactKey: 'PROJ_BARBER_IMPACT',
       highlights: [
         {
           titleKey: 'PROJ_BARBER_HIGHLIGHT_1_TITLE',
@@ -252,10 +276,36 @@ export class ProjectsComponent {
       color: 'orange'
     },
     {
+      name: 'ExploraJP',
+      taglineKey: 'PROJ_EXPLORA_TAGLINE',
+      problemKey: 'PROJ_EXPLORA_PROBLEM',
+      solutionKey: 'PROJ_EXPLORA_SOLUTION',
+      impactKey: 'PROJ_EXPLORA_IMPACT',
+      highlights: [
+        {
+          titleKey: 'PROJ_EXPLORA_HIGHLIGHT_1_TITLE',
+          descriptionKey: 'PROJ_EXPLORA_HIGHLIGHT_1_DESC'
+        },
+        {
+          titleKey: 'PROJ_EXPLORA_HIGHLIGHT_2_TITLE',
+          descriptionKey: 'PROJ_EXPLORA_HIGHLIGHT_2_DESC'
+        },
+        {
+          titleKey: 'PROJ_EXPLORA_HIGHLIGHT_3_TITLE',
+          descriptionKey: 'PROJ_EXPLORA_HIGHLIGHT_3_DESC'
+        }
+      ],
+      techStack: ['React Native', 'NestJS', 'PostgreSQL', 'PostGIS', 'Redis', 'BullMQ', 'Cloudflare R2'],
+      githubUrl: 'https://github.com/KennethDornelles/ExploraJP',
+      color: 'purple',
+      demoVideoUrl: 'https://pub-240b13a431544f0fb4f0835fcc399e51.r2.dev/cases/explorajp-demo.mp4',
+    },
+    {
       name: 'PetBoss',
       taglineKey: 'PROJ_PET_TAGLINE',
       problemKey: 'PROJ_PET_PROBLEM',
       solutionKey: 'PROJ_PET_SOLUTION',
+      impactKey: 'PROJ_PET_IMPACT',
       highlights: [
         {
           titleKey: 'PROJ_PET_HIGHLIGHT_1_TITLE',
