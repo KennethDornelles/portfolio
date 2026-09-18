@@ -12,7 +12,12 @@ interface ContactForm {
   email: string;
   subject: string;
   message: string;
+  website: string;
 }
+
+type ContactSubmission = components['schemas']['CreateContactDto'] & {
+  website?: string;
+};
 
 @Component({
   selector: 'app-contact',
@@ -57,6 +62,19 @@ interface ContactForm {
                 required
                 class="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:border-tech-blue focus:outline-none transition-colors"
                 [placeholder]="'CONTACT_NAME_PLACEHOLDER' | translate"
+              />
+            </div>
+
+            <!-- Honeypot: kept out of the visual flow for automated submissions. -->
+            <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+              <label for="website">Website</label>
+              <input
+                id="website"
+                type="text"
+                [(ngModel)]="form.website"
+                name="website"
+                tabindex="-1"
+                autocomplete="off"
               />
             </div>
 
@@ -136,6 +154,20 @@ interface ContactForm {
           <a href="mailto:kenneth.jesus@olustack.com.br" class="text-tech-blue hover:underline">
             kenneth.jesus@olustack.com.br
           </a>
+          <div class="mt-5 flex justify-center gap-5 text-sm">
+            <a
+              href="https://linkedin.com/in/kennethjesus"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-tech-blue hover:underline"
+            >{{ 'CONTACT_LINKEDIN' | translate }}</a>
+            <a
+              href="https://github.com/KennethDornelles"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-tech-blue hover:underline"
+            >{{ 'CONTACT_GITHUB' | translate }}</a>
+          </div>
         </div>
       </div>
     </section>
@@ -150,6 +182,7 @@ export class ContactComponent {
     email: '',
     subject: '',
     message: '',
+    website: '',
   };
 
   submitting = signal(false);
@@ -160,11 +193,12 @@ export class ContactComponent {
     this.submitting.set(true);
     this.error.set(null);
 
-    const payload: components['schemas']['CreateContactDto'] = {
+    const payload: ContactSubmission = {
       name: this.form.name,
       email: this.form.email,
       message: this.form.message,
       subject: this.form.subject || undefined,
+      website: this.form.website || undefined,
     };
     this.http.post(`${environment.apiUrl}/contacts`, payload).subscribe({
       next: () => {
