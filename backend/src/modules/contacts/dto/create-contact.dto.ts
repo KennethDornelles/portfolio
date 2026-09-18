@@ -1,5 +1,5 @@
 import { IsString, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 
 export class CreateContactDto {
   @ApiProperty({ example: 'John Doe' })
@@ -21,4 +21,10 @@ export class CreateContactDto {
   @IsString()
   @IsOptional()
   subject?: string;
+
+  /** Honeypot field used to silently absorb automated submissions. */
+  @ApiHideProperty()
+  @IsString()
+  @IsOptional()
+  website?: string;
 }

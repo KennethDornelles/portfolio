@@ -113,6 +113,20 @@ describe('API-002 public contact submission', () => {
     expect(contactsService.create).not.toHaveBeenCalled();
   });
 
+  it('silently accepts honeypot submissions without persisting or sending them', async () => {
+    await httpRequest(app)
+      .post('/api/contacts')
+      .send({
+        name: 'Automated visitor',
+        email: 'bot@example.com',
+        message: 'Spam',
+        website: 'https://spam.example',
+      })
+      .expect(201, { success: true });
+
+    expect(contactsService.create).not.toHaveBeenCalled();
+  });
+
   it('keeps contact administration protected', async () => {
     await httpRequest(app).get('/api/contacts').expect(401);
     await httpRequest(app)
