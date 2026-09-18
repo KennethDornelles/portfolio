@@ -298,7 +298,7 @@ export class ProjectsComponent {
       techStack: ['React Native', 'NestJS', 'PostgreSQL', 'PostGIS', 'Redis', 'BullMQ', 'Cloudflare R2'],
       githubUrl: 'https://github.com/KennethDornelles/ExploraJP',
       color: 'purple',
-      demoVideoUrl: 'https://pub-240b13a431544f0fb4f0835fcc399e51.r2.dev/cases/explorajp-demo.mp4',
+      demoVideoUrl: 'https://cdn.olustack.com.br/cases/explorajp-demo.mp4',
     },
     {
       name: 'PetBoss',

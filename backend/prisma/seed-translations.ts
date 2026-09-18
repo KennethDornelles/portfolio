@@ -316,6 +316,10 @@ export async function seedTranslations(prisma: PrismaClient) {
       lang: 'PT_BR',
       value: 'Ou envie um email diretamente para:',
     },
+    { key: 'CONTACT_LINKEDIN', lang: 'EN_US', value: 'LinkedIn' },
+    { key: 'CONTACT_LINKEDIN', lang: 'PT_BR', value: 'LinkedIn' },
+    { key: 'CONTACT_GITHUB', lang: 'EN_US', value: 'GitHub' },
+    { key: 'CONTACT_GITHUB', lang: 'PT_BR', value: 'GitHub' },
 
     // Authentication - Login
     { key: 'AUTH_LOGIN_TITLE', lang: 'EN_US', value: 'Welcome Back' },

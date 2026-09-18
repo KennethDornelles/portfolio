@@ -37,7 +37,12 @@ export class ContactsController {
     description: 'The contact message has been successfully created.',
   })
   async create(@Body() createContactDto: CreateContactDto) {
-    await this.contactsService.create(createContactDto);
+    const { website, ...contact } = createContactDto;
+    if (website?.trim()) {
+      return { success: true };
+    }
+
+    await this.contactsService.create(contact);
     return { success: true };
   }
 
