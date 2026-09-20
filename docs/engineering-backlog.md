@@ -98,11 +98,11 @@ O Notion continua sendo a fonte operacional para planejamento e atualização de
 | CASE-002 | Publicar ExploraJP como case study principal | CASE-001 | M | P2 | Proposto |
 | CONTENT-001 | Reposicionar hero para Backend/Fullstack | — | XS | P2 | Proposto |
 | CONTENT-002 | Reestruturar cards com impacto e CTA | CASE-001 | S | P2 | Proposto |
-| CONTENT-004 | Quantificar resultados técnicos das experiências | CONTENT-003 | S | P2 | Proposto |
+| CONTENT-004 | Quantificar resultados técnicos das experiências | CONTENT-003 | S | P2 | Concluído |
 | CV-001 | Disponibilizar CV em PT-BR e EN-US | CONTENT-001 | S | P2 | Proposto |
 | EXP-001 | Criar linha do tempo de experiência orientada a impacto | CONTENT-003, CONTENT-004 | M | P2 | Proposto |
 | I18N-002 | Preservar rota, metadata e `hreflang` na troca PT/EN | CACHE-001 | M | P2 | Concluído |
-| METRICS-001 | Extrair métricas verificáveis do repositório e CI | CI-001 | M | P2 | Proposto |
+| METRICS-001 | Extrair métricas verificáveis do repositório e CI | CI-001 | M | P2 | Concluído |
 | SEO-001 | Implementar metadata, canonical e dados estruturados multilíngues | I18N-002 | M | P2 | Proposto |
 | ANALYTICS-001 | Instrumentar conversões dos CTAs | CONTENT-001, CONTENT-002, CV-001 | S | P3 | Proposto |
 | CONTACT-002 | Disponibilizar contatos secundários com proteção contra spam | API-002, SEC-001 | S | P3 | Proposto |
