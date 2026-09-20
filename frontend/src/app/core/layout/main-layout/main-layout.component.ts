@@ -9,9 +9,10 @@ import { NavbarComponent } from '../navbar/navbar.component';
   imports: [CommonModule, RouterOutlet, NavbarComponent],
   template: `
     <div class="min-h-screen bg-graphite-950 text-white font-sans selection:bg-tech-blue/30">
+      <a class="skip-link" href="#main-content">Pular para o conteúdo principal</a>
       <app-navbar></app-navbar>
       
-      <main class="relative pt-16">
+      <main id="main-content" class="relative pt-16" tabindex="-1">
         <!-- Background Gradients/Effects could go here -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none -z-10">
            <div class="absolute top-0 left-1/4 w-96 h-96 bg-tech-blue/10 rounded-full blur-3xl opacity-20 transform -translate-y-1/2"></div>

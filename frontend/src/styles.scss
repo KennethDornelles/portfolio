@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+:focus-visible {
+  outline: 3px solid #00d4ff !important;
+  outline-offset: 3px !important;
+}
+
+.skip-link {
+  background: #00d4ff;
+  border-radius: 0 0 0.5rem 0;
+  color: #050505;
+  font-weight: 700;
+  left: 0;
+  padding: 0.75rem 1rem;
+  position: fixed;
+  top: 0;
+  transform: translateY(-120%);
+  transition: transform 150ms ease-out;
+  z-index: 100;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /*
   COMPREHENSIVE GRADIENT TEXT FIX
   Fixes Chrome/Safari text wrapping issues with gradients
