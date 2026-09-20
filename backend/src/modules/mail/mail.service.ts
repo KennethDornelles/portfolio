@@ -53,10 +53,22 @@ export class ResendMailProvider implements IMailProvider {
 
 @Injectable()
 export class MailService {
-  constructor(@InjectQueue('mail') private mailQueue: Queue) {}
+  constructor(
+    @InjectQueue('mail') private mailQueue: Queue,
+    private configService: ConfigService,
+  ) {}
+
+  private enqueue(data: { to: string; subject: string; body: string }) {
+    return this.mailQueue.add('send-email', data, {
+      attempts: 3,
+      backoff: { type: 'exponential', delay: 1_000 },
+      removeOnComplete: 100,
+      removeOnFail: 100,
+    });
+  }
 
   async sendWelcome(email: string) {
-    await this.mailQueue.add('send-email', {
+    await this.enqueue({
       to: email,
       subject: 'Welcome to Portfolio',
       body: '<h1>Thank you for joining!</h1>',
@@ -69,8 +81,14 @@ export class MailService {
     subject?: string;
     message: string;
   }) {
-    await this.mailQueue.add('send-email', {
-      to: 'kenneth.jesus@olustack.com.br',
+    await this.enqueue({
+      to: this.configService.get<string>(
+        'CONTACT_ALERT_RECIPIENT',
+        this.configService.get<string>(
+          'ADMIN_EMAIL',
+          'kenneth.jesus@olustack.com.br',
+        ),
+      ),
       subject: escapeHtml(contact.subject || 'Novo contato pelo portfólio'),
       body: `<h1>Novo contato</h1><p><strong>Nome:</strong> ${escapeHtml(contact.name)}</p><p><strong>E-mail:</strong> ${escapeHtml(contact.email)}</p><p><strong>Mensagem:</strong></p><p>${escapeHtml(contact.message)}</p>`,
     });
@@ -78,7 +96,7 @@ export class MailService {
 
   // Generic method for other usages
   async send(to: string, subject: string, body: string) {
-    await this.mailQueue.add('send-email', {
+    await this.enqueue({
       to,
       subject,
       body,
