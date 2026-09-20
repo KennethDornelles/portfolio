@@ -46,6 +46,11 @@
               <p class="text-zinc-400 text-sm">{{ exp.focus | translate }}</p>
             </div>
 
+            <div *ngIf="exp.impact" class="mb-5 rounded-lg border border-cyan-900/50 bg-cyan-950/20 p-3">
+              <p class="text-cyan-300 font-medium mb-1">{{ 'TIMELINE_IMPACT' | translate }}</p>
+              <p class="text-zinc-300 text-sm">{{ exp.impact | translate }}</p>
+            </div>
+
             <!-- Cases/Highlights -->
             <div *ngIf="exp.cases" class="mb-5">
               <p class="text-zinc-300 font-medium mb-2">{{ 'TIMELINE_CASES' | translate }}</p>

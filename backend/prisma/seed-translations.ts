@@ -697,6 +697,17 @@ export async function seedTranslations(prisma: PrismaClient) {
         'PetBoss: Engine de logística e geolocalização utilizando PostGIS para serviços pet.',
     },
 
+    {
+      key: 'EXP_OLU_HIGHLIGHT_3',
+      lang: 'EN_US',
+      value: 'ExploraJP: mobile-first tourism platform combining geolocation, challenges, and local discovery.',
+    },
+    {
+      key: 'EXP_OLU_HIGHLIGHT_3',
+      lang: 'PT_BR',
+      value: 'ExploraJP: plataforma de turismo mobile-first combinando geolocalização, desafios e descoberta local.',
+    },
+
     // Escola de Computação Solidária (COED)
     {
       key: 'EXP_COED_ROLE',
@@ -869,6 +880,22 @@ export async function seedTranslations(prisma: PrismaClient) {
       lang: 'PT_BR',
       value: 'Sistemas Distribuídos',
     },
+
+    // Impact statements (EXP-001)
+    { key: 'TIMELINE_IMPACT', lang: 'EN_US', value: 'Impact:' },
+    { key: 'TIMELINE_IMPACT', lang: 'PT_BR', value: 'Impacto:' },
+    { key: 'EXP_CROS_IMPACT', lang: 'EN_US', value: 'More predictable delivery through modernized backend architecture and database performance work.' },
+    { key: 'EXP_CROS_IMPACT', lang: 'PT_BR', value: 'Entregas mais previsíveis por meio de arquitetura backend modernizada e trabalho de performance em banco.' },
+    { key: 'EXP_OLU_IMPACT', lang: 'EN_US', value: 'End-to-end products that turn complex domains into scalable, user-facing SaaS capabilities.' },
+    { key: 'EXP_OLU_IMPACT', lang: 'PT_BR', value: 'Produtos de ponta a ponta que transformam domínios complexos em capacidades SaaS escaláveis para usuários.' },
+    { key: 'EXP_UNIMED_IMPACT', lang: 'EN_US', value: 'Safer data flows for healthcare operations where integrity and reliability are essential.' },
+    { key: 'EXP_UNIMED_IMPACT', lang: 'PT_BR', value: 'Fluxos de dados mais seguros para operações de saúde onde integridade e confiabilidade são essenciais.' },
+    { key: 'EXP_COED_IMPACT', lang: 'EN_US', value: 'More accessible technical learning through clear, reusable audiovisual and presentation materials.' },
+    { key: 'EXP_COED_IMPACT', lang: 'PT_BR', value: 'Aprendizado técnico mais acessível por meio de materiais audiovisuais e apresentações claros e reutilizáveis.' },
+    { key: 'EXP_RENNER_IMPACT', lang: 'EN_US', value: 'Greater operational stability by prioritizing incident response and high-demand flow performance.' },
+    { key: 'EXP_RENNER_IMPACT', lang: 'PT_BR', value: 'Maior estabilidade operacional ao priorizar resposta a incidentes e performance de fluxos de alta demanda.' },
+    { key: 'EXP_PURPLE_IMPACT', lang: 'EN_US', value: 'A resilient API foundation supported growth while keeping delivery practices automated and testable.' },
+    { key: 'EXP_PURPLE_IMPACT', lang: 'PT_BR', value: 'Uma base resiliente de APIs sustentou o crescimento mantendo práticas de entrega automatizadas e testáveis.' },
 
     // Quantified technical indicators (CONTENT-004)
     { key: 'EXP_CROS_RESULT_1', lang: 'EN_US', value: '2 primary backend technologies applied: Node.js and NestJS.' },
