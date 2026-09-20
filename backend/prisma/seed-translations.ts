@@ -459,6 +459,18 @@ export async function seedTranslations(prisma: PrismaClient) {
     { key: 'TIMELINE_CASES', lang: 'PT_BR', value: 'Cases:' },
     { key: 'TIMELINE_HIGHLIGHTS', lang: 'EN_US', value: 'Highlights:' },
     { key: 'TIMELINE_HIGHLIGHTS', lang: 'PT_BR', value: 'Destaques:' },
+    { key: 'TIMELINE_RESULTS', lang: 'EN_US', value: 'Technical indicators:' },
+    { key: 'TIMELINE_RESULTS', lang: 'PT_BR', value: 'Indicadores técnicos:' },
+    {
+      key: 'TIMELINE_RESULTS_NOTE',
+      lang: 'EN_US',
+      value: 'Scope indicators based on the experience record; not production KPIs.',
+    },
+    {
+      key: 'TIMELINE_RESULTS_NOTE',
+      lang: 'PT_BR',
+      value: 'Indicadores de escopo baseados no registro da experiência; não são KPIs de produção.',
+    },
     {
       key: 'TIMELINE_CTA_TITLE',
       lang: 'EN_US',
@@ -597,8 +609,8 @@ export async function seedTranslations(prisma: PrismaClient) {
       lang: 'PT_BR',
       value: 'Desenvolvedor Full Stack Pleno',
     },
-    { key: 'EXP_CROS_PERIOD', lang: 'EN_US', value: 'April 2025 - Present' },
-    { key: 'EXP_CROS_PERIOD', lang: 'PT_BR', value: 'Abril 2025 - Presente' },
+    { key: 'EXP_CROS_PERIOD', lang: 'EN_US', value: 'April 2025 - April 2026' },
+    { key: 'EXP_CROS_PERIOD', lang: 'PT_BR', value: 'Abril 2025 - Abril 2026' },
     {
       key: 'EXP_CROS_FOCUS',
       lang: 'EN_US',
@@ -683,6 +695,70 @@ export async function seedTranslations(prisma: PrismaClient) {
       lang: 'PT_BR',
       value:
         'PetBoss: Engine de logística e geolocalização utilizando PostGIS para serviços pet.',
+    },
+
+    // Escola de Computação Solidária (COED)
+    {
+      key: 'EXP_COED_ROLE',
+      lang: 'EN_US',
+      value: 'Volunteer Content and Learning Materials Monitor',
+    },
+    {
+      key: 'EXP_COED_ROLE',
+      lang: 'PT_BR',
+      value: 'Monitor Voluntário de Conteúdo e Materiais Didáticos',
+    },
+    { key: 'EXP_COED_PERIOD', lang: 'EN_US', value: 'September 2026 - Present' },
+    { key: 'EXP_COED_PERIOD', lang: 'PT_BR', value: 'Setembro 2026 - Presente' },
+    {
+      key: 'EXP_COED_FOCUS',
+      lang: 'EN_US',
+      value: 'Production and review of technical content for accessible computing education.',
+    },
+    {
+      key: 'EXP_COED_FOCUS',
+      lang: 'PT_BR',
+      value: 'Produção e revisão de conteúdo técnico para educação acessível em computação.',
+    },
+    {
+      key: 'EXP_COED_HIGHLIGHT_1',
+      lang: 'EN_US',
+      value: 'Produce and edit technical videos that support classroom learning.',
+    },
+    {
+      key: 'EXP_COED_HIGHLIGHT_1',
+      lang: 'PT_BR',
+      value: 'Produção e edição de vídeos técnicos para apoiar o aprendizado em sala.',
+    },
+    {
+      key: 'EXP_COED_HIGHLIGHT_2',
+      lang: 'EN_US',
+      value: 'Create and review class presentations and other educational materials.',
+    },
+    {
+      key: 'EXP_COED_HIGHLIGHT_2',
+      lang: 'PT_BR',
+      value: 'Criação e revisão de apresentações de aula e outros materiais educacionais.',
+    },
+    {
+      key: 'EXP_COED_RESULT_1',
+      lang: 'EN_US',
+      value: '2 content formats delivered: technical videos and class presentations.',
+    },
+    {
+      key: 'EXP_COED_RESULT_1',
+      lang: 'PT_BR',
+      value: '2 formatos de conteúdo entregues: vídeos técnicos e apresentações de aula.',
+    },
+    {
+      key: 'EXP_COED_RESULT_2',
+      lang: 'EN_US',
+      value: '1 educational mission: strengthen communication and knowledge sharing.',
+    },
+    {
+      key: 'EXP_COED_RESULT_2',
+      lang: 'PT_BR',
+      value: '1 missão educacional: fortalecer a comunicação e o compartilhamento de conhecimento.',
     },
 
     // Unimed
@@ -793,6 +869,28 @@ export async function seedTranslations(prisma: PrismaClient) {
       lang: 'PT_BR',
       value: 'Sistemas Distribuídos',
     },
+
+    // Quantified technical indicators (CONTENT-004)
+    { key: 'EXP_CROS_RESULT_1', lang: 'EN_US', value: '2 primary backend technologies applied: Node.js and NestJS.' },
+    { key: 'EXP_CROS_RESULT_1', lang: 'PT_BR', value: '2 tecnologias principais de backend aplicadas: Node.js e NestJS.' },
+    { key: 'EXP_CROS_RESULT_2', lang: 'EN_US', value: '2 delivery fronts: feature development and query/database optimization.' },
+    { key: 'EXP_CROS_RESULT_2', lang: 'PT_BR', value: '2 frentes de entrega: desenvolvimento de funcionalidades e otimização de queries/banco.' },
+    { key: 'EXP_OLU_RESULT_1', lang: 'EN_US', value: '2 SaaS products taken from domain modeling through backend delivery.' },
+    { key: 'EXP_OLU_RESULT_1', lang: 'PT_BR', value: '2 produtos SaaS conduzidos da modelagem de domínio à entrega backend.' },
+    { key: 'EXP_OLU_RESULT_2', lang: 'EN_US', value: '4 core platform capabilities: APIs, geolocation, caching, and payments.' },
+    { key: 'EXP_OLU_RESULT_2', lang: 'PT_BR', value: '4 capacidades centrais de plataforma: APIs, geolocalização, cache e pagamentos.' },
+    { key: 'EXP_UNIMED_RESULT_1', lang: 'EN_US', value: '2 database technologies integrated: Oracle/PL-SQL and PostgreSQL.' },
+    { key: 'EXP_UNIMED_RESULT_1', lang: 'PT_BR', value: '2 tecnologias de banco integradas: Oracle/PL-SQL e PostgreSQL.' },
+    { key: 'EXP_UNIMED_RESULT_2', lang: 'EN_US', value: '1 mission-critical healthcare context with data integrity as a constraint.' },
+    { key: 'EXP_UNIMED_RESULT_2', lang: 'PT_BR', value: '1 contexto de saúde de missão crítica com integridade de dados como requisito.' },
+    { key: 'EXP_RENNER_RESULT_1', lang: 'EN_US', value: '12-month systems analysis cycle documented in the experience period.' },
+    { key: 'EXP_RENNER_RESULT_1', lang: 'PT_BR', value: 'Ciclo de 12 meses de análise de sistemas documentado no período da experiência.' },
+    { key: 'EXP_RENNER_RESULT_2', lang: 'EN_US', value: '2 operational priorities: incident response and performance tuning.' },
+    { key: 'EXP_RENNER_RESULT_2', lang: 'PT_BR', value: '2 prioridades operacionais: resposta a incidentes e ajuste de performance.' },
+    { key: 'EXP_PURPLE_RESULT_1', lang: 'EN_US', value: '10,000+ daily active users served by the APIs, as recorded for the role.' },
+    { key: 'EXP_PURPLE_RESULT_1', lang: 'PT_BR', value: 'Mais de 10.000 usuários ativos diários atendidos pelas APIs, conforme registro da função.' },
+    { key: 'EXP_PURPLE_RESULT_2', lang: 'EN_US', value: '3 delivery controls combined: AWS infrastructure, CI/CD, and automated Jest tests.' },
+    { key: 'EXP_PURPLE_RESULT_2', lang: 'PT_BR', value: '3 controles de entrega combinados: infraestrutura AWS, CI/CD e testes automatizados com Jest.' },
 
     // PurpleCats
     {

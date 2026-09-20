@@ -23,15 +23,15 @@ enum LanguageCode {
 }
 
 model User {
-  id            String         @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  email         String         @unique
-  passwordHash  String
-  role          UserRole       @default(USER)
-  isActive      Boolean        @default(true)
-  deletedAt     DateTime?
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
-  
+  id           String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  email        String    @unique
+  passwordHash String
+  role         UserRole  @default(USER)
+  isActive     Boolean   @default(true)
+  deletedAt    DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
   refreshTokens RefreshToken[]
   auditLogs     AuditLog[]
   profile       Profile?
@@ -42,15 +42,15 @@ model User {
 }
 
 model RefreshToken {
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  token       String   @unique
-  userId      String   @db.Uuid
-  ipAddress   String?
-  userAgent   String?
-  expiresAt   DateTime
-  revokedAt   DateTime?
-  createdAt   DateTime @default(now())
-  
+  id        String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  token     String    @unique
+  userId    String    @db.Uuid
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
@@ -58,12 +58,12 @@ model RefreshToken {
 }
 
 model TranslationKey {
-  id           String        @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  key          String        @unique
-  description  String?
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  
+  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  key         String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
   translations Translation[]
 
   @@map("translation_keys")
@@ -76,7 +76,7 @@ model Translation {
   value     String
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
-  
+
   translationKey TranslationKey @relation(fields: [keyId], references: [id], onDelete: Cascade)
 
   @@unique([keyId, language])
@@ -84,16 +84,16 @@ model Translation {
 }
 
 model AuditLog {
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  userId      String?  @db.Uuid
-  action      String
-  entity      String
-  entityId    String?
-  ipAddress   String?
-  userAgent   String?
-  metadata    Json?
-  createdAt   DateTime @default(now())
-  
+  id        String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  userId    String?  @db.Uuid
+  action    String
+  entity    String
+  entityId  String?
+  ipAddress String?
+  userAgent String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@index([userId])
@@ -103,7 +103,7 @@ model AuditLog {
 }
 
 model Store {
-  id       String @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id       String                                @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   name     String
   location Unsupported("geometry(Point, 4326)")?
 
@@ -112,35 +112,35 @@ model Store {
 }
 
 model Project {
-  id            String       @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id            String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   title         String
-  slug          String       @unique
+  slug          String    @unique
   description   String
-  content       String?      @db.Text
+  content       String?   @db.Text
   thumbnail     String?
   repositoryUrl String?
   liveUrl       String?
-  isActive      Boolean      @default(true)
+  isActive      Boolean   @default(true)
   startDate     DateTime?
   endDate       DateTime?
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 
-  technologies  Technology[]
+  technologies Technology[]
 
   @@map("projects")
 }
 
 model Technology {
-  id               String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
-  name             String    @unique
+  id               String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  name             String   @unique
   icon             String?
-  category         String    @default("Other")
-  proficiencyLevel Int       @default(75)
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  category         String   @default("Other")
+  proficiencyLevel Int      @default(75)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
 
-  projects  Project[]
+  projects Project[]
 
   @@map("technologies")
 }
@@ -171,7 +171,7 @@ model Profile {
 }
 
 model Experience {
-  id          String   @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
+  id          String    @id @default(dbgenerated("uuid_generate_v4()")) @db.Uuid
   role        String
   company     String
   period      String
@@ -179,12 +179,13 @@ model Experience {
   description String?
   cases       String[]
   highlights  String[]
+  results     String[]
   techStack   Json
   startDate   DateTime?
   endDate     DateTime?
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@map("experiences")
 }

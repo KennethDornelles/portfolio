@@ -47,6 +47,15 @@ export class CreateExperienceDto {
   @IsOptional()
   highlights?: string[];
 
+  @ApiPropertyOptional({
+    description: 'Translated technical scope/results indicators',
+    example: ['EXP_PURPLE_RESULT_1', 'EXP_PURPLE_RESULT_2'],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  results?: string[];
+
   @ApiProperty({
     description: 'JSON structure for tech stack',
     example: [{ name: 'NestJS', color: 'bg-red-600' }],
