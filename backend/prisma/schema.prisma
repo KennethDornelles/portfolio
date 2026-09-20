@@ -176,6 +176,7 @@ model Experience {
   company     String
   period      String
   focus       String
+  impact      String?
   description String?
   cases       String[]
   highlights  String[]

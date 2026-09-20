@@ -30,6 +30,11 @@ export class CreateExperienceDto {
   @IsNotEmpty()
   focus: string;
 
+  @ApiPropertyOptional({ description: 'Translated impact statement' })
+  @IsString()
+  @IsOptional()
+  impact?: string;
+
   @ApiPropertyOptional()
   @IsString()
   @IsOptional()

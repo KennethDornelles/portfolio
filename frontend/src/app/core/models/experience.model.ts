@@ -9,6 +9,7 @@ export interface Experience {
   company: string;
   period: string;
   focus: string;
+  impact?: string;
   description?: string;
   cases?: string[];
   highlights?: string[];

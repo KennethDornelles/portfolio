@@ -17,6 +17,7 @@ async function main() {
       company: 'CroSoften',
       period: 'EXP_CROS_PERIOD',
       focus: 'EXP_CROS_FOCUS',
+      impact: 'EXP_CROS_IMPACT',
       highlights: ['EXP_CROS_HIGHLIGHT_1', 'EXP_CROS_HIGHLIGHT_2'],
       results: ['EXP_CROS_RESULT_1', 'EXP_CROS_RESULT_2'],
       techStack: [
@@ -31,7 +32,8 @@ async function main() {
       company: 'OluStack',
       period: 'EXP_OLU_PERIOD',
       focus: 'EXP_OLU_FOCUS',
-      highlights: ['EXP_OLU_HIGHLIGHT_1', 'EXP_OLU_HIGHLIGHT_2'],
+      impact: 'EXP_OLU_IMPACT',
+      highlights: ['EXP_OLU_HIGHLIGHT_1', 'EXP_OLU_HIGHLIGHT_2', 'EXP_OLU_HIGHLIGHT_3'],
       results: ['EXP_OLU_RESULT_1', 'EXP_OLU_RESULT_2'],
       techStack: [
         { name: 'NestJS', color: 'bg-red-600' },
@@ -46,6 +48,7 @@ async function main() {
       company: 'Unimed',
       period: 'EXP_UNIMED_PERIOD',
       focus: 'EXP_UNIMED_FOCUS',
+      impact: 'EXP_UNIMED_IMPACT',
       highlights: ['EXP_UNIMED_HIGHLIGHT_1', 'EXP_UNIMED_HIGHLIGHT_2'],
       results: ['EXP_UNIMED_RESULT_1', 'EXP_UNIMED_RESULT_2'],
       techStack: [
@@ -60,6 +63,7 @@ async function main() {
       company: 'Escola de Computação Solidária (COED)',
       period: 'EXP_COED_PERIOD',
       focus: 'EXP_COED_FOCUS',
+      impact: 'EXP_COED_IMPACT',
       highlights: ['EXP_COED_HIGHLIGHT_1', 'EXP_COED_HIGHLIGHT_2'],
       results: ['EXP_COED_RESULT_1', 'EXP_COED_RESULT_2'],
       techStack: [
@@ -74,6 +78,7 @@ async function main() {
       company: 'Lojas Renner S.A.',
       period: 'EXP_RENNER_PERIOD',
       focus: 'EXP_RENNER_FOCUS',
+      impact: 'EXP_RENNER_IMPACT',
       highlights: ['EXP_RENNER_HIGHLIGHT_1', 'EXP_RENNER_HIGHLIGHT_2'],
       results: ['EXP_RENNER_RESULT_1', 'EXP_RENNER_RESULT_2'],
       techStack: [
@@ -87,6 +92,7 @@ async function main() {
       company: 'PurpleCats',
       period: 'EXP_PURPLE_PERIOD',
       focus: 'EXP_PURPLE_FOCUS',
+      impact: 'EXP_PURPLE_IMPACT',
       highlights: ['EXP_PURPLE_HIGHLIGHT_1', 'EXP_PURPLE_HIGHLIGHT_2'],
       results: ['EXP_PURPLE_RESULT_1', 'EXP_PURPLE_RESULT_2'],
       techStack: [
