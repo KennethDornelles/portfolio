@@ -948,6 +948,11 @@ export async function seedTranslations(prisma: PrismaClient) {
     },
     { key: 'EXP_TECH_MICROSERVICES', lang: 'EN_US', value: 'Microservices' },
     { key: 'EXP_TECH_MICROSERVICES', lang: 'PT_BR', value: 'Microsserviços' },
+    { key: 'CV_DOWNLOAD_PT', lang: 'EN_US', value: 'Download CV (PT-BR)' },
+    { key: 'CV_DOWNLOAD_PT', lang: 'PT_BR', value: 'Baixar CV (PT-BR)' },
+    { key: 'CV_DOWNLOAD_EN', lang: 'EN_US', value: 'Download CV (EN-US)' },
+    { key: 'CV_DOWNLOAD_EN', lang: 'PT_BR', value: 'Baixar CV (EN-US)' },
+
     // Dashboard - Admin Layout & Sidebar
     { key: 'ADMIN_PANEL_TITLE', lang: 'EN_US', value: 'Admin Panel' },
     { key: 'ADMIN_PANEL_TITLE', lang: 'PT_BR', value: 'Painel Administrativo' },

@@ -56,6 +56,14 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
                 <p class="text-gray-400 leading-relaxed max-w-2xl" [innerHTML]="'ABOUT_LEADERSHIP_DESC' | translate">
                 </p>
               </div>
+              <a href="/assets/cv/kenneth-dornelles-cv-pt-br.pdf" download
+                 class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all">
+                {{ 'CV_DOWNLOAD_PT' | translate }}
+              </a>
+              <a href="/assets/cv/kenneth-dornelles-cv-en-us.pdf" download
+                 class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all">
+                {{ 'CV_DOWNLOAD_EN' | translate }}
+              </a>
             </div>
           </div>
         </div>
