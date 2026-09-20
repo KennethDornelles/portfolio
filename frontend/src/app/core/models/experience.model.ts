@@ -12,6 +12,7 @@ export interface Experience {
   description?: string;
   cases?: string[];
   highlights?: string[];
+  results?: string[];
   techStack: Technology[]; // Mapped from JSON
   startDate?: string;
   endDate?: string;

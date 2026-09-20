@@ -56,9 +56,15 @@ jobs:
       - run: npx prisma migrate deploy
       - run: npx prisma db seed
       - run: npx eslint "{src,apps,libs,test}/**/*.ts"
-      - run: npm test -- --runInBand
+      - run: npm run test:cov:ci
       - run: npm run test:e2e -- --runInBand
       - run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-coverage
+          path: backend/coverage
+          if-no-files-found: warn
 
   frontend:
     runs-on: ubuntu-latest
@@ -73,5 +79,11 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
       - run: npm ci
-      - run: npm test -- --watch=false --no-progress
+      - run: npm run test:coverage
       - run: npm run build
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: frontend-coverage
+          path: frontend/coverage
+          if-no-files-found: warn

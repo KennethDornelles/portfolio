@@ -8,6 +8,7 @@
     "api:generate": "openapi-typescript http://localhost:3000/api/docs-json -o src/app/core/api/generated.ts",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "test:coverage": "ng test --coverage --watch=false --no-progress",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs"
   },
   "prettier": {
@@ -48,6 +49,7 @@
     "@angular/compiler-cli": "^21.2.22",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
+    "@vitest/coverage-v8": "^4.1.11",
     "autoprefixer": "^10.4.23",
     "jsdom": "^27.1.0",
     "openapi-typescript": "^7.13.0",
