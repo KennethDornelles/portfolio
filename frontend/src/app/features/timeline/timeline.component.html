@@ -18,7 +18,7 @@
     <!-- Experience Items -->
     <div *ngFor="let exp of experiences$ | async; let i = index; let isLast = last" 
          #timelineItem
-         class="relative mb-12 sm:mb-24 group opacity-0 translate-y-12 transition-all duration-1000 ease-out">
+         class="relative mb-12 sm:mb-24 group opacity-100 translate-y-0 transition-all duration-1000 ease-out">
       <!-- Flex container to handle layout -->
       <div class="flex flex-col sm:flex-row items-center sm:items-start" [ngClass]="{'sm:flex-row-reverse': i % 2 !== 0}">
         
@@ -63,6 +63,16 @@
                   <span class="mr-2 text-cyan-500">▹</span> {{ h | translate }}
                 </li>
               </ul>
+            </div>
+
+            <div *ngIf="exp.results?.length" class="mb-5">
+              <p class="text-zinc-300 font-medium mb-2">{{ 'TIMELINE_RESULTS' | translate }}</p>
+              <ul class="space-y-1">
+                <li *ngFor="let result of exp.results" class="text-zinc-400 text-sm flex items-start">
+                  <span class="mr-2 text-emerald-400">✓</span> {{ result | translate }}
+                </li>
+              </ul>
+              <p class="mt-2 text-xs text-zinc-500">{{ 'TIMELINE_RESULTS_NOTE' | translate }}</p>
             </div>
 
             <!-- Tech Stack -->
