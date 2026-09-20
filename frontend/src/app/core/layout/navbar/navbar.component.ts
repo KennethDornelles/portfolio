@@ -10,15 +10,15 @@ import { AdminAuthService } from '../../services/admin-auth.service';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, TranslatePipe],
   template: `
-    <nav class="fixed top-0 left-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
+    <nav aria-label="Navegação principal" class="fixed top-0 left-0 w-full z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
           <!-- Logo -->
-          <div class="flex-shrink-0 cursor-pointer" routerLink="/">
+          <a class="flex-shrink-0" routerLink="/" aria-label="OluStack, página inicial">
             <span class="text-xl font-bold tracking-tighter text-white">
               Olu<span class="text-tech-blue">Stack</span><span class="text-tech-blue">.</span>
             </span>
-          </div>
+          </a>
 
           <!-- Desktop Menu -->
           <div class="hidden md:block">
@@ -49,10 +49,10 @@ import { AdminAuthService } from '../../services/admin-auth.service';
           <!-- Right Actions -->
           <div class="hidden md:flex items-center space-x-4">
             <!-- Language Selector -->
-            <div class="flex items-center space-x-2 text-sm text-gray-400">
-              <button (click)="switchLang('PT_BR')" [class.text-white]="langService.currentLang() === 'PT_BR'" class="hover:text-tech-blue transition-colors">PT</button>
+            <div aria-label="Selecionar idioma" class="flex items-center space-x-2 text-sm text-gray-400" role="group">
+              <button (click)="switchLang('PT_BR')" [attr.aria-pressed]="langService.currentLang() === 'PT_BR'" [class.text-white]="langService.currentLang() === 'PT_BR'" class="hover:text-tech-blue transition-colors">PT</button>
               <span>/</span>
-              <button (click)="switchLang('EN_US')" [class.text-white]="langService.currentLang() === 'EN_US'" class="hover:text-tech-blue transition-colors">EN</button>
+              <button (click)="switchLang('EN_US')" [attr.aria-pressed]="langService.currentLang() === 'EN_US'" [class.text-white]="langService.currentLang() === 'EN_US'" class="hover:text-tech-blue transition-colors">EN</button>
             </div>
 
             <!-- Demo Mode Button -->
@@ -84,8 +84,10 @@ import { AdminAuthService } from '../../services/admin-auth.service';
           <div class="-mr-2 flex md:hidden">
              <button type="button" 
                      (click)="toggleMobileMenu()"
-                     class="bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none">
-               <span class="sr-only">Open main menu</span>
+                     [attr.aria-expanded]="isMobileMenuOpen"
+                     aria-controls="mobile-navigation"
+                     [attr.aria-label]="isMobileMenuOpen ? 'Fechar menu principal' : 'Abrir menu principal'"
+                     class="bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800">
                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                  @if (isMobileMenuOpen) {
                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -100,7 +102,7 @@ import { AdminAuthService } from '../../services/admin-auth.service';
 
       <!-- Mobile Menu -->
       @if (isMobileMenuOpen) {
-        <div class="md:hidden bg-black/95 backdrop-blur-xl border-b border-white/10">
+        <div id="mobile-navigation" class="md:hidden bg-black/95 backdrop-blur-xl border-b border-white/10">
           <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <a routerLink="/" (click)="closeMobileMenu()" routerLinkActive="bg-white/5 text-white" [routerLinkActiveOptions]="{exact: true}"
                class="text-gray-300 hover:bg-white/5 hover:text-white block px-3 py-2 rounded-md text-base font-medium">
@@ -127,9 +129,9 @@ import { AdminAuthService } from '../../services/admin-auth.service';
           <div class="pt-4 pb-4 border-t border-white/10">
             <div class="flex items-center px-5 space-x-4">
                <!-- Language Selector Mobile -->
-               <div class="flex items-center space-x-3 text-sm text-gray-400">
-                  <button (click)="switchLang('PT_BR')" [class.text-white]="langService.currentLang() === 'PT_BR'" class="px-2 py-1 hover:bg-white/5 rounded">PT</button>
-                  <button (click)="switchLang('EN_US')" [class.text-white]="langService.currentLang() === 'EN_US'" class="px-2 py-1 hover:bg-white/5 rounded">EN</button>
+               <div aria-label="Selecionar idioma" class="flex items-center space-x-3 text-sm text-gray-400" role="group">
+                  <button (click)="switchLang('PT_BR')" [attr.aria-pressed]="langService.currentLang() === 'PT_BR'" [class.text-white]="langService.currentLang() === 'PT_BR'" class="px-2 py-1 hover:bg-white/5 rounded">PT</button>
+                  <button (click)="switchLang('EN_US')" [attr.aria-pressed]="langService.currentLang() === 'EN_US'" [class.text-white]="langService.currentLang() === 'EN_US'" class="px-2 py-1 hover:bg-white/5 rounded">EN</button>
                </div>
             </div>
             <div class="mt-3 px-2 space-y-1">
