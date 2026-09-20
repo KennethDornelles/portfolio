@@ -1,4 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   HealthCheck,
   HealthCheckService,
@@ -27,18 +28,19 @@ export class HealthController {
     private prisma: PrismaService,
     private db: PrismaHealthIndicator,
     private microservice: MicroserviceHealthIndicator,
+    private configService: ConfigService,
   ) {}
 
   @Public()
   @Get()
   @HealthCheck()
   check() {
-    const url = process.env.REDIS_URL;
+    const url = this.configService.get<string>('app.redis.url');
     const parsedUrl = parseRedisUrl(url || '');
 
     let redisOptions: RedisHealthOptions = {
-      host: process.env.REDIS_HOST || 'localhost',
-      port: parseInt(process.env.REDIS_PORT || '6379', 10),
+      host: this.configService.get<string>('app.redis.host', 'localhost'),
+      port: this.configService.get<number>('app.redis.port', 6379),
     };
 
     if (parsedUrl) {
@@ -57,7 +59,7 @@ export class HealthController {
           .pingCheck('database', this.prisma, { timeout: 5000 })
           .catch((error) => {
             if (
-              process.env.NODE_ENV === 'production' &&
+              this.configService.get<string>('app.nodeEnv') === 'production' &&
               error instanceof HealthCheckError
             ) {
               const causes = error.causes as Record<
@@ -80,7 +82,7 @@ export class HealthController {
           })
           .catch((error) => {
             if (
-              process.env.NODE_ENV === 'production' &&
+              this.configService.get<string>('app.nodeEnv') === 'production' &&
               error instanceof HealthCheckError
             ) {
               const causes = error.causes as Record<

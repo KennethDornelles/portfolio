@@ -9,8 +9,7 @@ export class PrismaService
   implements OnModuleInit, OnModuleDestroy
 {
   constructor(private configService: ConfigService) {
-    let dbUrl =
-      configService.get<string>('DATABASE_URL') || process.env.DATABASE_URL;
+    let dbUrl = configService.get<string>('app.databaseUrl');
 
     // Add recommended Supabase/Render pooling params if not present
     if (
