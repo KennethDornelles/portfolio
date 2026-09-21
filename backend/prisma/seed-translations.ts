@@ -464,12 +464,14 @@ export async function seedTranslations(prisma: PrismaClient) {
     {
       key: 'TIMELINE_RESULTS_NOTE',
       lang: 'EN_US',
-      value: 'Scope indicators based on the experience record; not production KPIs.',
+      value:
+        'Scope indicators based on the experience record; not production KPIs.',
     },
     {
       key: 'TIMELINE_RESULTS_NOTE',
       lang: 'PT_BR',
-      value: 'Indicadores de escopo baseados no registro da experiência; não são KPIs de produção.',
+      value:
+        'Indicadores de escopo baseados no registro da experiência; não são KPIs de produção.',
     },
     {
       key: 'TIMELINE_CTA_TITLE',
@@ -590,6 +592,58 @@ export async function seedTranslations(prisma: PrismaClient) {
     },
     { key: 'HOME_STACK_TITLE', lang: 'EN_US', value: 'Main Stack' },
     { key: 'HOME_STACK_TITLE', lang: 'PT_BR', value: 'Stack Principal' },
+    {
+      key: 'HOME_PROOF_TITLE',
+      lang: 'EN_US',
+      value: 'Engineering that turns complexity into momentum',
+    },
+    {
+      key: 'HOME_PROOF_TITLE',
+      lang: 'PT_BR',
+      value: 'Engenharia que transforma complexidade em impulso',
+    },
+    {
+      key: 'HOME_PROOF_DESC',
+      lang: 'EN_US',
+      value:
+        'From resilient APIs to focused product interfaces, each delivery connects technical depth to a clear business outcome.',
+    },
+    {
+      key: 'HOME_PROOF_DESC',
+      lang: 'PT_BR',
+      value:
+        'De APIs resilientes a interfaces de produto objetivas, cada entrega conecta profundidade técnica a um resultado de negócio claro.',
+    },
+    {
+      key: 'HOME_PROOF_ITEM_1',
+      lang: 'EN_US',
+      value: 'Scalable backend foundations',
+    },
+    {
+      key: 'HOME_PROOF_ITEM_1',
+      lang: 'PT_BR',
+      value: 'Fundamentos backend escaláveis',
+    },
+    {
+      key: 'HOME_PROOF_ITEM_2',
+      lang: 'EN_US',
+      value: 'Reliable delivery and observability',
+    },
+    {
+      key: 'HOME_PROOF_ITEM_2',
+      lang: 'PT_BR',
+      value: 'Entrega confiável e observável',
+    },
+    {
+      key: 'HOME_PROOF_ITEM_3',
+      lang: 'EN_US',
+      value: 'Interfaces built for real users',
+    },
+    {
+      key: 'HOME_PROOF_ITEM_3',
+      lang: 'PT_BR',
+      value: 'Interfaces feitas para usuários reais',
+    },
     { key: 'TECH_NESTJS', lang: 'EN_US', value: 'NestJS' },
     { key: 'TECH_NESTJS', lang: 'PT_BR', value: 'NestJS' },
     { key: 'DASH_VISITS', lang: 'EN_US', value: 'Portfolio Visits' },
@@ -700,12 +754,14 @@ export async function seedTranslations(prisma: PrismaClient) {
     {
       key: 'EXP_OLU_HIGHLIGHT_3',
       lang: 'EN_US',
-      value: 'ExploraJP: mobile-first tourism platform combining geolocation, challenges, and local discovery.',
+      value:
+        'ExploraJP: mobile-first tourism platform combining geolocation, challenges, and local discovery.',
     },
     {
       key: 'EXP_OLU_HIGHLIGHT_3',
       lang: 'PT_BR',
-      value: 'ExploraJP: plataforma de turismo mobile-first combinando geolocalização, desafios e descoberta local.',
+      value:
+        'ExploraJP: plataforma de turismo mobile-first combinando geolocalização, desafios e descoberta local.',
     },
 
     // Escola de Computação Solidária (COED)
@@ -719,57 +775,75 @@ export async function seedTranslations(prisma: PrismaClient) {
       lang: 'PT_BR',
       value: 'Monitor Voluntário de Conteúdo e Materiais Didáticos',
     },
-    { key: 'EXP_COED_PERIOD', lang: 'EN_US', value: 'September 2026 - Present' },
-    { key: 'EXP_COED_PERIOD', lang: 'PT_BR', value: 'Setembro 2026 - Presente' },
+    {
+      key: 'EXP_COED_PERIOD',
+      lang: 'EN_US',
+      value: 'September 2026 - Present',
+    },
+    {
+      key: 'EXP_COED_PERIOD',
+      lang: 'PT_BR',
+      value: 'Setembro 2026 - Presente',
+    },
     {
       key: 'EXP_COED_FOCUS',
       lang: 'EN_US',
-      value: 'Production and review of technical content for accessible computing education.',
+      value:
+        'Production and review of technical content for accessible computing education.',
     },
     {
       key: 'EXP_COED_FOCUS',
       lang: 'PT_BR',
-      value: 'Produção e revisão de conteúdo técnico para educação acessível em computação.',
+      value:
+        'Produção e revisão de conteúdo técnico para educação acessível em computação.',
     },
     {
       key: 'EXP_COED_HIGHLIGHT_1',
       lang: 'EN_US',
-      value: 'Produce and edit technical videos that support classroom learning.',
+      value:
+        'Produce and edit technical videos that support classroom learning.',
     },
     {
       key: 'EXP_COED_HIGHLIGHT_1',
       lang: 'PT_BR',
-      value: 'Produção e edição de vídeos técnicos para apoiar o aprendizado em sala.',
+      value:
+        'Produção e edição de vídeos técnicos para apoiar o aprendizado em sala.',
     },
     {
       key: 'EXP_COED_HIGHLIGHT_2',
       lang: 'EN_US',
-      value: 'Create and review class presentations and other educational materials.',
+      value:
+        'Create and review class presentations and other educational materials.',
     },
     {
       key: 'EXP_COED_HIGHLIGHT_2',
       lang: 'PT_BR',
-      value: 'Criação e revisão de apresentações de aula e outros materiais educacionais.',
+      value:
+        'Criação e revisão de apresentações de aula e outros materiais educacionais.',
     },
     {
       key: 'EXP_COED_RESULT_1',
       lang: 'EN_US',
-      value: '2 content formats delivered: technical videos and class presentations.',
+      value:
+        '2 content formats delivered: technical videos and class presentations.',
     },
     {
       key: 'EXP_COED_RESULT_1',
       lang: 'PT_BR',
-      value: '2 formatos de conteúdo entregues: vídeos técnicos e apresentações de aula.',
+      value:
+        '2 formatos de conteúdo entregues: vídeos técnicos e apresentações de aula.',
     },
     {
       key: 'EXP_COED_RESULT_2',
       lang: 'EN_US',
-      value: '1 educational mission: strengthen communication and knowledge sharing.',
+      value:
+        '1 educational mission: strengthen communication and knowledge sharing.',
     },
     {
       key: 'EXP_COED_RESULT_2',
       lang: 'PT_BR',
-      value: '1 missão educacional: fortalecer a comunicação e o compartilhamento de conhecimento.',
+      value:
+        '1 missão educacional: fortalecer a comunicação e o compartilhamento de conhecimento.',
     },
 
     // Unimed
@@ -884,40 +958,197 @@ export async function seedTranslations(prisma: PrismaClient) {
     // Impact statements (EXP-001)
     { key: 'TIMELINE_IMPACT', lang: 'EN_US', value: 'Impact:' },
     { key: 'TIMELINE_IMPACT', lang: 'PT_BR', value: 'Impacto:' },
-    { key: 'EXP_CROS_IMPACT', lang: 'EN_US', value: 'More predictable delivery through modernized backend architecture and database performance work.' },
-    { key: 'EXP_CROS_IMPACT', lang: 'PT_BR', value: 'Entregas mais previsíveis por meio de arquitetura backend modernizada e trabalho de performance em banco.' },
-    { key: 'EXP_OLU_IMPACT', lang: 'EN_US', value: 'End-to-end products that turn complex domains into scalable, user-facing SaaS capabilities.' },
-    { key: 'EXP_OLU_IMPACT', lang: 'PT_BR', value: 'Produtos de ponta a ponta que transformam domínios complexos em capacidades SaaS escaláveis para usuários.' },
-    { key: 'EXP_UNIMED_IMPACT', lang: 'EN_US', value: 'Safer data flows for healthcare operations where integrity and reliability are essential.' },
-    { key: 'EXP_UNIMED_IMPACT', lang: 'PT_BR', value: 'Fluxos de dados mais seguros para operações de saúde onde integridade e confiabilidade são essenciais.' },
-    { key: 'EXP_COED_IMPACT', lang: 'EN_US', value: 'More accessible technical learning through clear, reusable audiovisual and presentation materials.' },
-    { key: 'EXP_COED_IMPACT', lang: 'PT_BR', value: 'Aprendizado técnico mais acessível por meio de materiais audiovisuais e apresentações claros e reutilizáveis.' },
-    { key: 'EXP_RENNER_IMPACT', lang: 'EN_US', value: 'Greater operational stability by prioritizing incident response and high-demand flow performance.' },
-    { key: 'EXP_RENNER_IMPACT', lang: 'PT_BR', value: 'Maior estabilidade operacional ao priorizar resposta a incidentes e performance de fluxos de alta demanda.' },
-    { key: 'EXP_PURPLE_IMPACT', lang: 'EN_US', value: 'A resilient API foundation supported growth while keeping delivery practices automated and testable.' },
-    { key: 'EXP_PURPLE_IMPACT', lang: 'PT_BR', value: 'Uma base resiliente de APIs sustentou o crescimento mantendo práticas de entrega automatizadas e testáveis.' },
+    {
+      key: 'EXP_CROS_IMPACT',
+      lang: 'EN_US',
+      value:
+        'More predictable delivery through modernized backend architecture and database performance work.',
+    },
+    {
+      key: 'EXP_CROS_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'Entregas mais previsíveis por meio de arquitetura backend modernizada e trabalho de performance em banco.',
+    },
+    {
+      key: 'EXP_OLU_IMPACT',
+      lang: 'EN_US',
+      value:
+        'End-to-end products that turn complex domains into scalable, user-facing SaaS capabilities.',
+    },
+    {
+      key: 'EXP_OLU_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'Produtos de ponta a ponta que transformam domínios complexos em capacidades SaaS escaláveis para usuários.',
+    },
+    {
+      key: 'EXP_UNIMED_IMPACT',
+      lang: 'EN_US',
+      value:
+        'Safer data flows for healthcare operations where integrity and reliability are essential.',
+    },
+    {
+      key: 'EXP_UNIMED_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'Fluxos de dados mais seguros para operações de saúde onde integridade e confiabilidade são essenciais.',
+    },
+    {
+      key: 'EXP_COED_IMPACT',
+      lang: 'EN_US',
+      value:
+        'More accessible technical learning through clear, reusable audiovisual and presentation materials.',
+    },
+    {
+      key: 'EXP_COED_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'Aprendizado técnico mais acessível por meio de materiais audiovisuais e apresentações claros e reutilizáveis.',
+    },
+    {
+      key: 'EXP_RENNER_IMPACT',
+      lang: 'EN_US',
+      value:
+        'Greater operational stability by prioritizing incident response and high-demand flow performance.',
+    },
+    {
+      key: 'EXP_RENNER_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'Maior estabilidade operacional ao priorizar resposta a incidentes e performance de fluxos de alta demanda.',
+    },
+    {
+      key: 'EXP_PURPLE_IMPACT',
+      lang: 'EN_US',
+      value:
+        'A resilient API foundation supported growth while keeping delivery practices automated and testable.',
+    },
+    {
+      key: 'EXP_PURPLE_IMPACT',
+      lang: 'PT_BR',
+      value:
+        'Uma base resiliente de APIs sustentou o crescimento mantendo práticas de entrega automatizadas e testáveis.',
+    },
 
     // Quantified technical indicators (CONTENT-004)
-    { key: 'EXP_CROS_RESULT_1', lang: 'EN_US', value: '2 primary backend technologies applied: Node.js and NestJS.' },
-    { key: 'EXP_CROS_RESULT_1', lang: 'PT_BR', value: '2 tecnologias principais de backend aplicadas: Node.js e NestJS.' },
-    { key: 'EXP_CROS_RESULT_2', lang: 'EN_US', value: '2 delivery fronts: feature development and query/database optimization.' },
-    { key: 'EXP_CROS_RESULT_2', lang: 'PT_BR', value: '2 frentes de entrega: desenvolvimento de funcionalidades e otimização de queries/banco.' },
-    { key: 'EXP_OLU_RESULT_1', lang: 'EN_US', value: '2 SaaS products taken from domain modeling through backend delivery.' },
-    { key: 'EXP_OLU_RESULT_1', lang: 'PT_BR', value: '2 produtos SaaS conduzidos da modelagem de domínio à entrega backend.' },
-    { key: 'EXP_OLU_RESULT_2', lang: 'EN_US', value: '4 core platform capabilities: APIs, geolocation, caching, and payments.' },
-    { key: 'EXP_OLU_RESULT_2', lang: 'PT_BR', value: '4 capacidades centrais de plataforma: APIs, geolocalização, cache e pagamentos.' },
-    { key: 'EXP_UNIMED_RESULT_1', lang: 'EN_US', value: '2 database technologies integrated: Oracle/PL-SQL and PostgreSQL.' },
-    { key: 'EXP_UNIMED_RESULT_1', lang: 'PT_BR', value: '2 tecnologias de banco integradas: Oracle/PL-SQL e PostgreSQL.' },
-    { key: 'EXP_UNIMED_RESULT_2', lang: 'EN_US', value: '1 mission-critical healthcare context with data integrity as a constraint.' },
-    { key: 'EXP_UNIMED_RESULT_2', lang: 'PT_BR', value: '1 contexto de saúde de missão crítica com integridade de dados como requisito.' },
-    { key: 'EXP_RENNER_RESULT_1', lang: 'EN_US', value: '12-month systems analysis cycle documented in the experience period.' },
-    { key: 'EXP_RENNER_RESULT_1', lang: 'PT_BR', value: 'Ciclo de 12 meses de análise de sistemas documentado no período da experiência.' },
-    { key: 'EXP_RENNER_RESULT_2', lang: 'EN_US', value: '2 operational priorities: incident response and performance tuning.' },
-    { key: 'EXP_RENNER_RESULT_2', lang: 'PT_BR', value: '2 prioridades operacionais: resposta a incidentes e ajuste de performance.' },
-    { key: 'EXP_PURPLE_RESULT_1', lang: 'EN_US', value: '10,000+ daily active users served by the APIs, as recorded for the role.' },
-    { key: 'EXP_PURPLE_RESULT_1', lang: 'PT_BR', value: 'Mais de 10.000 usuários ativos diários atendidos pelas APIs, conforme registro da função.' },
-    { key: 'EXP_PURPLE_RESULT_2', lang: 'EN_US', value: '3 delivery controls combined: AWS infrastructure, CI/CD, and automated Jest tests.' },
-    { key: 'EXP_PURPLE_RESULT_2', lang: 'PT_BR', value: '3 controles de entrega combinados: infraestrutura AWS, CI/CD e testes automatizados com Jest.' },
+    {
+      key: 'EXP_CROS_RESULT_1',
+      lang: 'EN_US',
+      value: '2 primary backend technologies applied: Node.js and NestJS.',
+    },
+    {
+      key: 'EXP_CROS_RESULT_1',
+      lang: 'PT_BR',
+      value: '2 tecnologias principais de backend aplicadas: Node.js e NestJS.',
+    },
+    {
+      key: 'EXP_CROS_RESULT_2',
+      lang: 'EN_US',
+      value:
+        '2 delivery fronts: feature development and query/database optimization.',
+    },
+    {
+      key: 'EXP_CROS_RESULT_2',
+      lang: 'PT_BR',
+      value:
+        '2 frentes de entrega: desenvolvimento de funcionalidades e otimização de queries/banco.',
+    },
+    {
+      key: 'EXP_OLU_RESULT_1',
+      lang: 'EN_US',
+      value:
+        '2 SaaS products taken from domain modeling through backend delivery.',
+    },
+    {
+      key: 'EXP_OLU_RESULT_1',
+      lang: 'PT_BR',
+      value:
+        '2 produtos SaaS conduzidos da modelagem de domínio à entrega backend.',
+    },
+    {
+      key: 'EXP_OLU_RESULT_2',
+      lang: 'EN_US',
+      value:
+        '4 core platform capabilities: APIs, geolocation, caching, and payments.',
+    },
+    {
+      key: 'EXP_OLU_RESULT_2',
+      lang: 'PT_BR',
+      value:
+        '4 capacidades centrais de plataforma: APIs, geolocalização, cache e pagamentos.',
+    },
+    {
+      key: 'EXP_UNIMED_RESULT_1',
+      lang: 'EN_US',
+      value:
+        '2 database technologies integrated: Oracle/PL-SQL and PostgreSQL.',
+    },
+    {
+      key: 'EXP_UNIMED_RESULT_1',
+      lang: 'PT_BR',
+      value: '2 tecnologias de banco integradas: Oracle/PL-SQL e PostgreSQL.',
+    },
+    {
+      key: 'EXP_UNIMED_RESULT_2',
+      lang: 'EN_US',
+      value:
+        '1 mission-critical healthcare context with data integrity as a constraint.',
+    },
+    {
+      key: 'EXP_UNIMED_RESULT_2',
+      lang: 'PT_BR',
+      value:
+        '1 contexto de saúde de missão crítica com integridade de dados como requisito.',
+    },
+    {
+      key: 'EXP_RENNER_RESULT_1',
+      lang: 'EN_US',
+      value:
+        '12-month systems analysis cycle documented in the experience period.',
+    },
+    {
+      key: 'EXP_RENNER_RESULT_1',
+      lang: 'PT_BR',
+      value:
+        'Ciclo de 12 meses de análise de sistemas documentado no período da experiência.',
+    },
+    {
+      key: 'EXP_RENNER_RESULT_2',
+      lang: 'EN_US',
+      value:
+        '2 operational priorities: incident response and performance tuning.',
+    },
+    {
+      key: 'EXP_RENNER_RESULT_2',
+      lang: 'PT_BR',
+      value:
+        '2 prioridades operacionais: resposta a incidentes e ajuste de performance.',
+    },
+    {
+      key: 'EXP_PURPLE_RESULT_1',
+      lang: 'EN_US',
+      value:
+        '10,000+ daily active users served by the APIs, as recorded for the role.',
+    },
+    {
+      key: 'EXP_PURPLE_RESULT_1',
+      lang: 'PT_BR',
+      value:
+        'Mais de 10.000 usuários ativos diários atendidos pelas APIs, conforme registro da função.',
+    },
+    {
+      key: 'EXP_PURPLE_RESULT_2',
+      lang: 'EN_US',
+      value:
+        '3 delivery controls combined: AWS infrastructure, CI/CD, and automated Jest tests.',
+    },
+    {
+      key: 'EXP_PURPLE_RESULT_2',
+      lang: 'PT_BR',
+      value:
+        '3 controles de entrega combinados: infraestrutura AWS, CI/CD e testes automatizados com Jest.',
+    },
 
     // PurpleCats
     {
@@ -1350,6 +1581,55 @@ export async function seedTranslations(prisma: PrismaClient) {
       lang: 'PT_BR',
       value:
         'Nossa operação atua como um parceiro de inovação. Além de acelerar negócios B2B, construímos nosso próprio ecossistema de produtos SaaS, como BarberBoss e PetBoss. Entregamos não apenas código, mas engenharia inteligente integrando tecnologias modernas como Signals no Angular 19, geolocalização com PostGIS e segurança corporativa de missão crítica.',
+    },
+
+    { key: 'FOUNDER_TITLE', lang: 'EN_US', value: 'Built from the inside out' },
+    {
+      key: 'FOUNDER_TITLE',
+      lang: 'PT_BR',
+      value: 'Construído de dentro para fora',
+    },
+    {
+      key: 'FOUNDER_DESC',
+      lang: 'EN_US',
+      value:
+        'Kenneth leads OluStack with a hands-on approach: understand the real problem, design a dependable foundation, and turn every technical decision into a clearer product experience.',
+    },
+    {
+      key: 'FOUNDER_DESC',
+      lang: 'PT_BR',
+      value:
+        'Kenneth lidera a OluStack de forma próxima: entende o problema real, desenha uma base confiável e transforma cada decisão técnica em uma experiência de produto mais clara.',
+    },
+    {
+      key: 'FOUNDER_POINT_1',
+      lang: 'EN_US',
+      value: 'Clarity before complexity',
+    },
+    {
+      key: 'FOUNDER_POINT_1',
+      lang: 'PT_BR',
+      value: 'Clareza antes da complexidade',
+    },
+    {
+      key: 'FOUNDER_POINT_2',
+      lang: 'EN_US',
+      value: 'Ownership from architecture to delivery',
+    },
+    {
+      key: 'FOUNDER_POINT_2',
+      lang: 'PT_BR',
+      value: 'Responsabilidade da arquitetura à entrega',
+    },
+    {
+      key: 'FOUNDER_POINT_3',
+      lang: 'EN_US',
+      value: 'Technology that earns trust',
+    },
+    {
+      key: 'FOUNDER_POINT_3',
+      lang: 'PT_BR',
+      value: 'Tecnologia que conquista confiança',
     },
 
     // About - Leadership

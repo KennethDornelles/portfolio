@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LanguageService } from '../../core/services/language.service';
 import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-about',
@@ -11,14 +12,16 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
   template: `
     <section class="py-20 px-4 sm:px-6 lg:px-8">
       <div class="max-w-5xl mx-auto">
-        
         <!-- Header Section -->
         <div class="text-center mb-16">
-          <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-tech-blue/20 to-purple-500/20 rounded-2xl border border-tech-blue/30 text-3xl mb-8 shadow-lg shadow-tech-blue/20">
+          <div
+            class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-tech-blue/20 to-purple-500/20 rounded-2xl border border-tech-blue/30 text-3xl mb-8 shadow-lg shadow-tech-blue/20"
+          >
             🏢
           </div>
           <h1 class="text-4xl md:text-5xl font-bold text-white mb-3">
-            {{ 'ABOUT_TITLE_PREFIX' | translate }} <span class="text-tech-blue">{{ 'ABOUT_TITLE_SUFFIX' | translate }}</span>
+            {{ 'ABOUT_TITLE_PREFIX' | translate }}
+            <span class="text-tech-blue">{{ 'ABOUT_TITLE_SUFFIX' | translate }}</span>
           </h1>
           <p class="text-xl text-gray-400 font-medium">
             {{ 'ABOUT_ROLE' | translate }}
@@ -36,32 +39,87 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
             </p>
           </div>
         </div>
+        <section
+          class="mb-20 rounded-3xl border border-tech-blue/20 bg-gradient-to-br from-tech-blue/10 via-white/[0.03] to-transparent p-8 md:p-12"
+        >
+          <div class="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+            <div>
+              <span class="text-sm font-semibold uppercase tracking-[0.2em] text-tech-blue">{{
+                'ABOUT_LEADERSHIP_ROLE' | translate
+              }}</span>
+              <h2 class="mt-3 text-3xl font-bold text-white md:text-4xl">
+                {{ 'FOUNDER_TITLE' | translate }}
+              </h2>
+              <p class="mt-5 text-lg leading-relaxed text-gray-300">
+                {{ 'FOUNDER_DESC' | translate }}
+              </p>
+              <a
+                routerLink="/contact"
+                (click)="trackFounderCta()"
+                class="mt-8 inline-flex rounded-full bg-tech-blue px-6 py-3 font-bold text-black transition hover:bg-tech-blue/80"
+                >{{ 'BTN_START_CONVERSATION' | translate }}</a
+              >
+            </div>
+            <ul class="space-y-3">
+              @for (point of founderPoints; track point) {
+                <li
+                  class="flex items-center gap-3 rounded-xl border border-white/10 bg-black/20 px-4 py-4 text-gray-200"
+                >
+                  <span class="text-tech-blue" aria-hidden="true">✓</span
+                  ><span>{{ point | translate }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </section>
 
         <!-- Liderança Técnica Section -->
         <div class="mb-20">
-          <div class="bg-gradient-to-br from-white/5 to-transparent rounded-3xl border border-white/10 p-8 md:p-12">
+          <div
+            class="bg-gradient-to-br from-white/5 to-transparent rounded-3xl border border-white/10 p-8 md:p-12"
+          >
             <div class="flex flex-col md:flex-row items-center gap-8">
               <div class="relative flex-shrink-0">
-                <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-tech-blue via-cyan-500 to-purple-600 p-1 shadow-2xl shadow-tech-blue/20">
-                  <img src="assets/avatar.svg" alt="Kenneth Olusegun" 
-                       class="w-full h-full rounded-full object-cover bg-graphite-950">
+                <div
+                  class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gradient-to-br from-tech-blue via-cyan-500 to-purple-600 p-1 shadow-2xl shadow-tech-blue/20"
+                >
+                  <img
+                    src="assets/avatar.svg"
+                    alt="Kenneth Olusegun"
+                    class="w-full h-full rounded-full object-cover bg-graphite-950"
+                  />
                 </div>
-                <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-tech-blue rounded-full flex items-center justify-center text-lg border-4 border-graphite-950 shadow-lg" title="CTO & Founder">
+                <div
+                  class="absolute -bottom-2 -right-2 w-10 h-10 bg-tech-blue rounded-full flex items-center justify-center text-lg border-4 border-graphite-950 shadow-lg"
+                  title="CTO & Founder"
+                >
                   👨‍💻
                 </div>
               </div>
               <div class="text-center md:text-left">
-                <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">{{ 'ABOUT_LEADERSHIP_TITLE' | translate }}</h2>
-                <h3 class="text-tech-blue font-medium mb-4">{{ 'ABOUT_LEADERSHIP_ROLE' | translate }}</h3>
-                <p class="text-gray-400 leading-relaxed max-w-2xl" [innerHTML]="'ABOUT_LEADERSHIP_DESC' | translate">
-                </p>
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">
+                  {{ 'ABOUT_LEADERSHIP_TITLE' | translate }}
+                </h2>
+                <h3 class="text-tech-blue font-medium mb-4">
+                  {{ 'ABOUT_LEADERSHIP_ROLE' | translate }}
+                </h3>
+                <p
+                  class="text-gray-400 leading-relaxed max-w-2xl"
+                  [innerHTML]="'ABOUT_LEADERSHIP_DESC' | translate"
+                ></p>
               </div>
-              <a href="/assets/cv/kenneth-dornelles-cv-pt-br.pdf" download
-                 class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all">
+              <a
+                href="/assets/cv/kenneth-dornelles-cv-pt-br.pdf"
+                download
+                class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all"
+              >
                 {{ 'CV_DOWNLOAD_PT' | translate }}
               </a>
-              <a href="/assets/cv/kenneth-dornelles-cv-en-us.pdf" download
-                 class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all">
+              <a
+                href="/assets/cv/kenneth-dornelles-cv-en-us.pdf"
+                download
+                class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all"
+              >
                 {{ 'CV_DOWNLOAD_EN' | translate }}
               </a>
             </div>
@@ -71,21 +129,39 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
         <!-- Proximidade Regional Section -->
         <div class="mb-20">
           <div class="text-center mb-12">
-            <h2 class="text-3xl font-bold text-white mb-4">{{ 'ABOUT_REACH_TITLE' | translate }}</h2>
+            <h2 class="text-3xl font-bold text-white mb-4">
+              {{ 'ABOUT_REACH_TITLE' | translate }}
+            </h2>
             <p class="text-gray-400">{{ 'ABOUT_REACH_SUBTITLE' | translate }}</p>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="p-8 bg-white/5 rounded-2xl border border-tech-blue/20 flex items-start gap-4 hover:bg-white/10 transition-colors">
-              <div class="w-12 h-12 bg-tech-blue/10 rounded-xl flex items-center justify-center text-2xl shrink-0">📍</div>
+            <div
+              class="p-8 bg-white/5 rounded-2xl border border-tech-blue/20 flex items-start gap-4 hover:bg-white/10 transition-colors"
+            >
+              <div
+                class="w-12 h-12 bg-tech-blue/10 rounded-xl flex items-center justify-center text-2xl shrink-0"
+              >
+                📍
+              </div>
               <div>
-                <h3 class="text-xl font-bold text-white mb-2">{{ 'ABOUT_REACH_LOCAL_TITLE' | translate }}</h3>
+                <h3 class="text-xl font-bold text-white mb-2">
+                  {{ 'ABOUT_REACH_LOCAL_TITLE' | translate }}
+                </h3>
                 <p class="text-gray-400 text-sm">{{ 'ABOUT_REACH_LOCAL_DESC' | translate }}</p>
               </div>
             </div>
-            <div class="p-8 bg-white/5 rounded-2xl border border-white/10 flex items-start gap-4 hover:bg-white/10 transition-colors">
-              <div class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-2xl shrink-0">🌍</div>
+            <div
+              class="p-8 bg-white/5 rounded-2xl border border-white/10 flex items-start gap-4 hover:bg-white/10 transition-colors"
+            >
+              <div
+                class="w-12 h-12 bg-purple-500/10 rounded-xl flex items-center justify-center text-2xl shrink-0"
+              >
+                🌍
+              </div>
               <div>
-                <h3 class="text-xl font-bold text-white mb-2">{{ 'ABOUT_REACH_GLOBAL_TITLE' | translate }}</h3>
+                <h3 class="text-xl font-bold text-white mb-2">
+                  {{ 'ABOUT_REACH_GLOBAL_TITLE' | translate }}
+                </h3>
                 <p class="text-gray-400 text-sm">{{ 'ABOUT_REACH_GLOBAL_DESC' | translate }}</p>
               </div>
             </div>
@@ -95,7 +171,9 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
         <!-- The Edge Section -->
         <div class="mb-20">
           <div class="text-center mb-12">
-            <span class="inline-block px-4 py-2 bg-tech-blue/10 text-tech-blue rounded-full text-sm font-medium uppercase tracking-wider mb-4">
+            <span
+              class="inline-block px-4 py-2 bg-tech-blue/10 text-tech-blue rounded-full text-sm font-medium uppercase tracking-wider mb-4"
+            >
               {{ 'ABOUT_EDGE_LABEL' | translate }}
             </span>
             <h2 class="text-3xl md:text-4xl font-bold text-white">
@@ -105,44 +183,68 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Card 1 -->
-            <div class="group p-8 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 hover:border-tech-blue/50 transition-all duration-300 hover:-translate-y-1">
-              <div class="w-14 h-14 bg-tech-blue/10 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+            <div
+              class="group p-8 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 hover:border-tech-blue/50 transition-all duration-300 hover:-translate-y-1"
+            >
+              <div
+                class="w-14 h-14 bg-tech-blue/10 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform"
+              >
                 🏗️
               </div>
-              <h3 class="text-xl font-bold text-white mb-3">{{ 'ABOUT_CARD_1_TITLE' | translate }}</h3>
+              <h3 class="text-xl font-bold text-white mb-3">
+                {{ 'ABOUT_CARD_1_TITLE' | translate }}
+              </h3>
               <p class="text-gray-400 leading-relaxed">
                 {{ 'ABOUT_CARD_1_DESC' | translate }}
               </p>
             </div>
 
             <!-- Card 2 -->
-            <div class="group p-8 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1">
-              <div class="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+            <div
+              class="group p-8 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all duration-300 hover:-translate-y-1"
+            >
+              <div
+                class="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform"
+              >
                 💡
               </div>
-              <h3 class="text-xl font-bold text-white mb-3">{{ 'ABOUT_CARD_2_TITLE' | translate }}</h3>
+              <h3 class="text-xl font-bold text-white mb-3">
+                {{ 'ABOUT_CARD_2_TITLE' | translate }}
+              </h3>
               <p class="text-gray-400 leading-relaxed">
                 {{ 'ABOUT_CARD_2_DESC' | translate }}
               </p>
             </div>
 
             <!-- Card 3 -->
-            <div class="group p-8 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300 hover:-translate-y-1">
-              <div class="w-14 h-14 bg-cyan-400/10 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+            <div
+              class="group p-8 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 hover:border-cyan-400/50 transition-all duration-300 hover:-translate-y-1"
+            >
+              <div
+                class="w-14 h-14 bg-cyan-400/10 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform"
+              >
                 ⚡
               </div>
-              <h3 class="text-xl font-bold text-white mb-3">{{ 'ABOUT_CARD_3_TITLE' | translate }}</h3>
+              <h3 class="text-xl font-bold text-white mb-3">
+                {{ 'ABOUT_CARD_3_TITLE' | translate }}
+              </h3>
               <p class="text-gray-400 leading-relaxed">
                 {{ 'ABOUT_CARD_3_DESC' | translate }}
               </p>
             </div>
 
             <!-- Card 4 -->
-            <div class="group p-8 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 hover:border-blue-400/50 transition-all duration-300 hover:-translate-y-1">
-              <div class="w-14 h-14 bg-blue-400/10 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform">
+            <div
+              class="group p-8 bg-gradient-to-br from-white/5 to-transparent rounded-2xl border border-white/10 hover:border-blue-400/50 transition-all duration-300 hover:-translate-y-1"
+            >
+              <div
+                class="w-14 h-14 bg-blue-400/10 rounded-xl flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform"
+              >
                 📊
               </div>
-              <h3 class="text-xl font-bold text-white mb-3">{{ 'ABOUT_CARD_4_TITLE' | translate }}</h3>
+              <h3 class="text-xl font-bold text-white mb-3">
+                {{ 'ABOUT_CARD_4_TITLE' | translate }}
+              </h3>
               <p class="text-gray-400 leading-relaxed">
                 {{ 'ABOUT_CARD_4_DESC' | translate }}
               </p>
@@ -174,17 +276,27 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
         <!-- CTA Section -->
         <div class="text-center">
-          <div class="inline-block p-8 md:p-12 bg-gradient-to-br from-tech-blue/10 via-purple-500/5 to-transparent rounded-3xl border border-white/10">
-            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">{{ 'ABOUT_CTA_TITLE' | translate }}</h3>
+          <div
+            class="inline-block p-8 md:p-12 bg-gradient-to-br from-tech-blue/10 via-purple-500/5 to-transparent rounded-3xl border border-white/10"
+          >
+            <h3 class="text-2xl md:text-3xl font-bold text-white mb-4">
+              {{ 'ABOUT_CTA_TITLE' | translate }}
+            </h3>
             <p class="text-gray-400 mb-8 max-w-lg mx-auto">
               {{ 'ABOUT_CTA_DESC' | translate }}
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-              <a routerLink="/contact" class="px-8 py-4 bg-tech-blue text-black font-bold rounded-full hover:bg-tech-blue/80 transition-all hover:scale-105">
+              <a
+                routerLink="/contact"
+                class="px-8 py-4 bg-tech-blue text-black font-bold rounded-full hover:bg-tech-blue/80 transition-all hover:scale-105"
+              >
                 {{ 'BTN_START_CONVERSATION' | translate }}
               </a>
-              <a href="https://linkedin.com/in/kennethjesus" target="_blank" 
-                 class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2">
+              <a
+                href="https://linkedin.com/in/kennethjesus"
+                target="_blank"
+                class="px-8 py-4 bg-white/5 text-white border border-white/10 rounded-full hover:bg-white/10 transition-all flex items-center justify-center gap-2"
+              >
                 <span>💼</span> LinkedIn
               </a>
             </div>
@@ -193,24 +305,37 @@ import { TranslatePipe } from '../../core/pipes/translate.pipe';
 
         <!-- Social Links -->
         <div class="flex justify-center gap-6 mt-12">
-          <a href="https://github.com/KennethDornelles" target="_blank" 
-             class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110">
+          <a
+            href="https://github.com/KennethDornelles"
+            target="_blank"
+            class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110"
+          >
             🐙
           </a>
-          <a href="https://linkedin.com/in/kennethjesus" target="_blank" 
-             class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110">
+          <a
+            href="https://linkedin.com/in/kennethjesus"
+            target="_blank"
+            class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110"
+          >
             💼
           </a>
-          <a href="mailto:kenneth.jesus@olustack.com.br" 
-             class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110">
+          <a
+            href="mailto:kenneth.jesus@olustack.com.br"
+            class="p-4 bg-white/5 rounded-full hover:bg-white/10 transition-colors text-2xl hover:scale-110"
+          >
             ✉️
           </a>
         </div>
       </div>
     </section>
-  `
+  `,
 })
 export class AboutComponent {
   langService = inject(LanguageService);
+  private readonly analytics = inject(AnalyticsService);
+  readonly founderPoints = ['FOUNDER_POINT_1', 'FOUNDER_POINT_2', 'FOUNDER_POINT_3'];
 
+  trackFounderCta(): void {
+    this.analytics.track('cta_click', { target: 'contact', location: 'founder_section' });
+  }
 }

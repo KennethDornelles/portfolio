@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import type { components } from '../../core/api/generated';
 import { LanguageService } from '../../core/services/language.service';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 interface ContactForm {
   name: string;
@@ -160,13 +161,15 @@ type ContactSubmission = components['schemas']['CreateContactDto'] & {
               target="_blank"
               rel="noopener noreferrer"
               class="text-tech-blue hover:underline"
-            >{{ 'CONTACT_LINKEDIN' | translate }}</a>
+              >{{ 'CONTACT_LINKEDIN' | translate }}</a
+            >
             <a
               href="https://github.com/KennethDornelles"
               target="_blank"
               rel="noopener noreferrer"
               class="text-tech-blue hover:underline"
-            >{{ 'CONTACT_GITHUB' | translate }}</a>
+              >{{ 'CONTACT_GITHUB' | translate }}</a
+            >
           </div>
         </div>
       </div>
@@ -176,6 +179,7 @@ type ContactSubmission = components['schemas']['CreateContactDto'] & {
 export class ContactComponent {
   private http = inject(HttpClient);
   langService = inject(LanguageService);
+  private analytics = inject(AnalyticsService);
 
   form: ContactForm = {
     name: '',
@@ -204,6 +208,7 @@ export class ContactComponent {
       next: () => {
         this.submitting.set(false);
         this.submitted.set(true);
+        this.analytics.track('contact_submit_success', { form: 'contact' });
       },
       error: (err) => {
         this.submitting.set(false);
