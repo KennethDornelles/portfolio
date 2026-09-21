@@ -25,6 +25,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { parseRedisUrl } from './common/utils/redis.util';
 import { I18nRedisKeyvAdapter } from './modules/i18n/i18n-redis-store';
 import { validateEnvironment } from './config/environment.validation';
+import appConfig from './config/app.config';
 
 @Module({
   imports: [
@@ -33,23 +34,20 @@ import { validateEnvironment } from './config/environment.validation';
       ignoreEnvFile: process.env.NODE_ENV === 'production',
       envFilePath: '.env',
       validate: validateEnvironment,
+      load: [appConfig],
     }),
     BullModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
-        const url =
-          configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
+        const url = configService.get<string>('app.redis.url');
         const parsed = parseRedisUrl(url || '');
 
         return {
           connection: parsed || {
             host:
-              configService.get<string>('REDIS_HOST') ||
-              process.env.REDIS_HOST ||
+              configService.get<string>('app.redis.host', 'localhost') ||
               'localhost',
-            port:
-              configService.get<number>('REDIS_PORT') ||
-              parseInt(process.env.REDIS_PORT || '6379', 10),
+            port: configService.get<number>('app.redis.port', 6379),
           },
         };
       },
@@ -88,8 +86,7 @@ import { validateEnvironment } from './config/environment.validation';
       isGlobal: true,
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const url =
-          configService.get<string>('REDIS_URL') || process.env.REDIS_URL;
+        const url = configService.get<string>('app.redis.url');
         const parsed = parseRedisUrl(url || '');
 
         return {
@@ -111,11 +108,14 @@ import { validateEnvironment } from './config/environment.validation';
                       socket: {
                         host:
                           configService.get<string>('REDIS_HOST') ||
-                          process.env.REDIS_HOST ||
+                          configService.get<string>(
+                            'app.redis.host',
+                            'localhost',
+                          ) ||
                           'localhost',
                         port:
                           configService.get<number>('REDIS_PORT') ||
-                          parseInt(process.env.REDIS_PORT || '6379', 10),
+                          configService.get<number>('app.redis.port', 6379),
                         connectTimeout: 10000,
                       },
                     },

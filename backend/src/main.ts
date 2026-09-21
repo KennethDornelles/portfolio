@@ -20,11 +20,15 @@ async function bootstrap() {
 
   // Startup Validation Logging
   console.log('--- Startup Configuration Check ---');
-  console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
-  console.log(`REDIS_URL defined: ${!!process.env.REDIS_URL}`);
-  console.log(`REDIS_HOST defined: ${!!process.env.REDIS_HOST}`);
-  console.log(`DATABASE_URL defined: ${!!process.env.DATABASE_URL}`);
-  if (process.env.DATABASE_URL?.includes('supabase')) {
+  const nodeEnv = configService.get<string>('app.nodeEnv');
+  const redisUrl = configService.get<string>('app.redis.url');
+  const redisHost = configService.get<string>('app.redis.host');
+  const databaseUrl = configService.get<string>('app.databaseUrl');
+  console.log(`NODE_ENV: ${nodeEnv}`);
+  console.log(`REDIS_URL defined: ${!!redisUrl}`);
+  console.log(`REDIS_HOST defined: ${!!redisHost}`);
+  console.log(`DATABASE_URL defined: ${!!databaseUrl}`);
+  if (databaseUrl?.includes('supabase')) {
     console.log('Detected Supabase URL');
   }
   console.log('-----------------------------------');

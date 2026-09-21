@@ -4,6 +4,7 @@ Este diretório concentra o diagnóstico técnico e o plano de evolução do pro
 
 - [Diagnóstico de engenharia](./engineering-assessment.md): riscos, gargalos, evidências e recomendações da análise realizada em 30 de agosto de 2026.
 - [Backlog de engenharia](./engineering-backlog.md): itens priorizados, dependências e critérios de aceite.
+- [Configuração de ambiente](./configuration.md): variáveis, secrets e fluxo tipado de configuração do backend.
 
 ## Como manter estes documentos
 
