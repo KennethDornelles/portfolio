@@ -1583,6 +1583,55 @@ export async function seedTranslations(prisma: PrismaClient) {
         'Nossa operação atua como um parceiro de inovação. Além de acelerar negócios B2B, construímos nosso próprio ecossistema de produtos SaaS, como BarberBoss e PetBoss. Entregamos não apenas código, mas engenharia inteligente integrando tecnologias modernas como Signals no Angular 19, geolocalização com PostGIS e segurança corporativa de missão crítica.',
     },
 
+    { key: 'FOUNDER_TITLE', lang: 'EN_US', value: 'Built from the inside out' },
+    {
+      key: 'FOUNDER_TITLE',
+      lang: 'PT_BR',
+      value: 'Construído de dentro para fora',
+    },
+    {
+      key: 'FOUNDER_DESC',
+      lang: 'EN_US',
+      value:
+        'Kenneth leads OluStack with a hands-on approach: understand the real problem, design a dependable foundation, and turn every technical decision into a clearer product experience.',
+    },
+    {
+      key: 'FOUNDER_DESC',
+      lang: 'PT_BR',
+      value:
+        'Kenneth lidera a OluStack de forma próxima: entende o problema real, desenha uma base confiável e transforma cada decisão técnica em uma experiência de produto mais clara.',
+    },
+    {
+      key: 'FOUNDER_POINT_1',
+      lang: 'EN_US',
+      value: 'Clarity before complexity',
+    },
+    {
+      key: 'FOUNDER_POINT_1',
+      lang: 'PT_BR',
+      value: 'Clareza antes da complexidade',
+    },
+    {
+      key: 'FOUNDER_POINT_2',
+      lang: 'EN_US',
+      value: 'Ownership from architecture to delivery',
+    },
+    {
+      key: 'FOUNDER_POINT_2',
+      lang: 'PT_BR',
+      value: 'Responsabilidade da arquitetura à entrega',
+    },
+    {
+      key: 'FOUNDER_POINT_3',
+      lang: 'EN_US',
+      value: 'Technology that earns trust',
+    },
+    {
+      key: 'FOUNDER_POINT_3',
+      lang: 'PT_BR',
+      value: 'Tecnologia que conquista confiança',
+    },
+
     // About - Leadership
     {
       key: 'ABOUT_LEADERSHIP_TITLE',
