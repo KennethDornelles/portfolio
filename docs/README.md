@@ -7,6 +7,7 @@ Este diretório concentra o diagnóstico técnico e o plano de evolução do pro
 - [Configuração de ambiente](./configuration.md): variáveis, secrets e fluxo tipado de configuração do backend.
 - [Runbook de desenvolvimento e entrega](./development-runbook.md): setup local, banco, validação, R2/CDN e fluxo de deploy.
 - [Observabilidade](./observability.md): correlação de requisições e eventos estruturados.
+- [Estratégia de testes](./testing-strategy.md): metas de cobertura e critérios de aceite do CI.
 
 ## Como manter estes documentos
 
