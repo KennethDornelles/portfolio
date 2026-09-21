@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { randomUUID } from 'node:crypto';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './modules/auth/auth.module';
@@ -26,6 +27,7 @@ import { parseRedisUrl } from './common/utils/redis.util';
 import { I18nRedisKeyvAdapter } from './modules/i18n/i18n-redis-store';
 import { validateEnvironment } from './config/environment.validation';
 import appConfig from './config/app.config';
+import { RequestIdMiddleware } from './common/middleware/request-id.middleware';
 
 @Module({
   imports: [
@@ -54,6 +56,8 @@ import appConfig from './config/app.config';
     }),
     LoggerModule.forRoot({
       pinoHttp: {
+        genReqId: (request) =>
+          request.headers['x-request-id']?.toString() || randomUUID(),
         redact: {
           paths: [
             'req.headers.authorization',
@@ -163,4 +167,8 @@ import appConfig from './config/app.config';
     },
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(RequestIdMiddleware).forRoutes('*');
+  }
+}

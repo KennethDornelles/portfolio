@@ -6,7 +6,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { finalize } from 'rxjs/operators';
 import { Request } from 'express';
 
 @Injectable()
@@ -18,12 +18,23 @@ export class PerformanceInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest<Request>();
     const method = req.method;
     const url = req.url;
+    const requestId = req.header('x-request-id') || 'unknown';
+    const response = context
+      .switchToHttp()
+      .getResponse<{ statusCode: number }>();
 
     return next.handle().pipe(
-      tap(() => {
+      finalize(() => {
         const time = performance.now() - now;
         this.logger.log(
-          `[Performance] ${method} ${url} took ${time.toFixed(2)}ms`,
+          JSON.stringify({
+            event: 'http.request.completed',
+            requestId,
+            method,
+            url,
+            statusCode: response.statusCode,
+            durationMs: Number(time.toFixed(2)),
+          }),
         );
       }),
     );
