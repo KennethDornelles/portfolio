@@ -1,4 +1,5 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-case-study-video',
@@ -16,6 +17,7 @@ import { Component, input } from '@angular/core';
           playsinline
           preload="metadata"
           [poster]="poster() || null"
+          (play)="trackPlay()"
         >
           <source [src]="src()" type="video/mp4" />
         </video>
@@ -25,7 +27,12 @@ import { Component, input } from '@angular/core';
   `,
 })
 export class CaseStudyVideoComponent {
+  private readonly analytics = inject(AnalyticsService);
   readonly src = input<string | null>(null);
   readonly poster = input<string | null>(null);
   readonly label = input<string>('Product demonstration');
+
+  trackPlay(): void {
+    this.analytics.track('case_video_play', { video: this.src() || 'unknown' });
+  }
 }
